@@ -1,4 +1,4 @@
-# هانيول هوم | Haneul Store
+# La Cucina (by aml badr)
 
 متجر إلكتروني مبني بـ React.js + Vite + Tailwind CSS، بأربع صفحات منفصلة.
 

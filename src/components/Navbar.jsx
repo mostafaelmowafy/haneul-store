@@ -25,8 +25,13 @@ export default function Navbar() {
 
         <Link to="/" className="flex items-center gap-2">
           <Leaf className="h-6 w-6 text-brand-primary" />
-          <span className="font-display text-2xl text-brand-primaryDark">
-            هانيول <span className="text-brand-primary">هوم</span>
+          <span className="flex flex-col leading-none">
+            <span className="font-display text-2xl text-brand-primaryDark">
+              La <span className="text-brand-primary">Cucina</span>
+            </span>
+            <span className="mt-0.5 text-[10px] tracking-wide text-brand-muted">
+              by aml badr
+            </span>
           </span>
         </Link>
 

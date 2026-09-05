@@ -15,7 +15,7 @@ export default function ItemCard({ item }) {
     : null;
 
   return (
-    <div className="group overflow-hidden rounded-2xl border border-brand-border bg-brand-surface transition-shadow hover:shadow-lg hover:shadow-brand-primary/10">
+    <div className="group overflow-hidden rounded-2xl border border-brand-border bg-brand-surface transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-primary/10">
       <div className="relative">
         <button onClick={() => navigate(`/product/${item.id}`)} className="block w-full">
           <ProductImage src={item.images?.[0]} alt={item.name} className="aspect-square w-full bg-white" />

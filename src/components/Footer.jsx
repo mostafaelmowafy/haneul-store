@@ -8,7 +8,7 @@ export default function Footer() {
         <div>
           <div className="mb-3 flex items-center gap-2">
             <Leaf className="h-5 w-5" />
-            <span className="font-display text-xl">هانيول هوم</span>
+            <span className="font-display text-xl">La Cucina</span>
           </div>
           <p className="leading-relaxed text-[#C7D6BE]">
             منتجات تنظيف منزلية بروح كورية أصيلة، لبيت أنقى برائحة تدوم.
@@ -26,13 +26,13 @@ export default function Footer() {
 
         <div>
           <p className="mb-3 font-semibold">تواصلي معنا</p>
-          <p className="text-[#C7D6BE]">hello@haneulhome.com</p>
+          <p className="text-[#C7D6BE]">hello@lacucina.com</p>
           <p className="text-[#C7D6BE]">٠١٠٠ ١٢٣ ٤٥٦٧</p>
         </div>
       </div>
 
       <div className="border-t border-white/10 py-4 text-center text-xs text-[#9FB79A]">
-        © 2026 هانيول هوم — جميع الحقوق محفوظة
+        © 2026 La Cucina — by aml badr — جميع الحقوق محفوظة
       </div>
     </footer>
   );

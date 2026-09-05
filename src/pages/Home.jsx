@@ -27,7 +27,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid justify-center gap-4 sm:gap-6 [grid-template-columns:repeat(auto-fit,minmax(140px,200px))] sm:[grid-template-columns:repeat(auto-fit,minmax(220px,320px))]">
+        <div className="grid justify-center gap-4 sm:gap-6 [grid-template-columns:repeat(auto-fit,minmax(210px,260px))] sm:[grid-template-columns:repeat(auto-fit,minmax(220px,320px))]">
           {products.map((item) => (
             <ItemCard key={item.id} item={item} />
           ))}

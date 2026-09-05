@@ -5,7 +5,9 @@ export default function ProductImage({ src, alt, className = "" }) {
 
   if (errored || !src) {
     return (
-      <div className={`flex items-center justify-center bg-brand-light text-xs text-brand-muted ${className}`}>
+      <div
+        className={`flex items-center justify-center bg-brand-light text-xs text-brand-muted ${className}`}
+      >
         لا توجد صورة
       </div>
     );
