@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .input {
+    @apply w-full rounded-xl border border-brand-border bg-[#FBFAF6] px-4 py-2.5 text-sm outline-none transition-shadow;
+  }
+  .input:focus {
+    @apply border-brand-primary shadow-[0_0_0_3px_rgba(62,107,78,0.12)];
+  }
+}
