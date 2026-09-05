@@ -8,7 +8,7 @@ import { useCart } from "../context/CartContext.jsx";
 export default function ItemCard({ item }) {
   const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, closeDrawer } = useCart();
 
   const discount = item.oldPrice
     ? Math.round(100 - (item.price / item.oldPrice) * 100)
@@ -59,12 +59,24 @@ export default function ItemCard({ item }) {
           )}
         </div>
 
-        <button
-          onClick={() => addToCart(item.id, 1)}
-          className="w-full rounded-xl bg-brand-primaryDark py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-primaryDarker"
-        >
-          أضف للسلة
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => addToCart(item.id, 1)}
+            className="flex-1 rounded-xl bg-brand-primaryDark py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-primaryDarker"
+          >
+            أضف للسلة
+          </button>
+          <button
+            onClick={() => {
+              addToCart(item.id, 1);
+              closeDrawer();
+              navigate("/checkout");
+            }}
+            className="flex-1 rounded-xl border border-brand-primaryDark py-2.5 text-sm font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
+          >
+            اشتري الآن
+          </button>
+        </div>
       </div>
     </div>
   );

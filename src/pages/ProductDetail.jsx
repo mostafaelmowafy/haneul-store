@@ -11,7 +11,7 @@ export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getItemById, bundles } = useCatalog();
-  const { addToCart } = useCart();
+  const { addToCart, closeDrawer } = useCart();
 
   const item = getItemById(id);
   const [qty, setQty] = useState(1);
@@ -35,6 +35,12 @@ export default function ProductDetail() {
     addToCart(item.id, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
+  };
+
+  const handleBuyNow = () => {
+    addToCart(item.id, qty);
+    closeDrawer();
+    navigate("/checkout");
   };
 
   return (
@@ -67,7 +73,7 @@ export default function ProductDetail() {
 
           <p className="mb-6 leading-relaxed text-[#4A4A42]">{item.description}</p>
 
-          <div className="mb-6 flex items-center gap-4">
+          <div className="mb-4 flex items-center gap-4">
             <div className="flex items-center rounded-full border border-brand-border">
               <button
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
@@ -85,7 +91,9 @@ export default function ProductDetail() {
                 <Plus className="h-4 w-4" />
               </button>
             </div>
+          </div>
 
+          <div className="mb-6 flex items-center gap-3">
             <button
               onClick={handleAdd}
               className="flex flex-1 items-center justify-center gap-2 rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker"
@@ -97,6 +105,13 @@ export default function ProductDetail() {
               ) : (
                 "أضف للسلة"
               )}
+            </button>
+
+            <button
+              onClick={handleBuyNow}
+              className="flex-1 rounded-full border border-brand-primaryDark py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
+            >
+              اشتري الآن
             </button>
           </div>
 
