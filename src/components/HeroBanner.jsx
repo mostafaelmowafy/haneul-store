@@ -1,72 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React from 'react';
 
-const SLIDES = [
-  {
-    title: "نظافة منزلك أسهل من أي وقت",
-    sub: "منتجات تنظيف فعّالة لكل ركن في بيتك، بنتيجة واضحة من أول استخدام",
-    cta: "تسوّقي الآن",
-    tint: "from-[#C7D9BB] via-[#A9C79A] to-[#6E9B7C]",
-  },
-  {
-    title: "إزالة الدهون بقوة في دقائق",
-    sub: "تركيبة قوية تذيب أصعب الدهون من المواقد والشفاطات بسهولة",
-    cta: "شوفي المنتج",
-    tint: "from-[#B9CDA6] via-[#8FB79B] to-[#3E6B4E]",
-  },
-  {
-    title: "شحن مجاني لكل الطلبات داخل مصر",
-    sub: "اطلبي الآن ووصل لباب بيتك دون أي مصاريف إضافية",
-    cta: "ابدئي التسوق",
-    tint: "from-[#D6C79A] via-[#B7C9A0] to-[#5C8E6C]",
-  },
-];
-
-// ارتفاع ثابت للبانر بكل شرائحه، عشان محتوى الصفحة تحته ميتحركش وهو بيتقلب
-const BANNER_HEIGHT = "h-[380px] sm:h-[480px]";
-
+// بانر حقيقي بتصميم جاهز مع تأثير الفريم المضبب للأطراف الفارغة
 export default function HeroBanner({ onShop }) {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => setIndex((i) => (i + 1) % SLIDES.length), 4500);
-    return () => clearInterval(timer);
-  }, []);
-
-  const slide = SLIDES[index];
+  // كود الصور المشترك لمنع التكرار
+  const BannerImages = () => (
+    <>
+      <source media="(min-width: 640px)" srcSet="/images/banner-desktop.webp" />
+      <img
+        src="/images/banner-mobile.webp"
+        alt="La Cucina — منتجات كورية لبيت أنظف"
+      />
+    </>
+  );
 
   return (
-    <div className="relative overflow-hidden">
-      <div
-        className={`flex items-center justify-center bg-gradient-to-br ${BANNER_HEIGHT} ${slide.tint} transition-colors duration-700`}
-      >
-        <div className="mx-auto max-w-6xl px-6 text-center">
-          <h1 className="font-display mx-auto max-w-2xl text-3xl leading-tight text-[#22381F] sm:text-5xl">
-            {slide.title}
-          </h1>
-          <p className="mx-auto mt-4 max-w-lg text-base text-brand-primaryDark sm:text-lg">
-            {slide.sub}
-          </p>
-          <button
-            onClick={onShop}
-            className="mt-8 rounded-full bg-brand-primaryDark px-8 py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker"
-          >
-            {slide.cta}
-          </button>
-        </div>
+    <button
+      onClick={onShop}
+      className="block w-full relative overflow-hidden bg-black/5"
+    >
+      {/* 1. الخلفية المموهة (تظهر فقط في المساحات الفارغة) */}
+      <div className="absolute inset-0 select-none pointer-events-none scale-105 blur-2xl brightness-90 opacity-60">
+        <picture className="w-full h-full [&>img]:w-full [&>img]:h-full [&>img]:object-cover">
+          <BannerImages />
+        </picture>
       </div>
 
-      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-        {SLIDES.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setIndex(i)}
-            aria-label={`الشريحة ${i + 1}`}
-            className={`h-1.5 rounded-full transition-all ${
-              i === index ? "w-6 bg-brand-primaryDark" : "w-1.5 bg-brand-primaryDark/40"
-            }`}
+      {/* 2. طبقة تغبيش إضافية ناعمة لدمج الأطراف */}
+      <div className="absolute inset-0 backdrop-blur-sm pointer-events-none"></div>
+
+      {/* 3. البانر الأصلي في المقدمة بحجمه الطبيعي */}
+      <div className="relative z-10 w-full flex justify-center">
+        <picture className="w-full">
+          <source
+            media="(min-width: 640px)"
+            srcSet="/images/banner-desktop.webp"
           />
-        ))}
+          <img
+            src="/images/banner-mobile.webp"
+            alt="La Cucina — منتجات كورية لبيت أنظف"
+            className="max-h-[73vh] w-full object-contain object-top"
+          />
+        </picture>
       </div>
-    </div>
+    </button>
   );
 }

@@ -129,8 +129,8 @@ export default function ProductDetail() {
       {/* العروض بتظهر هنا بعد وصف المنتج مباشرة، وبتتزود تلقائيًا من src/data/catalog.js */}
       {offers.length > 0 && (
         <div className="mt-16">
-          <h2 className="font-display mb-6 text-xl text-brand-primaryDark">عروض قد تعجبك</h2>
-          <div className="grid justify-center gap-4 sm:gap-6 [grid-template-columns:repeat(auto-fit,minmax(210px,260px))] sm:[grid-template-columns:repeat(auto-fit,minmax(220px,320px))]">
+          <h2 className="font-display mb-6 text-center text-xl text-brand-primaryDark">عروض قد تعجبك</h2>
+          <div className="grid grid-cols-2 justify-center gap-4 sm:gap-6 sm:[grid-template-columns:repeat(auto-fit,minmax(220px,320px))]">
             {offers.map((offer) => (
               <ItemCard key={offer.id} item={offer} />
             ))}
