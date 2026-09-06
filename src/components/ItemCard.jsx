@@ -15,7 +15,7 @@ export default function ItemCard({ item }) {
     : null;
 
   return (
-    <div className="group overflow-hidden rounded-2xl border border-brand-border bg-brand-surface transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-primary/10">
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-brand-border bg-brand-surface transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-primary/10">
       <div className="relative">
         <button onClick={() => navigate(`/product/${item.id}`)} className="block w-full">
           <ProductImage src={item.images?.[0]} alt={item.name} className="aspect-square w-full bg-white" />
@@ -40,7 +40,7 @@ export default function ItemCard({ item }) {
         </button>
       </div>
 
-      <div className="p-4">
+      <div className="flex flex-1 flex-col p-4">
         <p className="mb-1 text-[11px] font-medium text-brand-accent">{item.category}</p>
 
         <button
@@ -59,7 +59,7 @@ export default function ItemCard({ item }) {
           )}
         </div>
 
-        <div className="flex flex-col gap-2 sm:flex-row">
+        <div className="mt-auto flex flex-col gap-2 sm:flex-row">
           <button
             onClick={() => addToCart(item.id, 1)}
             className="flex-1 whitespace-nowrap rounded-xl bg-brand-primaryDark py-2.5 text-xs font-medium text-white transition-colors hover:bg-brand-primaryDarker sm:text-sm"
