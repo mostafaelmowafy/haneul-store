@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import ProductImage from "../components/ProductImage.jsx";
 import { formatPrice, GOVERNORATES } from "../data/products.js";
 import { useCart } from "../context/CartContext.jsx";
@@ -10,14 +10,11 @@ const FREE_SHIPPING_THRESHOLD = 500;
 const SHIPPING_FEE = 60;
 
 const EMPTY_FORM = {
-  firstName: "",
-  lastName: "",
+  fullName: "",
   phone: "",
-  email: "",
-  address: "",
-  apartment: "",
-  city: "",
+  altPhone: "",
   governorate: GOVERNORATES[0],
+  address: "",
   notes: "",
 };
 
@@ -31,21 +28,23 @@ const validateForm = (form) => {
   const newErrors = {};
 
   const phone = convertArabicNumsToEnglish((form.phone || "").trim());
-  const firstName = (form.firstName || "").trim();
-  const lastName = (form.lastName || "").trim();
+  const altPhone = convertArabicNumsToEnglish((form.altPhone || "").trim());
+  const fullName = (form.fullName || "").trim();
 
-  if (!firstName) newErrors.firstName = "يجب إدخال الاسم الأول";
-  if (!lastName) newErrors.lastName = "يجب إدخال اسم العائلة";
+  if (!fullName) newErrors.fullName = "يجب إدخال الاسم بالكامل";
 
   if (!phone) {
     newErrors.phone = "يجب إدخال رقم الهاتف";
   } else if (!PHONE_REGEX.test(phone)) {
     newErrors.phone =
-      "❌ من فضلك أدخل رقم هاتف صحيح يبدأ بـ 010 - 011 - 015 - 0127 - 0128 - 0120 - 0121 - 0122 ويتكون من 11 رقم";
+      "❌ من فضلك أدخلي رقم هاتف صحيح يبدأ بـ 010 - 011 - 015 - 0127 - 0128 - 0120 - 0121 - 0122 ويتكون من 11 رقم";
+  }
+
+  if (altPhone && !PHONE_REGEX.test(altPhone)) {
+    newErrors.altPhone = "❌ الرقم البديل غير صحيح، تأكدي إنه مكوّن من 11 رقم";
   }
 
   if (!(form.address || "").trim()) newErrors.address = "يجب إدخال العنوان بالتفصيل";
-  if (!(form.city || "").trim()) newErrors.city = "يجب إدخال المدينة";
   if (!(form.governorate || "").trim()) newErrors.governorate = "يجب إدخال المحافظة";
 
   return newErrors;
@@ -66,11 +65,10 @@ export default function Checkout() {
 
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState({});
-  const [placed, setPlaced] = useState(false);
 
   const setField = (key) => (e) => {
     let value = e.target.value;
-    if (key === "phone") value = convertArabicNumsToEnglish(value);
+    if (key === "phone" || key === "altPhone") value = convertArabicNumsToEnglish(value);
     setForm((f) => ({ ...f, [key]: value }));
   };
 
@@ -81,25 +79,25 @@ export default function Checkout() {
       return;
     }
     setErrors({});
-    setPlaced(true);
-    clearCart();
-  };
 
-  if (placed) {
-    return (
-      <div className="mx-auto max-w-lg px-6 py-24 text-center">
-        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-brand-light">
-          <Check className="h-8 w-8 text-brand-primaryDark" />
-        </div>
-        <h1 className="font-display mb-2 text-2xl text-brand-primaryDark">
-          تم استلام طلبك بنجاح
-        </h1>
-        <p className="text-sm text-brand-muted">
-          سيتواصل معكِ فريقنا لتأكيد التفاصيل قبل الشحن.
-        </p>
-      </div>
-    );
-  }
+    const orderSnapshot = {
+      lines: lines.map((line) => ({
+        id: line.item.id,
+        name: line.item.name,
+        image: line.item.images?.[0] || null,
+        qty: line.qty,
+        price: line.item.price,
+        oldPrice: line.item.oldPrice || null,
+      })),
+      subtotal,
+      shipping,
+      total,
+      form,
+    };
+
+    clearCart();
+    navigate("/order-success", { state: orderSnapshot });
+  };
 
   if (lines.length === 0) {
     return (
@@ -193,12 +191,24 @@ export default function Checkout() {
         <div className="order-1 sm:order-2 sm:col-span-3">
           <div className="space-y-5 rounded-xl border border-brand-border bg-brand-surface p-5 sm:p-6">
             <div>
-              <h2 className="mb-3 font-semibold text-brand-text">بيانات التواصل</h2>
+              <h2 className="mb-3 font-semibold text-brand-text">بيانات الشحن</h2>
               <div className="grid gap-3 sm:grid-cols-2">
+                <div className="sm:col-span-2">
+                  <input
+                    className="input w-full"
+                    placeholder="الاسم بالكامل"
+                    value={form.fullName}
+                    onChange={setField("fullName")}
+                  />
+                  {errors.fullName && (
+                    <p className="mt-1 text-xs text-red-500">{errors.fullName}</p>
+                  )}
+                </div>
+
                 <div>
                   <input
-                    className="input"
-                    placeholder="رقم الهاتف"
+                    className="input w-full"
+                    placeholder="رقم التليفون"
                     value={form.phone}
                     onChange={setField("phone")}
                     maxLength={11}
@@ -208,69 +218,22 @@ export default function Checkout() {
                     <p className="mt-1 text-xs text-red-500">{errors.phone}</p>
                   )}
                 </div>
-                <input
-                  className="input"
-                  placeholder="البريد الإلكتروني (اختياري)"
-                  value={form.email}
-                  onChange={setField("email")}
-                />
-              </div>
-            </div>
 
-            <div>
-              <h2 className="mb-3 font-semibold text-brand-text">عنوان الشحن</h2>
-              <div className="grid gap-3 sm:grid-cols-2">
                 <div>
                   <input
-                    className="input"
-                    placeholder="الاسم الأول"
-                    value={form.firstName}
-                    onChange={setField("firstName")}
+                    className="input w-full"
+                    placeholder="رقم بديل (اختياري)"
+                    value={form.altPhone}
+                    onChange={setField("altPhone")}
+                    maxLength={11}
+                    dir="ltr"
                   />
-                  {errors.firstName && (
-                    <p className="mt-1 text-xs text-red-500">{errors.firstName}</p>
+                  {errors.altPhone && (
+                    <p className="mt-1 text-xs text-red-500">{errors.altPhone}</p>
                   )}
                 </div>
-                <div>
-                  <input
-                    className="input"
-                    placeholder="اسم العائلة"
-                    value={form.lastName}
-                    onChange={setField("lastName")}
-                  />
-                  {errors.lastName && (
-                    <p className="mt-1 text-xs text-red-500">{errors.lastName}</p>
-                  )}
-                </div>
+
                 <div className="sm:col-span-2">
-                  <input
-                    className="input w-full"
-                    placeholder="العنوان"
-                    value={form.address}
-                    onChange={setField("address")}
-                  />
-                  {errors.address && (
-                    <p className="mt-1 text-xs text-red-500">{errors.address}</p>
-                  )}
-                </div>
-                <input
-                  className="input sm:col-span-2"
-                  placeholder="شقة، دور، إلخ (اختياري)"
-                  value={form.apartment}
-                  onChange={setField("apartment")}
-                />
-                <div>
-                  <input
-                    className="input w-full"
-                    placeholder="المدينة"
-                    value={form.city}
-                    onChange={setField("city")}
-                  />
-                  {errors.city && (
-                    <p className="mt-1 text-xs text-red-500">{errors.city}</p>
-                  )}
-                </div>
-                <div>
                   <select
                     className="input w-full"
                     value={form.governorate}
@@ -286,9 +249,22 @@ export default function Checkout() {
                     <p className="mt-1 text-xs text-red-500">{errors.governorate}</p>
                   )}
                 </div>
+
+                <div className="sm:col-span-2">
+                  <textarea
+                    className="input h-24 w-full resize-none"
+                    placeholder="العنوان بالتفصيل"
+                    value={form.address}
+                    onChange={setField("address")}
+                  />
+                  {errors.address && (
+                    <p className="mt-1 text-xs text-red-500">{errors.address}</p>
+                  )}
+                </div>
+
                 <textarea
                   className="input h-20 resize-none sm:col-span-2"
-                  placeholder="ملاحظات على الطلب (اختياري)"
+                  placeholder="ملاحظات إضافية تحبي تقوليها (اختياري)"
                   value={form.notes}
                   onChange={setField("notes")}
                 />

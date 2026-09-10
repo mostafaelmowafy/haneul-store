@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function ProductImage({ src, alt, className = '' }) {
+export default function ProductImage({ src, alt, className = '', ...rest }) {
   const [errored, setErrored] = useState(false);
 
   useEffect(() => {
@@ -24,6 +24,7 @@ export default function ProductImage({ src, alt, className = '' }) {
       onError={() => setErrored(true)}
       className={`object-fill ${className}`}
       loading="lazy"
+      {...rest}
     />
   );
 }

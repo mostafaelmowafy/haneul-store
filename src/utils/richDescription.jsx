@@ -4,6 +4,53 @@ import React from "react";
 // وبيتقبل الغلطة الإملائية الشائعة "يدل" بدل "بدل" كمان.
 const OFFER_PRICE_REGEX = /(\d[\d,]*)\s*(?:ج)?\s*(?:بدل|يدل)\s*(\d[\d,]*)\s*ج/;
 
+// بيلوّن "الشحن مجاني" وأي سعر تاني مكتوب بعد جملة السعر الرئيسية
+// (زي "سعر العبوة فى العرض 133 ج فقط") بلون مختلف عشان يبان لافت
+const AFTER_HIGHLIGHT_REGEX =
+  /(الشحن\s*مجان[يى])|(\d[\d,]*\s*ج(?!\.م))/g;
+
+function renderAfterText(text) {
+  const nodes = [];
+  let lastIndex = 0;
+  let i = 0;
+
+  for (const m of text.matchAll(AFTER_HIGHLIGHT_REGEX)) {
+    if (m.index > lastIndex) {
+      nodes.push(
+        <span key={`t-${i++}`} className="text-sm text-[#4A4A42]">
+          {text.slice(lastIndex, m.index)}
+        </span>,
+      );
+    }
+
+    const isShipping = Boolean(m[1]);
+    nodes.push(
+      <span
+        key={`h-${i++}`}
+        className={
+          isShipping
+            ? "text-sm font-bold text-emerald-600"
+            : "text-sm font-bold text-rose-600"
+        }
+      >
+        {m[0]}
+      </span>,
+    );
+
+    lastIndex = m.index + m[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(
+      <span key={`t-${i++}`} className="text-sm text-[#4A4A42]">
+        {text.slice(lastIndex)}
+      </span>,
+    );
+  }
+
+  return nodes;
+}
+
 function renderLine(line, key) {
   const match = line.match(OFFER_PRICE_REGEX);
 
@@ -42,7 +89,7 @@ function renderLine(line, key) {
           🔥 الأكثر طلبًا
         </span>
       )}
-      {after && <span className="text-sm text-[#4A4A42]">{after}</span>}
+      {after && <span className="flex flex-wrap items-center gap-x-1">{renderAfterText(after)}</span>}
     </div>
   );
 }

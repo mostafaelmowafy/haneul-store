@@ -11,6 +11,7 @@ import Home from "./pages/Home.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
 import Cart from "./pages/Cart.jsx";
 import Checkout from "./pages/Checkout.jsx";
+import OrderSuccess from "./pages/OrderSuccess.jsx";
 
 export default function App() {
   const location = useLocation();
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/product/:id" element={<ProductDetail key={location.pathname} />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-success" element={<OrderSuccess />} />
           </Routes>
 
           <Footer />
