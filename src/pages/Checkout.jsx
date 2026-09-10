@@ -21,6 +21,36 @@ const EMPTY_FORM = {
   notes: "",
 };
 
+const convertArabicNumsToEnglish = (str) =>
+  str.replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+
+const PHONE_REGEX =
+  /^(?:(?:010|011|015)[0-9]{8}|(?:0127|0128|0120|0121|0122)[0-9]{7})$/;
+
+const validateForm = (form) => {
+  const newErrors = {};
+
+  const phone = convertArabicNumsToEnglish((form.phone || "").trim());
+  const firstName = (form.firstName || "").trim();
+  const lastName = (form.lastName || "").trim();
+
+  if (!firstName) newErrors.firstName = "يجب إدخال الاسم الأول";
+  if (!lastName) newErrors.lastName = "يجب إدخال اسم العائلة";
+
+  if (!phone) {
+    newErrors.phone = "يجب إدخال رقم الهاتف";
+  } else if (!PHONE_REGEX.test(phone)) {
+    newErrors.phone =
+      "❌ من فضلك أدخل رقم هاتف صحيح يبدأ بـ 010 - 011 - 015 - 0127 - 0128 - 0120 - 0121 - 0122 ويتكون من 11 رقم";
+  }
+
+  if (!(form.address || "").trim()) newErrors.address = "يجب إدخال العنوان بالتفصيل";
+  if (!(form.city || "").trim()) newErrors.city = "يجب إدخال المدينة";
+  if (!(form.governorate || "").trim()) newErrors.governorate = "يجب إدخال المحافظة";
+
+  return newErrors;
+};
+
 export default function Checkout() {
   const { cart, clearCart } = useCart();
   const { getItemById } = useCatalog();
@@ -35,14 +65,22 @@ export default function Checkout() {
   const total = subtotal + shipping;
 
   const [form, setForm] = useState(EMPTY_FORM);
+  const [errors, setErrors] = useState({});
   const [placed, setPlaced] = useState(false);
 
-  const setField = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
-
-  const requiredOk =
-    form.firstName && form.lastName && form.phone && form.address && form.city;
+  const setField = (key) => (e) => {
+    let value = e.target.value;
+    if (key === "phone") value = convertArabicNumsToEnglish(value);
+    setForm((f) => ({ ...f, [key]: value }));
+  };
 
   const handlePlaceOrder = () => {
+    const newErrors = validateForm(form);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
     setPlaced(true);
     clearCart();
   };
@@ -97,23 +135,34 @@ export default function Checkout() {
           <div className="sticky top-24 rounded-xl border border-brand-border bg-brand-surface p-5">
             <h2 className="mb-4 font-semibold text-brand-text">ملخص الطلب</h2>
 
-            <div className="max-h-64 space-y-3 overflow-auto pr-1">
+            <div className="max-h-72 space-y-4 overflow-y-auto overflow-x-visible px-1 pt-2">
               {lines.map((line) => (
                 <div key={line.id} className="flex items-center gap-3">
                   <div className="relative shrink-0">
                     <ProductImage
                       src={line.item.images?.[0]}
                       alt={line.item.name}
-                      className="h-12 w-12 rounded-lg bg-white"
+                      className="h-16 w-16 rounded-xl bg-white"
                     />
-                    <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-primaryDark text-[10px] text-white">
+                    <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-brand-surface bg-brand-primaryDark text-xs font-bold leading-none text-white">
                       {line.qty}
                     </span>
                   </div>
-                  <p className="flex-1 truncate text-xs text-[#4A4A42]">{line.item.name}</p>
-                  <p className="shrink-0 text-xs font-semibold text-brand-primaryDark">
-                    {formatPrice(line.item.price * line.qty)}
-                  </p>
+                  <div className="flex flex-1 items-center justify-between gap-2">
+                    <p className="text-sm font-medium leading-snug text-brand-text">
+                      {line.item.name}
+                    </p>
+                    <div className="shrink-0 text-left">
+                      {line.item.oldPrice && (
+                        <p className="text-xs text-brand-muted line-through">
+                          {formatPrice(line.item.oldPrice * line.qty)}
+                        </p>
+                      )}
+                      <p className="text-sm font-bold text-brand-primaryDark">
+                        {formatPrice(line.item.price * line.qty)}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -146,12 +195,19 @@ export default function Checkout() {
             <div>
               <h2 className="mb-3 font-semibold text-brand-text">بيانات التواصل</h2>
               <div className="grid gap-3 sm:grid-cols-2">
-                <input
-                  className="input"
-                  placeholder="رقم الهاتف"
-                  value={form.phone}
-                  onChange={setField("phone")}
-                />
+                <div>
+                  <input
+                    className="input"
+                    placeholder="رقم الهاتف"
+                    value={form.phone}
+                    onChange={setField("phone")}
+                    maxLength={11}
+                    dir="ltr"
+                  />
+                  {errors.phone && (
+                    <p className="mt-1 text-xs text-red-500">{errors.phone}</p>
+                  )}
+                </div>
                 <input
                   className="input"
                   placeholder="البريد الإلكتروني (اختياري)"
@@ -164,43 +220,72 @@ export default function Checkout() {
             <div>
               <h2 className="mb-3 font-semibold text-brand-text">عنوان الشحن</h2>
               <div className="grid gap-3 sm:grid-cols-2">
-                <input
-                  className="input"
-                  placeholder="الاسم الأول"
-                  value={form.firstName}
-                  onChange={setField("firstName")}
-                />
-                <input
-                  className="input"
-                  placeholder="اسم العائلة"
-                  value={form.lastName}
-                  onChange={setField("lastName")}
-                />
-                <input
-                  className="input sm:col-span-2"
-                  placeholder="العنوان"
-                  value={form.address}
-                  onChange={setField("address")}
-                />
+                <div>
+                  <input
+                    className="input"
+                    placeholder="الاسم الأول"
+                    value={form.firstName}
+                    onChange={setField("firstName")}
+                  />
+                  {errors.firstName && (
+                    <p className="mt-1 text-xs text-red-500">{errors.firstName}</p>
+                  )}
+                </div>
+                <div>
+                  <input
+                    className="input"
+                    placeholder="اسم العائلة"
+                    value={form.lastName}
+                    onChange={setField("lastName")}
+                  />
+                  {errors.lastName && (
+                    <p className="mt-1 text-xs text-red-500">{errors.lastName}</p>
+                  )}
+                </div>
+                <div className="sm:col-span-2">
+                  <input
+                    className="input w-full"
+                    placeholder="العنوان"
+                    value={form.address}
+                    onChange={setField("address")}
+                  />
+                  {errors.address && (
+                    <p className="mt-1 text-xs text-red-500">{errors.address}</p>
+                  )}
+                </div>
                 <input
                   className="input sm:col-span-2"
                   placeholder="شقة، دور، إلخ (اختياري)"
                   value={form.apartment}
                   onChange={setField("apartment")}
                 />
-                <input
-                  className="input"
-                  placeholder="المدينة"
-                  value={form.city}
-                  onChange={setField("city")}
-                />
-                <select className="input" value={form.governorate} onChange={setField("governorate")}>
-                  {GOVERNORATES.map((g) => (
-                    <option key={g} value={g}>
-                      {g}
-                    </option>
-                  ))}
-                </select>
+                <div>
+                  <input
+                    className="input w-full"
+                    placeholder="المدينة"
+                    value={form.city}
+                    onChange={setField("city")}
+                  />
+                  {errors.city && (
+                    <p className="mt-1 text-xs text-red-500">{errors.city}</p>
+                  )}
+                </div>
+                <div>
+                  <select
+                    className="input w-full"
+                    value={form.governorate}
+                    onChange={setField("governorate")}
+                  >
+                    {GOVERNORATES.map((g) => (
+                      <option key={g} value={g}>
+                        {g}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.governorate && (
+                    <p className="mt-1 text-xs text-red-500">{errors.governorate}</p>
+                  )}
+                </div>
                 <textarea
                   className="input h-20 resize-none sm:col-span-2"
                   placeholder="ملاحظات على الطلب (اختياري)"
@@ -211,9 +296,8 @@ export default function Checkout() {
             </div>
 
             <button
-              disabled={!requiredOk}
               onClick={handlePlaceOrder}
-              className="w-full rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker disabled:cursor-not-allowed disabled:opacity-40"
+              className="w-full rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker"
             >
               تأكيد الطلب — {formatPrice(total)}
             </button>
