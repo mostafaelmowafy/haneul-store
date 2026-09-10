@@ -11,6 +11,7 @@ import {
 import ProductGallery from '../components/ProductGallery.jsx';
 import ItemCard from '../components/ItemCard.jsx';
 import { formatPrice } from '../data/products.js';
+import RichDescription from '../utils/richDescription.jsx';
 import { useCatalog } from '../context/CatalogContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 
@@ -84,9 +85,9 @@ export default function ProductDetail() {
             )}
           </div>
 
-          <p className="mb-6 leading-relaxed text-[#4A4A42] whitespace-pre-line ">
-            {item.description}
-          </p>
+          <div className="mb-6">
+            <RichDescription text={item.description} />
+          </div>
 
           <div className="mb-4 flex items-center gap-4">
             <div className="flex items-center rounded-full border border-brand-border">
