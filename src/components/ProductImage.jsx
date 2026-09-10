@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 
-export default function ProductImage({ src, alt, className = "" }) {
+export default function ProductImage({ src, alt, className = '' }) {
   const [errored, setErrored] = useState(false);
+
+  useEffect(() => {
+    setErrored(false);
+  }, [src]);
 
   if (errored || !src) {
     return (
@@ -18,7 +22,7 @@ export default function ProductImage({ src, alt, className = "" }) {
       src={src}
       alt={alt}
       onError={() => setErrored(true)}
-      className={`object-cover ${className}`}
+      className={`object-fill ${className}`}
       loading="lazy"
     />
   );

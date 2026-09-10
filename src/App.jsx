@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { CatalogProvider } from "./context/CatalogContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
@@ -13,6 +13,8 @@ import Cart from "./pages/Cart.jsx";
 import Checkout from "./pages/Checkout.jsx";
 
 export default function App() {
+  const location = useLocation();
+
   return (
     <CatalogProvider>
       <CartProvider>
@@ -23,7 +25,7 @@ export default function App() {
 
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/product/:id" element={<ProductDetail key={location.pathname} />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
           </Routes>

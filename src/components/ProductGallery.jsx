@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductImage from "./ProductImage.jsx";
 
 export default function ProductGallery({ images, alt }) {
   const [active, setActive] = useState(0);
   const list = images && images.length > 0 ? images : [null];
+
+  useEffect(() => {
+    setActive(0);
+  }, [images]);
 
   return (
     <div>

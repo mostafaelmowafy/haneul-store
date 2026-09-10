@@ -1,11 +1,18 @@
-import React, { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowRight, Minus, Plus, Check, Truck, ShieldCheck } from "lucide-react";
-import ProductGallery from "../components/ProductGallery.jsx";
-import ItemCard from "../components/ItemCard.jsx";
-import { formatPrice } from "../data/products.js";
-import { useCatalog } from "../context/CatalogContext.jsx";
-import { useCart } from "../context/CartContext.jsx";
+import React, { useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import {
+  ArrowRight,
+  Minus,
+  Plus,
+  Check,
+  Truck,
+  ShieldCheck,
+} from 'lucide-react';
+import ProductGallery from '../components/ProductGallery.jsx';
+import ItemCard from '../components/ItemCard.jsx';
+import { formatPrice } from '../data/products.js';
+import { useCatalog } from '../context/CatalogContext.jsx';
+import { useCart } from '../context/CartContext.jsx';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -40,7 +47,7 @@ export default function ProductDetail() {
   const handleBuyNow = () => {
     addToCart(item.id, qty);
     closeDrawer();
-    navigate("/checkout");
+    navigate('/checkout');
   };
 
   return (
@@ -53,12 +60,18 @@ export default function ProductDetail() {
         الرجوع
       </button>
 
-      <div className="grid gap-10 sm:grid-cols-2">
-        <ProductGallery images={item.images} alt={item.name} />
+      <div className="grid items-start gap-10 sm:grid-cols-2">
+        <div className="sm:sticky sm:top-24 sm:self-start">
+          <ProductGallery images={item.images} alt={item.name} />
+        </div>
 
         <div>
-          <p className="mb-2 text-xs font-medium text-brand-accent">{item.category}</p>
-          <h1 className="font-display mb-3 text-2xl text-brand-text sm:text-3xl">{item.name}</h1>
+          <p className="mb-2 text-xs font-medium text-brand-accent">
+            {item.category}
+          </p>
+          <h1 className="font-display mb-3 text-2xl text-brand-text sm:text-3xl">
+            {item.name}
+          </h1>
 
           <div className="mb-5 flex items-center gap-3">
             <span className="text-2xl font-bold text-brand-primaryDark">
@@ -71,7 +84,9 @@ export default function ProductDetail() {
             )}
           </div>
 
-          <p className="mb-6 leading-relaxed text-[#4A4A42]">{item.description}</p>
+          <p className="mb-6 leading-relaxed text-[#4A4A42] whitespace-pre-line ">
+            {item.description}
+          </p>
 
           <div className="mb-4 flex items-center gap-4">
             <div className="flex items-center rounded-full border border-brand-border">
@@ -103,7 +118,7 @@ export default function ProductDetail() {
                   <Check className="h-4 w-4" /> تمت الإضافة
                 </>
               ) : (
-                "أضف للسلة"
+                'أضف للسلة'
               )}
             </button>
 
@@ -120,7 +135,8 @@ export default function ProductDetail() {
               <Truck className="h-4 w-4 text-brand-primary" /> شحن مجاني
             </span>
             <span className="flex items-center gap-1">
-              <ShieldCheck className="h-4 w-4 text-brand-primary" /> استرجاع خلال 14 يوم
+              <ShieldCheck className="h-4 w-4 text-brand-primary" /> استرجاع
+              خلال 14 يوم
             </span>
           </div>
         </div>
@@ -129,8 +145,10 @@ export default function ProductDetail() {
       {/* العروض بتظهر هنا بعد وصف المنتج مباشرة، وبتتزود تلقائيًا من src/data/catalog.js */}
       {offers.length > 0 && (
         <div className="mt-16">
-          <h2 className="font-display mb-6 text-center text-xl text-brand-primaryDark">عروض قد تعجبك</h2>
-          <div className="grid grid-cols-2 justify-center gap-4 sm:gap-6 sm:[grid-template-columns:repeat(auto-fit,minmax(220px,320px))]">
+          <h2 className="font-display mb-6 text-center text-xl text-brand-primaryDark">
+            عروض قد تعجبك
+          </h2>
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
             {offers.map((offer) => (
               <ItemCard key={offer.id} item={offer} />
             ))}
