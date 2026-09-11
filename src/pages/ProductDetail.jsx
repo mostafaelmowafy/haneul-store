@@ -74,7 +74,7 @@ export default function ProductDetail() {
       </button>
 
       <div className="grid items-start gap-10 sm:grid-cols-2">
-        <div className="sm:sticky sm:top-24 sm:self-start">
+        <div className="mx-auto w-full max-w-sm sm:sticky sm:top-24 sm:max-w-none sm:self-start">
           <ProductGallery images={galleryImages} alt={item.name} />
         </div>
 
