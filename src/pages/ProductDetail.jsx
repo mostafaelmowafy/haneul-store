@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -39,6 +39,18 @@ export default function ProductDetail() {
   // العروض المتاحة (بتظهر تحت وصف أي منتج، ما عدا العرض اللي أنتِ واقفة فيه أصلًا)
   const offers = bundles.filter((b) => b.id !== item.id);
 
+  const galleryImages = useMemo(() => {
+    if (item.type === 'bundle' && item.includes?.length) {
+      return [
+        ...item.images,
+        ...item.includes
+          .map((productId) => getItemById(productId)?.images?.[0])
+          .filter(Boolean),
+      ];
+    }
+    return item.images;
+  }, [item.id]);
+
   const handleAdd = () => {
     addToCart(item.id, qty);
     setAdded(true);
@@ -63,7 +75,7 @@ export default function ProductDetail() {
 
       <div className="grid items-start gap-10 sm:grid-cols-2">
         <div className="sm:sticky sm:top-24 sm:self-start">
-          <ProductGallery images={item.images} alt={item.name} />
+          <ProductGallery images={galleryImages} alt={item.name} />
         </div>
 
         <div>
@@ -149,9 +161,14 @@ export default function ProductDetail() {
           <h2 className="font-display mb-6 text-center text-xl text-brand-primaryDark">
             عروض قد تعجبك
           </h2>
-          <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
             {offers.map((offer) => (
-              <ItemCard key={offer.id} item={offer} />
+              <div
+                key={offer.id}
+                className="w-[calc(50%-0.5rem)] sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1.125rem)]"
+              >
+                <ItemCard item={offer} />
+              </div>
             ))}
           </div>
         </div>
