@@ -33,8 +33,8 @@ export default function ProductGallery({ images, alt }) {
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     const SWIPE_THRESHOLD = 40;
 
-    if (deltaX > SWIPE_THRESHOLD) goPrev(); // سحب لليمين -> الصورة السابقة
-    else if (deltaX < -SWIPE_THRESHOLD) goNext(); // سحب لليسار -> الصورة التالية
+    if (deltaX > SWIPE_THRESHOLD) goNext(); // سحب من الشمال لليمين -> الصورة التالية
+    else if (deltaX < -SWIPE_THRESHOLD) goPrev(); // سحب من اليمين للشمال -> الصورة السابقة
 
     touchStartX.current = null;
   };
@@ -52,7 +52,7 @@ export default function ProductGallery({ images, alt }) {
           <div
             key={i}
             className="absolute inset-0 transition-transform duration-300 ease-out"
-            style={{ transform: `translateX(${(i - active) * 100}%)` }}
+            style={{ transform: `translateX(${(active - i) * 100}%)` }}
           >
             <ProductImage src={src} alt={`${alt} - صورة ${i + 1}`} className="h-full w-full" />
           </div>
