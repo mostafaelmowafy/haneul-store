@@ -48,7 +48,8 @@ const validateForm = (form) => {
   }
 
   if (altPhone && !PHONE_REGEX.test(altPhone)) {
-    newErrors.altPhone = '❌ الرقم البديل غير صحيح، تأكدي إنه مكوّن من 11 رقم';
+    newErrors.altPhone =
+      '❌ من فضلك أدخلي رقم هاتف صحيح يبدأ بـ 010 - 011 - 015 - 0127 - 0128 - 0120 - 0121 - 0122 ويتكون من 11 رقم';
   }
 
   if (!(form.address || '').trim())
@@ -68,9 +69,7 @@ export default function Checkout() {
     .map((line) => ({ ...line, item: getItemById(line.id) }))
     .filter((line) => line.item);
 
-  const subtotal = lines.reduce((sum, l) => sum + l.item.price * l.qty, 0);
-  const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
-  const total = subtotal + shipping;
+  const total = lines.reduce((sum, l) => sum + l.item.price * l.qty, 0);
 
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState({});
@@ -101,8 +100,6 @@ export default function Checkout() {
         price: line.item.price,
         oldPrice: line.item.oldPrice || null,
       })),
-      subtotal,
-      shipping,
       total,
       form,
     };
@@ -132,8 +129,6 @@ export default function Checkout() {
                   `${l.item.name} (الكمية: ${l.qty} - السعر: ${l.item.price} ج.م)`,
               )
               .join(' | '),
-            subtotal,
-            shipping,
             total,
           }),
         });
@@ -221,12 +216,8 @@ export default function Checkout() {
 
             <div className="space-y-2 text-sm text-[#4A4A42]">
               <div className="flex justify-between">
-                <span>الإجمالي الفرعي</span>
-                <span>{formatPrice(subtotal)}</span>
-              </div>
-              <div className="flex justify-between">
                 <span>الشحن</span>
-                <span>{shipping === 0 ? 'مجاني' : formatPrice(shipping)}</span>
+                <span> مجاني</span>
               </div>
             </div>
 
