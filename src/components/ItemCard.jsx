@@ -62,7 +62,7 @@ export default function ItemCard({ item }) {
         <div className="mt-auto flex flex-col gap-2 sm:flex-row">
           <button
             onClick={() => addToCart(item.id, 1)}
-            className="flex-1 whitespace-nowrap rounded-xl bg-brand-primaryDark py-2.5 text-xs font-medium text-white transition-colors hover:bg-brand-primaryDarker sm:text-sm"
+            className="flex-1 whitespace-nowrap rounded-xl border border-brand-primary py-2.5 text-xs font-medium text-brand-primaryDark transition-colors hover:bg-brand-light sm:text-sm"
           >
             أضف للسلة
           </button>
@@ -72,7 +72,7 @@ export default function ItemCard({ item }) {
               closeDrawer();
               navigate("/checkout");
             }}
-            className="flex-1 whitespace-nowrap rounded-xl border border-brand-primaryDark py-2.5 text-xs font-medium text-brand-primaryDark transition-colors hover:bg-brand-light sm:text-sm"
+            className="flex-1 whitespace-nowrap rounded-xl bg-brand-primary py-2.5 text-xs font-medium text-white transition-colors hover:bg-brand-primaryDark sm:text-sm"
           >
             اشتري الآن
           </button>

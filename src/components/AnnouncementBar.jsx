@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 
 const MESSAGES = [
-  "شحن مجاني لجميع الطلبات داخل مصر",
-  "ضمان استرجاع خلال 14 يوم دون أسئلة",
-  "منتجات أصلية 100% من كوريا",
+  <>
+    <span className="font-bold text-amber-300">شحن مجاني</span> لجميع الطلبات
+    داخل مصر
+  </>,
+  <>ضمان استرجاع خلال 14 يوم دون أسئلة</>,
+  <>
+    منتجات <span className="font-bold text-amber-300">أصلية 100%</span> من{" "}
+    <span className="font-bold text-amber-300">كوريا</span>
+  </>,
 ];
 
 export default function AnnouncementBar() {

@@ -124,7 +124,7 @@ export default function ProductDetail() {
           <div className="mb-6 flex items-center gap-3">
             <button
               onClick={handleAdd}
-              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker"
+              className="flex flex-1 items-center justify-center gap-2 rounded-full border border-brand-primary py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
             >
               {added ? (
                 <>
@@ -137,7 +137,7 @@ export default function ProductDetail() {
 
             <button
               onClick={handleBuyNow}
-              className="flex-1 rounded-full border border-brand-primaryDark py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
+              className="flex-1 rounded-full bg-brand-primary py-3 font-medium text-white transition-colors hover:bg-brand-primaryDark"
             >
               اشتري الآن
             </button>

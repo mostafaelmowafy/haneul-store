@@ -1,8 +1,8 @@
-import React from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { CheckCircle2, Truck, Phone } from 'lucide-react';
-import ProductImage from '../components/ProductImage.jsx';
-import { formatPrice } from '../data/products.js';
+import React from "react";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { CheckCircle2, Truck, Phone } from "lucide-react";
+import ProductImage from "../components/ProductImage.jsx";
+import { formatPrice } from "../data/products.js";
 
 export default function OrderSuccess() {
   const location = useLocation();
@@ -15,7 +15,7 @@ export default function OrderSuccess() {
       <div className="mx-auto max-w-lg px-6 py-24 text-center">
         <p className="mb-4 text-brand-muted">مفيش طلب لعرضه هنا.</p>
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           className="rounded-full bg-brand-primaryDark px-6 py-3 font-medium text-white hover:bg-brand-primaryDarker"
         >
           تصفحي المنتجات
@@ -24,7 +24,7 @@ export default function OrderSuccess() {
     );
   }
 
-  const { lines, shipping, total, form } = order;
+  const { lines, subtotal, shipping, total, form } = order;
   const heroImage = lines[0]?.image;
 
   return (
@@ -40,7 +40,7 @@ export default function OrderSuccess() {
                 src={heroImage}
                 alt="صورة الطلب"
                 className="h-full w-full"
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: "cover" }}
               />
             </div>
           )}
@@ -49,7 +49,7 @@ export default function OrderSuccess() {
           تم تأكيد طلبك بنجاح
         </h1>
         <p className="text-sm text-brand-muted">
-          يا {form?.fullName || 'عميلتنا العزيزة'}، وصلنا طلبك وجاري تجهيزه.
+          يا {form?.fullName || "عميلتنا العزيزة"}، وصلنا طلبك وجاري تجهيزه.
         </p>
       </div>
 
@@ -70,9 +70,7 @@ export default function OrderSuccess() {
                 </span>
               </div>
               <div className="flex flex-1 items-center justify-between gap-2">
-                <p className="text-sm font-medium leading-snug text-brand-text">
-                  {line.name}
-                </p>
+                <p className="text-sm font-medium leading-snug text-brand-text">{line.name}</p>
                 <div className="shrink-0 text-left">
                   {line.oldPrice && (
                     <p className="text-xs text-brand-muted line-through">
@@ -92,8 +90,12 @@ export default function OrderSuccess() {
 
         <div className="space-y-2 text-sm text-[#4A4A42]">
           <div className="flex justify-between">
+            <span>الإجمالي الفرعي</span>
+            <span>{formatPrice(subtotal)}</span>
+          </div>
+          <div className="flex justify-between">
             <span>الشحن</span>
-            <span>مجاني</span>
+            <span>{shipping === 0 ? "مجاني" : formatPrice(shipping)}</span>
           </div>
         </div>
 

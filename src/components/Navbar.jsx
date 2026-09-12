@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Leaf, Menu, X, Search, ShoppingBag } from "lucide-react";
-import { useCart } from "../context/CartContext.jsx";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Leaf, Menu, X, Search, ShoppingBag } from 'lucide-react';
+import { useCart } from '../context/CartContext.jsx';
 
 const NAV_LINKS = [
-  { label: "الرئيسية", to: "/" },
-  { label: "المنتجات", to: "/#products" },
+  { label: 'الرئيسية', to: '/' },
+  { label: 'المنتجات', to: '/#products' },
 ];
 
 export default function Navbar() {
@@ -40,7 +40,7 @@ export default function Navbar() {
             <a
               key={link.label}
               href={link.to}
-              className="text-sm font-medium text-brand-text transition-colors hover:text-brand-primary"
+              className="text-sm font-bold text-amber-500 transition-colors hover:text-brand-primary"
             >
               {link.label}
             </a>
@@ -76,7 +76,7 @@ export default function Navbar() {
               key={link.label}
               href={link.to}
               onClick={() => setOpen(false)}
-              className="border-b border-brand-border py-2 text-right text-sm font-medium text-brand-text"
+              className="border-b border-brand-border py-2 text-right text-sm font-bold text-brand-primaryDark"
             >
               {link.label}
             </a>
