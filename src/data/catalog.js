@@ -452,7 +452,7 @@ export const PRODUCTS = [
   
   سعر الشنطة 367 ج  بدل 450 ج والشحن مجانى
   2 + 1 مجانا بسعر 733 ج بدل 1350 ج و الشحن مجانى `,
-    images: ['/images/product-15.webp'],
+    images: ['/images/product-14.webp'],
   },
   {
     id: 'product-15',
