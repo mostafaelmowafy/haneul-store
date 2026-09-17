@@ -3,12 +3,12 @@
 // npoint.io، عشان لو حبيتي تغيّري الـ ID تقدري من نفس الصفحة على npoint.io
 // من غير ما تلمسي كود المشروع خالص أو تعملي Deploy جديد.
 
-const NPOINT_URL = "https://api.npoint.io/0f8ee006fd76b0b14c33";
+const NPOINT_URL = 'https://api.npoint.io/efac509b842bb5920571';
 
 let fbqScriptLoaded = false;
 
 function loadFbqScript() {
-  if (fbqScriptLoaded || typeof window === "undefined") return;
+  if (fbqScriptLoaded || typeof window === 'undefined') return;
   fbqScriptLoaded = true;
 
   /* eslint-disable */
@@ -20,14 +20,19 @@ function loadFbqScript() {
     if (!f._fbq) f._fbq = n;
     n.push = n;
     n.loaded = true;
-    n.version = "2.0";
+    n.version = '2.0';
     n.queue = [];
     t = b.createElement(e);
     t.async = true;
     t.src = v;
     s = b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t, s);
-  })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+  })(
+    window,
+    document,
+    'script',
+    'https://connect.facebook.net/en_US/fbevents.js',
+  );
   /* eslint-enable */
 }
 
@@ -41,23 +46,23 @@ export async function initFacebookPixel() {
 
     if (!pixelId) {
       console.warn(
-        "مفيش pixelId في بيانات npoint.io — تأكدي إنك حاطة { \"pixelId\": \"...\" } جوه الـ JSON على npoint.io"
+        'مفيش pixelId في بيانات npoint.io — تأكدي إنك حاطة { "pixelId": "..." } جوه الـ JSON على npoint.io',
       );
       return;
     }
 
     loadFbqScript();
-    window.fbq("init", pixelId);
-    window.fbq("track", "PageView");
+    window.fbq('init', pixelId);
+    window.fbq('track', 'PageView');
   } catch (err) {
-    console.error("تعذّر تحميل إعدادات Facebook Pixel من npoint.io:", err);
+    console.error('تعذّر تحميل إعدادات Facebook Pixel من npoint.io:', err);
   }
 }
 
 // بتتنادى مع كل تنقل بين الصفحات جوه الموقع (بما إن الموقع SPA وموقع الصفحة
 // مش بيعمل ريفرش كامل، لازم نبعت PageView يدوي مع كل تنقل).
 export function trackPageView() {
-  if (typeof window !== "undefined" && window.fbq) {
-    window.fbq("track", "PageView");
+  if (typeof window !== 'undefined' && window.fbq) {
+    window.fbq('track', 'PageView');
   }
 }
