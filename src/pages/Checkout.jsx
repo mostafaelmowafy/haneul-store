@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
-import ProductImage from "../components/ProductImage.jsx";
-import { formatPrice, GOVERNORATES } from "../data/products.js";
-import { useCart } from "../context/CartContext.jsx";
-import { useCatalog } from "../context/CatalogContext.jsx";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
+import ProductImage from '../components/ProductImage.jsx';
+import { formatPrice, GOVERNORATES } from '../data/products.js';
+import { useCart } from '../context/CartContext.jsx';
+import { useCatalog } from '../context/CatalogContext.jsx';
 
 const FREE_SHIPPING_THRESHOLD = 500;
 const SHIPPING_FEE = 60;
@@ -14,19 +14,19 @@ const SHIPPING_FEE = 60;
 // google-sheet-setup.md اللي جوه المشروع). من غيره الفورم هيشتغل عادي بس البيانات
 // مش هتتبعت للشيت.
 const GOOGLE_SHEET_WEBAPP_URL =
-  "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+  'https://script.google.com/macros/s/AKfycbwDznRJ_HBNCLxJZxRMsfACp7tA63XylR7__h1EocwAvoyldQDawOfu6O2PyduiwNx0xg/exec';
 
 const EMPTY_FORM = {
-  fullName: "",
-  phone: "",
-  altPhone: "",
+  fullName: '',
+  phone: '',
+  altPhone: '',
   governorate: GOVERNORATES[0],
-  address: "",
-  notes: "",
+  address: '',
+  notes: '',
 };
 
 const convertArabicNumsToEnglish = (str) =>
-  str.replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+  str.replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
 
 const PHONE_REGEX =
   /^(?:(?:010|011|015)[0-9]{8}|(?:0127|0128|0120|0121|0122)[0-9]{7})$/;
@@ -34,25 +34,27 @@ const PHONE_REGEX =
 const validateForm = (form) => {
   const newErrors = {};
 
-  const phone = convertArabicNumsToEnglish((form.phone || "").trim());
-  const altPhone = convertArabicNumsToEnglish((form.altPhone || "").trim());
-  const fullName = (form.fullName || "").trim();
+  const phone = convertArabicNumsToEnglish((form.phone || '').trim());
+  const altPhone = convertArabicNumsToEnglish((form.altPhone || '').trim());
+  const fullName = (form.fullName || '').trim();
 
-  if (!fullName) newErrors.fullName = "يجب إدخال الاسم بالكامل";
+  if (!fullName) newErrors.fullName = 'يجب إدخال الاسم بالكامل';
 
   if (!phone) {
-    newErrors.phone = "يجب إدخال رقم الهاتف";
+    newErrors.phone = 'يجب إدخال رقم الهاتف';
   } else if (!PHONE_REGEX.test(phone)) {
     newErrors.phone =
-      "❌ من فضلك أدخلي رقم هاتف صحيح يبدأ بـ 010 - 011 - 015 - 0127 - 0128 - 0120 - 0121 - 0122 ويتكون من 11 رقم";
+      '❌ من فضلك أدخلي رقم هاتف صحيح يبدأ بـ 010 - 011 - 015 - 0127 - 0128 - 0120 - 0121 - 0122 ويتكون من 11 رقم';
   }
 
   if (altPhone && !PHONE_REGEX.test(altPhone)) {
-    newErrors.altPhone = "❌ الرقم البديل غير صحيح، تأكدي إنه مكوّن من 11 رقم";
+    newErrors.altPhone = '❌ الرقم البديل غير صحيح، تأكدي إنه مكوّن من 11 رقم';
   }
 
-  if (!(form.address || "").trim()) newErrors.address = "يجب إدخال العنوان بالتفصيل";
-  if (!(form.governorate || "").trim()) newErrors.governorate = "يجب إدخال المحافظة";
+  if (!(form.address || '').trim())
+    newErrors.address = 'يجب إدخال العنوان بالتفصيل';
+  if (!(form.governorate || '').trim())
+    newErrors.governorate = 'يجب إدخال المحافظة';
 
   return newErrors;
 };
@@ -76,7 +78,8 @@ export default function Checkout() {
 
   const setField = (key) => (e) => {
     let value = e.target.value;
-    if (key === "phone" || key === "altPhone") value = convertArabicNumsToEnglish(value);
+    if (key === 'phone' || key === 'altPhone')
+      value = convertArabicNumsToEnglish(value);
     setForm((f) => ({ ...f, [key]: value }));
   };
 
@@ -107,22 +110,28 @@ export default function Checkout() {
     // بعت بيانات الطلب لجوجل شيت (لو الرابط متظبط). مستخدمين no-cors لأن
     // Google Apps Script مش بيرجّع CORS headers، فمينفعش نقرأ الرد، بس البيانات
     // بتوصل وبتتسجل في الشيت عادي.
-    if (GOOGLE_SHEET_WEBAPP_URL && !GOOGLE_SHEET_WEBAPP_URL.startsWith("PASTE_")) {
+    if (
+      GOOGLE_SHEET_WEBAPP_URL &&
+      !GOOGLE_SHEET_WEBAPP_URL.startsWith('PASTE_')
+    ) {
       try {
         await fetch(GOOGLE_SHEET_WEBAPP_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             fullName: form.fullName,
             phone: form.phone,
-            altPhone: form.altPhone || "لا يوجد",
+            altPhone: form.altPhone || 'لا يوجد',
             governorate: form.governorate,
             address: form.address,
-            notes: form.notes || "لا يوجد",
+            notes: form.notes || 'لا يوجد',
             products: lines
-              .map((l) => `${l.item.name} (الكمية: ${l.qty} - السعر: ${l.item.price} ج.م)`)
-              .join(" | "),
+              .map(
+                (l) =>
+                  `${l.item.name} (الكمية: ${l.qty} - السعر: ${l.item.price} ج.م)`,
+              )
+              .join(' | '),
             subtotal,
             shipping,
             total,
@@ -131,21 +140,23 @@ export default function Checkout() {
       } catch (err) {
         // حتى لو فشل الاتصال بجوجل شيت، الطلب برضه بيتسجل عندك في الموقع
         // وميتوقفش عن العميلة — بس تقدري تراجعي هنا لو حابة تتعاملي مع الخطأ بشكل تاني.
-        console.error("تعذّر إرسال بيانات الطلب لجوجل شيت:", err);
+        console.error('تعذّر إرسال بيانات الطلب لجوجل شيت:', err);
       }
     }
 
     setSubmitting(false);
     clearCart();
-    navigate("/order-success", { state: orderSnapshot });
+    navigate('/order-success', { state: orderSnapshot });
   };
 
   if (lines.length === 0) {
     return (
       <div className="mx-auto max-w-lg px-6 py-24 text-center">
-        <p className="mb-4 text-brand-muted">عربة التسوق فارغة، لا يوجد طلب لإتمامه.</p>
+        <p className="mb-4 text-brand-muted">
+          عربة التسوق فارغة، لا يوجد طلب لإتمامه.
+        </p>
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate('/')}
           className="rounded-full bg-brand-primaryDark px-6 py-3 font-medium text-white hover:bg-brand-primaryDarker"
         >
           تصفحي المنتجات
@@ -157,7 +168,7 @@ export default function Checkout() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
       <button
-        onClick={() => navigate("/cart")}
+        onClick={() => navigate('/cart')}
         className="mb-6 flex items-center gap-1 text-sm text-brand-primary hover:underline"
       >
         <ArrowRight className="h-4 w-4" />
@@ -215,7 +226,7 @@ export default function Checkout() {
               </div>
               <div className="flex justify-between">
                 <span>الشحن</span>
-                <span>{shipping === 0 ? "مجاني" : formatPrice(shipping)}</span>
+                <span>{shipping === 0 ? 'مجاني' : formatPrice(shipping)}</span>
               </div>
             </div>
 
@@ -232,17 +243,21 @@ export default function Checkout() {
         <div className="order-1 sm:order-2 sm:col-span-3">
           <div className="space-y-5 rounded-xl border border-brand-border bg-brand-surface p-5 sm:p-6">
             <div>
-              <h2 className="mb-3 font-semibold text-brand-text">بيانات الشحن</h2>
+              <h2 className="mb-3 font-semibold text-brand-text">
+                بيانات الشحن
+              </h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                   <input
                     className="input w-full"
                     placeholder="الاسم بالكامل"
                     value={form.fullName}
-                    onChange={setField("fullName")}
+                    onChange={setField('fullName')}
                   />
                   {errors.fullName && (
-                    <p className="mt-1 text-xs text-red-500">{errors.fullName}</p>
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.fullName}
+                    </p>
                   )}
                 </div>
 
@@ -251,7 +266,7 @@ export default function Checkout() {
                     className="input w-full"
                     placeholder="رقم التليفون"
                     value={form.phone}
-                    onChange={setField("phone")}
+                    onChange={setField('phone')}
                     maxLength={11}
                     dir="ltr"
                   />
@@ -265,12 +280,14 @@ export default function Checkout() {
                     className="input w-full"
                     placeholder="رقم بديل (اختياري)"
                     value={form.altPhone}
-                    onChange={setField("altPhone")}
+                    onChange={setField('altPhone')}
                     maxLength={11}
                     dir="ltr"
                   />
                   {errors.altPhone && (
-                    <p className="mt-1 text-xs text-red-500">{errors.altPhone}</p>
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.altPhone}
+                    </p>
                   )}
                 </div>
 
@@ -278,7 +295,7 @@ export default function Checkout() {
                   <select
                     className="input w-full"
                     value={form.governorate}
-                    onChange={setField("governorate")}
+                    onChange={setField('governorate')}
                   >
                     {GOVERNORATES.map((g) => (
                       <option key={g} value={g}>
@@ -287,7 +304,9 @@ export default function Checkout() {
                     ))}
                   </select>
                   {errors.governorate && (
-                    <p className="mt-1 text-xs text-red-500">{errors.governorate}</p>
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.governorate}
+                    </p>
                   )}
                 </div>
 
@@ -296,10 +315,12 @@ export default function Checkout() {
                     className="input h-24 w-full resize-none"
                     placeholder="العنوان بالتفصيل"
                     value={form.address}
-                    onChange={setField("address")}
+                    onChange={setField('address')}
                   />
                   {errors.address && (
-                    <p className="mt-1 text-xs text-red-500">{errors.address}</p>
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.address}
+                    </p>
                   )}
                 </div>
 
@@ -307,7 +328,7 @@ export default function Checkout() {
                   className="input h-20 resize-none sm:col-span-2"
                   placeholder="ملاحظات إضافية تحبي تقوليها (اختياري)"
                   value={form.notes}
-                  onChange={setField("notes")}
+                  onChange={setField('notes')}
                 />
               </div>
             </div>
@@ -317,7 +338,9 @@ export default function Checkout() {
               disabled={submitting}
               className="w-full rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {submitting ? "جاري إرسال الطلب..." : `تأكيد الطلب — ${formatPrice(total)}`}
+              {submitting
+                ? 'جاري إرسال الطلب...'
+                : `تأكيد الطلب — ${formatPrice(total)}`}
             </button>
           </div>
         </div>
