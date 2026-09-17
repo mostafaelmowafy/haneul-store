@@ -38,8 +38,10 @@ export default function App() {
       <CartProvider>
         <div dir="rtl" className="min-h-screen bg-brand-bg text-brand-text">
           <ScrollToTop />
-          <AnnouncementBar />
-          <Navbar />
+          <div className="sticky top-0 z-40">
+            <AnnouncementBar />
+            <Navbar />
+          </div>
 
           <Routes>
             <Route path="/" element={<Home />} />

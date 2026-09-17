@@ -13,7 +13,7 @@ export default function Navbar() {
   const { cartCount, openDrawer } = useCart();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-brand-border bg-brand-bg/95 backdrop-blur">
+    <header className="border-b border-brand-border bg-brand-bg/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <button
           className="text-brand-primaryDark sm:hidden"
