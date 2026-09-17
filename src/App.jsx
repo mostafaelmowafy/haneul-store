@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { CatalogProvider } from "./context/CatalogContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
@@ -12,9 +12,26 @@ import ProductDetail from "./pages/ProductDetail.jsx";
 import Cart from "./pages/Cart.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import OrderSuccess from "./pages/OrderSuccess.jsx";
+import { initFacebookPixel, trackPageView } from "./utils/facebookPixel.js";
 
 export default function App() {
   const location = useLocation();
+  const isFirstRender = useRef(true);
+
+  // تحميل الـ Pixel مرة واحدة أول ما الموقع يفتح
+  useEffect(() => {
+    initFacebookPixel();
+  }, []);
+
+  // PageView إضافي مع كل تنقل بين الصفحات (بعد أول تحميل، عشان منبعتش
+  // PageView مرتين لأول صفحة)
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    trackPageView();
+  }, [location.pathname]);
 
   return (
     <CatalogProvider>
