@@ -1,10 +1,10 @@
-import React from "react";
-import { Leaf } from "lucide-react";
+import React from 'react';
+import { Leaf } from 'lucide-react';
 
 export default function Footer() {
   return (
     <footer className="mt-10 bg-brand-primaryDark text-[#EFEADA]">
-      <div className="mx-auto grid max-w-6xl gap-8 px-6 py-10 text-sm sm:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-x-48 px-6 py-10 text-sm sm:grid-cols-2">
         <div>
           <div className="mb-3 flex items-center gap-2">
             <Leaf className="h-5 w-5" />
@@ -24,11 +24,11 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div>
+        {/* <div>
           <p className="mb-3 font-semibold">تواصلي معنا</p>
           <p className="text-[#C7D6BE]">hello@lacucina.com</p>
           <p className="text-[#C7D6BE]">٠١٠٠ ١٢٣ ٤٥٦٧</p>
-        </div>
+        </div> */}
       </div>
 
       <div className="border-t border-white/10 py-4 text-center text-xs text-[#9FB79A]">
