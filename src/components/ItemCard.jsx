@@ -50,13 +50,16 @@ export default function ItemCard({ item }) {
           {item.name}
         </button>
 
-        <div className="mb-3 flex items-center gap-2">
-          <span className="font-bold text-brand-primaryDark">{formatPrice(item.price)}</span>
-          {item.oldPrice && (
-            <span className="text-xs text-brand-muted line-through">
-              {formatPrice(item.oldPrice)}
-            </span>
-          )}
+        <div className="mb-3">
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-brand-primaryDark">{formatPrice(item.price)}</span>
+            {item.oldPrice && (
+              <span className="text-xs text-brand-muted line-through">
+                {formatPrice(item.oldPrice)}
+              </span>
+            )}
+          </div>
+          <p className="mt-0.5 text-xs font-bold text-emerald-600">شحن مجاني</p>
         </div>
 
         <div className="mt-auto flex flex-col gap-2 sm:flex-row">
