@@ -1,13 +1,20 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { X, Check, ShoppingBag } from "lucide-react";
-import ProductImage from "./ProductImage.jsx";
-import { formatPrice } from "../data/products.js";
-import { useCart } from "../context/CartContext.jsx";
-import { useCatalog } from "../context/CatalogContext.jsx";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { X, Check, ShoppingBag } from 'lucide-react';
+import ProductImage from './ProductImage.jsx';
+import { formatPrice } from '../data/products.js';
+import { useCart } from '../context/CartContext.jsx';
+import { useCatalog } from '../context/CatalogContext.jsx';
 
 export default function CartDrawer() {
-  const { cart, isDrawerOpen, closeDrawer, lastAddedId, setQty, removeFromCart } = useCart();
+  const {
+    cart,
+    isDrawerOpen,
+    closeDrawer,
+    lastAddedId,
+    setQty,
+    removeFromCart,
+  } = useCart();
   const { getItemById } = useCatalog();
   const navigate = useNavigate();
 
@@ -16,7 +23,7 @@ export default function CartDrawer() {
     .filter((line) => line.item);
 
   const lastAdded = lastAddedId ? getItemById(lastAddedId) : null;
-  const subtotal = lines.reduce((sum, l) => sum + l.item.price * l.qty, 0);
+  const total = lines.reduce((sum, l) => sum + l.item.price * l.qty, 0);
   const cartCount = lines.reduce((sum, l) => sum + l.qty, 0);
 
   const goTo = (path) => {
@@ -30,18 +37,20 @@ export default function CartDrawer() {
       <div
         onClick={closeDrawer}
         className={`fixed inset-0 z-50 bg-black/40 transition-opacity ${
-          isDrawerOpen ? "opacity-100" : "pointer-events-none opacity-0"
+          isDrawerOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
         }`}
       />
 
       {/* اللوحة المنبثقة */}
       <div
         className={`fixed inset-y-0 left-0 z-50 flex w-full max-w-sm flex-col bg-brand-surface shadow-2xl transition-transform duration-300 ${
-          isDrawerOpen ? "translate-x-0" : "-translate-x-full"
+          isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex items-center justify-between border-b border-brand-border p-4">
-          <h2 className="font-display text-lg text-brand-primaryDark">عربة التسوق</h2>
+          <h2 className="font-display text-lg text-brand-primaryDark">
+            عربة التسوق
+          </h2>
           <button
             onClick={closeDrawer}
             className="text-brand-muted hover:text-brand-text"
@@ -57,7 +66,8 @@ export default function CartDrawer() {
               <Check className="h-4 w-4" />
             </span>
             <p className="text-sm text-brand-text">
-              تمت إضافة <span className="font-semibold">{lastAdded.name}</span> إلى سلتك
+              تمت إضافة <span className="font-semibold">{lastAdded.name}</span>{' '}
+              إلى سلتك
             </p>
           </div>
         )}
@@ -87,12 +97,16 @@ export default function CartDrawer() {
                     <div className="mt-1 flex items-center gap-2">
                       <div className="flex items-center rounded-full border border-brand-border">
                         <button
-                          onClick={() => setQty(line.id, Math.max(1, line.qty - 1))}
+                          onClick={() =>
+                            setQty(line.id, Math.max(1, line.qty - 1))
+                          }
                           className="px-2 py-0.5 text-brand-primaryDark"
                         >
                           −
                         </button>
-                        <span className="w-6 text-center text-xs">{line.qty}</span>
+                        <span className="w-6 text-center text-xs">
+                          {line.qty}
+                        </span>
                         <button
                           onClick={() => setQty(line.id, line.qty + 1)}
                           className="px-2 py-0.5 text-brand-primaryDark"
@@ -121,20 +135,22 @@ export default function CartDrawer() {
           <div className="border-t border-brand-border p-4">
             <div className="mb-4 flex items-center justify-between text-sm">
               <span className="text-brand-muted">
-                الإجمالي الفرعي ({cartCount} {cartCount === 1 ? "قطعة" : "قطع"})
+                الإجمالي ({cartCount} {cartCount === 1 ? 'قطعة' : 'قطع'})
               </span>
-              <span className="font-bold text-brand-primaryDark">{formatPrice(subtotal)}</span>
+              <span className="font-bold text-brand-primaryDark">
+                {formatPrice(total)}
+              </span>
             </div>
 
             <div className="flex flex-col gap-2">
               <button
-                onClick={() => goTo("/checkout")}
+                onClick={() => goTo('/checkout')}
                 className="w-full rounded-full bg-brand-primaryDark py-3 text-sm font-medium text-white transition-colors hover:bg-brand-primaryDarker"
               >
                 إتمام الطلب
               </button>
               <button
-                onClick={() => goTo("/cart")}
+                onClick={() => goTo('/cart')}
                 className="w-full rounded-full border border-brand-border py-3 text-sm font-medium text-brand-text transition-colors hover:bg-brand-light"
               >
                 عرض السلة كاملة

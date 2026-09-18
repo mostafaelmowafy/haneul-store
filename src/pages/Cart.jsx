@@ -1,13 +1,10 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, Minus, Plus, Trash2 } from "lucide-react";
-import ProductImage from "../components/ProductImage.jsx";
-import { formatPrice } from "../data/products.js";
-import { useCart } from "../context/CartContext.jsx";
-import { useCatalog } from "../context/CatalogContext.jsx";
-
-const FREE_SHIPPING_THRESHOLD = 500;
-const SHIPPING_FEE = 60;
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingBag, Minus, Plus, Trash2 } from 'lucide-react';
+import ProductImage from '../components/ProductImage.jsx';
+import { formatPrice } from '../data/products.js';
+import { useCart } from '../context/CartContext.jsx';
+import { useCatalog } from '../context/CatalogContext.jsx';
 
 export default function Cart() {
   const { cart, setQty, removeFromCart } = useCart();
@@ -18,15 +15,15 @@ export default function Cart() {
     .map((line) => ({ ...line, item: getItemById(line.id) }))
     .filter((line) => line.item);
 
-  const subtotal = lines.reduce((sum, l) => sum + l.item.price * l.qty, 0);
-  const shipping = subtotal > 0 ? (subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE) : 0;
-  const total = subtotal + shipping;
+  const total = lines.reduce((sum, l) => sum + l.item.price * l.qty, 0);
 
   if (lines.length === 0) {
     return (
       <div className="mx-auto max-w-2xl px-6 py-20 text-center">
         <ShoppingBag className="mx-auto mb-4 h-14 w-14 text-[#C7D9BB]" />
-        <h1 className="font-display mb-2 text-2xl text-brand-primaryDark">عربة التسوق فارغة</h1>
+        <h1 className="font-display mb-2 text-2xl text-brand-primaryDark">
+          عربة التسوق فارغة
+        </h1>
         <p className="mb-6 text-sm text-brand-muted">
           لم تضيفي أي منتجات حتى الآن، تصفحي منتجاتنا وابدئي التسوق.
         </p>
@@ -68,7 +65,9 @@ export default function Cart() {
                 >
                   {line.item.name}
                 </Link>
-                <p className="mt-1 text-xs text-brand-muted">{formatPrice(line.item.price)}</p>
+                <p className="mt-1 text-xs text-brand-muted">
+                  {formatPrice(line.item.price)}
+                </p>
 
                 <div className="mt-2 flex items-center gap-3">
                   <div className="flex items-center rounded-full border border-brand-border">
@@ -107,7 +106,7 @@ export default function Cart() {
         <div className="sticky top-24 h-fit rounded-xl border border-brand-border bg-brand-surface p-5">
           <h2 className="mb-4 font-semibold text-brand-text">ملخص الطلب</h2>
 
-          <div className="space-y-2 text-sm text-[#4A4A42]">
+          {/* <div className="space-y-2 text-sm text-[#4A4A42]">
             <div className="flex justify-between">
               <span>الإجمالي الفرعي</span>
               <span>{formatPrice(subtotal)}</span>
@@ -116,7 +115,7 @@ export default function Cart() {
               <span>الشحن</span>
               <span>{shipping === 0 ? "مجاني" : formatPrice(shipping)}</span>
             </div>
-          </div>
+          </div> */}
 
           <div className="my-4 border-t border-brand-border" />
 
@@ -126,7 +125,7 @@ export default function Cart() {
           </div>
 
           <button
-            onClick={() => navigate("/checkout")}
+            onClick={() => navigate('/checkout')}
             className="w-full rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker"
           >
             إتمام الطلب

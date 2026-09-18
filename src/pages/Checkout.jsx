@@ -6,9 +6,6 @@ import { formatPrice, GOVERNORATES } from '../data/products.js';
 import { useCart } from '../context/CartContext.jsx';
 import { useCatalog } from '../context/CatalogContext.jsx';
 
-const FREE_SHIPPING_THRESHOLD = 500;
-const SHIPPING_FEE = 60;
-
 // رابط تطبيق الويب بتاع Google Apps Script اللي بيوصل بيانات الفورم بجوجل شيت.
 // لازم تحطي هنا اللينك اللي هيظهرلك بعد عملية الـ Deploy (اتبعي التعليمات في ملف
 // google-sheet-setup.md اللي جوه المشروع). من غيره الفورم هيشتغل عادي بس البيانات
@@ -69,8 +66,7 @@ export default function Checkout() {
     .filter((line) => line.item);
 
   const subtotal = lines.reduce((sum, l) => sum + l.item.price * l.qty, 0);
-  const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
-  const total = subtotal + shipping;
+  const total = subtotal;
 
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState({});
@@ -101,8 +97,6 @@ export default function Checkout() {
         price: line.item.price,
         oldPrice: line.item.oldPrice || null,
       })),
-      subtotal,
-      shipping,
       total,
       form,
     };
@@ -132,8 +126,6 @@ export default function Checkout() {
                   `${l.item.name} (الكمية: ${l.qty} - السعر: ${l.item.price} ج.م)`,
               )
               .join(' | '),
-            subtotal,
-            shipping,
             total,
           }),
         });
@@ -215,19 +207,6 @@ export default function Checkout() {
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div className="my-4 border-t border-brand-border" />
-
-            <div className="space-y-2 text-sm text-[#4A4A42]">
-              <div className="flex justify-between">
-                <span>الإجمالي الفرعي</span>
-                <span>{formatPrice(subtotal)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>الشحن</span>
-                <span>{shipping === 0 ? 'مجاني' : formatPrice(shipping)}</span>
-              </div>
             </div>
 
             <div className="my-4 border-t border-brand-border" />
