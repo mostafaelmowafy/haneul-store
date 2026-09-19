@@ -9,7 +9,7 @@ const OFFER_PRICE_REGEX = /(\d[\d,]*)\s*(?:ج)?\s*(?:بدل|يدل)\s*(\d[\d,]*)
 const AFTER_HIGHLIGHT_REGEX =
   /(الشحن\s*مجان[يى])|(\d[\d,]*\s*ج(?!\.م))/g;
 
-function renderAfterText(text) {
+export function renderAfterText(text) {
   const nodes = [];
   let lastIndex = 0;
   let i = 0;

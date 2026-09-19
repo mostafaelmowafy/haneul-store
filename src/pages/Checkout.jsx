@@ -6,6 +6,9 @@ import { formatPrice, GOVERNORATES } from '../data/products.js';
 import { useCart } from '../context/CartContext.jsx';
 import { useCatalog } from '../context/CatalogContext.jsx';
 
+const FREE_SHIPPING_THRESHOLD = 500;
+const SHIPPING_FEE = 60;
+
 // رابط تطبيق الويب بتاع Google Apps Script اللي بيوصل بيانات الفورم بجوجل شيت.
 // لازم تحطي هنا اللينك اللي هيظهرلك بعد عملية الـ Deploy (اتبعي التعليمات في ملف
 // google-sheet-setup.md اللي جوه المشروع). من غيره الفورم هيشتغل عادي بس البيانات
@@ -63,10 +66,10 @@ export default function Checkout() {
 
   const lines = cart
     .map((line) => ({ ...line, item: getItemById(line.id) }))
-    .filter((line) => line.item);
+    .filter((line) => line.item)
+    .map((line) => ({ ...line, unitPrice: line.unitPrice ?? line.item.price }));
 
-  const subtotal = lines.reduce((sum, l) => sum + l.item.price * l.qty, 0);
-  const total = subtotal;
+  const total = lines.reduce((sum, l) => sum + l.unitPrice * l.qty, 0);
 
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState({});
@@ -92,9 +95,11 @@ export default function Checkout() {
       lines: lines.map((line) => ({
         id: line.item.id,
         name: line.item.name,
+        optionLabel: line.optionLabel || null,
+        piecesPerUnit: line.piecesPerUnit || 1,
         image: line.item.images?.[0] || null,
         qty: line.qty,
-        price: line.item.price,
+        price: line.unitPrice,
         oldPrice: line.item.oldPrice || null,
       })),
       total,
@@ -121,10 +126,13 @@ export default function Checkout() {
             address: form.address,
             notes: form.notes || 'لا يوجد',
             products: lines
-              .map(
-                (l) =>
-                  `${l.item.name} (الكمية: ${l.qty} - السعر: ${l.item.price} ج.م)`,
-              )
+              .map((l) => {
+                const piecesNote =
+                  l.piecesPerUnit > 1
+                    ? ` = ${l.piecesPerUnit * l.qty} قطعة`
+                    : '';
+                return `${l.item.name}${l.optionLabel ? ` (${l.optionLabel})` : ''} (الكمية: ${l.qty}${piecesNote} - السعر: ${l.unitPrice} ج.م)`;
+              })
               .join(' | '),
             total,
           }),
@@ -179,7 +187,10 @@ export default function Checkout() {
 
             <div className="max-h-72 space-y-4 overflow-y-auto overflow-x-visible px-1 pt-2">
               {lines.map((line) => (
-                <div key={line.id} className="flex items-center gap-3">
+                <div
+                  key={`${line.id}-${line.optionLabel ?? 'base'}`}
+                  className="flex items-center gap-3"
+                >
                   <div className="relative shrink-0">
                     <ProductImage
                       src={line.item.images?.[0]}
@@ -191,17 +202,21 @@ export default function Checkout() {
                     </span>
                   </div>
                   <div className="flex flex-1 items-center justify-between gap-2">
-                    <p className="text-sm font-medium leading-snug text-brand-text">
-                      {line.item.name}
-                    </p>
-                    <div className="shrink-0 text-left">
-                      {line.item.oldPrice && (
-                        <p className="text-xs text-brand-muted line-through">
-                          {formatPrice(line.item.oldPrice * line.qty)}
+                    <div>
+                      <p className="text-sm font-medium leading-snug text-brand-text">
+                        {line.item.name}
+                      </p>
+                      {line.optionLabel && (
+                        <p className="text-xs font-medium text-brand-primary">
+                          {line.optionLabel}
+                          {line.piecesPerUnit > 1 &&
+                            ` (${line.piecesPerUnit * line.qty} قطعة)`}
                         </p>
                       )}
+                    </div>
+                    <div className="shrink-0 text-left">
                       <p className="text-sm font-bold text-brand-primaryDark">
-                        {formatPrice(line.item.price * line.qty)}
+                        {formatPrice(line.unitPrice * line.qty)}
                       </p>
                     </div>
                   </div>

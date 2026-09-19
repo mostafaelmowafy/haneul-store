@@ -1,27 +1,51 @@
-import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
 
 const CartContext = createContext(null);
-const STORAGE_KEY = "haneul-store-cart";
+const STORAGE_KEY = 'haneul-store-cart';
 
 function cartReducer(state, action) {
   switch (action.type) {
-    case "ADD": {
-      const { id, qty } = action.payload;
-      const existing = state.find((line) => line.id === id);
+    case 'ADD': {
+      const { id, qty, unitPrice, optionLabel, piecesPerUnit } = action.payload;
+      // بنلاقي سطر بنفس المنتج وبنفس الاختيار (نفس optionLabel) لو موجود،
+      // عشان لو العميلة ضافت "عبوة واحدة" و"عرض 2+1" لنفس المنتج، يبقوا
+      // سطرين منفصلين في السلة مش سطر واحد بسعر غلط.
+      // بنقارن بالـ optionLabel مش بالـ unitPrice، لأن unitPrice ممكن يكون
+      // undefined وقت الإضافة وبعدين يتحسب له سعر افتراضي وقت العرض بس
+      // (مش في الداتا نفسها)، فمقارنته كانت بتفشل وتمنع تحديث/حذف السطر.
+      const existing = state.find(
+        (line) => line.id === id && line.optionLabel === optionLabel,
+      );
       if (existing) {
         return state.map((line) =>
-          line.id === id ? { ...line, qty: line.qty + qty } : line
+          line === existing ? { ...line, qty: line.qty + qty } : line,
         );
       }
-      return [...state, { id, qty }];
+      return [...state, { id, qty, unitPrice, optionLabel, piecesPerUnit }];
     }
-    case "SET_QTY": {
-      const { id, qty } = action.payload;
-      return state.map((line) => (line.id === id ? { ...line, qty } : line));
+    case 'SET_QTY': {
+      const { id, qty, optionLabel } = action.payload;
+      return state.map((line) =>
+        line.id === id && line.optionLabel === optionLabel
+          ? { ...line, qty }
+          : line,
+      );
     }
-    case "REMOVE":
-      return state.filter((line) => line.id !== action.payload.id);
-    case "CLEAR":
+    case 'REMOVE':
+      return state.filter(
+        (line) =>
+          !(
+            line.id === action.payload.id &&
+            line.optionLabel === action.payload.optionLabel
+          ),
+      );
+    case 'CLEAR':
       return [];
     default:
       return state;
@@ -41,7 +65,11 @@ function loadCartFromStorage() {
 }
 
 export function CartProvider({ children }) {
-  const [cart, dispatch] = useReducer(cartReducer, undefined, loadCartFromStorage);
+  const [cart, dispatch] = useReducer(
+    cartReducer,
+    undefined,
+    loadCartFromStorage,
+  );
 
   // حالة الـ Quick Cart (السلة المنبثقة من الجانب لما تتضاف حاجة)
   const [isDrawerOpen, setDrawerOpen] = useState(false);
@@ -57,14 +85,20 @@ export function CartProvider({ children }) {
     }
   }, [cart]);
 
-  const addToCart = (id, qty = 1) => {
-    dispatch({ type: "ADD", payload: { id, qty } });
+  const addToCart = (id, qty = 1, options = {}) => {
+    const { unitPrice, optionLabel, piecesPerUnit } = options;
+    dispatch({
+      type: 'ADD',
+      payload: { id, qty, unitPrice, optionLabel, piecesPerUnit },
+    });
     setLastAddedId(id);
     setDrawerOpen(true);
   };
-  const setQty = (id, qty) => dispatch({ type: "SET_QTY", payload: { id, qty } });
-  const removeFromCart = (id) => dispatch({ type: "REMOVE", payload: { id } });
-  const clearCart = () => dispatch({ type: "CLEAR" });
+  const setQty = (id, qty, optionLabel) =>
+    dispatch({ type: 'SET_QTY', payload: { id, qty, optionLabel } });
+  const removeFromCart = (id, optionLabel) =>
+    dispatch({ type: 'REMOVE', payload: { id, optionLabel } });
+  const clearCart = () => dispatch({ type: 'CLEAR' });
   const openDrawer = () => setDrawerOpen(true);
   // لما نقفل السلة المنبثقة، بنشيل "آخر منتج اتضاف" عشان لو المستخدم فتحها
   // تاني من أيقونة العربة العادية، مايشوفش رسالة "تمت الإضافة" قديمة
@@ -97,6 +131,6 @@ export function CartProvider({ children }) {
 
 export function useCart() {
   const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart لازم يُستخدم داخل CartProvider");
+  if (!ctx) throw new Error('useCart لازم يُستخدم داخل CartProvider');
   return ctx;
 }

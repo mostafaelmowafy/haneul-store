@@ -20,10 +20,11 @@ export default function CartDrawer() {
 
   const lines = cart
     .map((line) => ({ ...line, item: getItemById(line.id) }))
-    .filter((line) => line.item);
+    .filter((line) => line.item)
+    .map((line) => ({ ...line, unitPrice: line.unitPrice ?? line.item.price }));
 
   const lastAdded = lastAddedId ? getItemById(lastAddedId) : null;
-  const total = lines.reduce((sum, l) => sum + l.item.price * l.qty, 0);
+  const subtotal = lines.reduce((sum, l) => sum + l.unitPrice * l.qty, 0);
   const cartCount = lines.reduce((sum, l) => sum + l.qty, 0);
 
   const goTo = (path) => {
@@ -81,7 +82,10 @@ export default function CartDrawer() {
           ) : (
             <div className="space-y-4">
               {lines.map((line) => (
-                <div key={line.id} className="flex items-center gap-3">
+                <div
+                  key={`${line.id}-${line.optionLabel ?? 'base'}`}
+                  className="flex items-center gap-3"
+                >
                   <ProductImage
                     src={line.item.images?.[0]}
                     alt={line.item.name}
@@ -91,14 +95,24 @@ export default function CartDrawer() {
                     <p className="truncate text-sm font-semibold text-brand-text">
                       {line.item.name}
                     </p>
+                    {line.optionLabel && (
+                      <p className="truncate text-xs font-medium text-brand-primary">
+                        {line.optionLabel}
+                      </p>
+                    )}
                     <p className="mt-0.5 text-xs text-brand-muted">
-                      {formatPrice(line.item.price)}
+                      {formatPrice(line.unitPrice)}
+                      {line.piecesPerUnit > 1 && ' للعرض'}
                     </p>
-                    <div className="mt-1 flex items-center gap-2">
+                    <div className="mt-1 flex flex-wrap items-center gap-2">
                       <div className="flex items-center rounded-full border border-brand-border">
                         <button
                           onClick={() =>
-                            setQty(line.id, Math.max(1, line.qty - 1))
+                            setQty(
+                              line.id,
+                              Math.max(1, line.qty - 1),
+                              line.optionLabel,
+                            )
                           }
                           className="px-2 py-0.5 text-brand-primaryDark"
                         >
@@ -108,14 +122,21 @@ export default function CartDrawer() {
                           {line.qty}
                         </span>
                         <button
-                          onClick={() => setQty(line.id, line.qty + 1)}
+                          onClick={() =>
+                            setQty(line.id, line.qty + 1, line.optionLabel)
+                          }
                           className="px-2 py-0.5 text-brand-primaryDark"
                         >
                           +
                         </button>
                       </div>
+                      {line.piecesPerUnit > 1 && (
+                        <span className="text-[11px] text-brand-muted">
+                          = {line.piecesPerUnit * line.qty} قطعة
+                        </span>
+                      )}
                       <button
-                        onClick={() => removeFromCart(line.id)}
+                        onClick={() => removeFromCart(line.id, line.optionLabel)}
                         className="text-xs text-brand-danger hover:underline"
                       >
                         حذف
@@ -123,7 +144,7 @@ export default function CartDrawer() {
                     </div>
                   </div>
                   <p className="shrink-0 text-sm font-semibold text-brand-primaryDark">
-                    {formatPrice(line.item.price * line.qty)}
+                    {formatPrice(line.unitPrice * line.qty)}
                   </p>
                 </div>
               ))}
@@ -138,7 +159,7 @@ export default function CartDrawer() {
                 الإجمالي ({cartCount} {cartCount === 1 ? 'قطعة' : 'قطع'})
               </span>
               <span className="font-bold text-brand-primaryDark">
-                {formatPrice(total)}
+                {formatPrice(subtotal)}
               </span>
             </div>
 

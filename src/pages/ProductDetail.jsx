@@ -11,7 +11,11 @@ import {
 import ProductGallery from '../components/ProductGallery.jsx';
 import ItemCard from '../components/ItemCard.jsx';
 import { formatPrice } from '../data/products.js';
-import RichDescription from '../utils/richDescription.jsx';
+import RichDescription, { renderAfterText } from '../utils/richDescription.jsx';
+import {
+  parseOfferOptions,
+  stripOfferLines,
+} from '../utils/parseOfferOptions.js';
 import { useCatalog } from '../context/CatalogContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 
@@ -24,6 +28,25 @@ export default function ProductDetail() {
   const item = getItemById(id);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+
+  // اختيارات السعر المستخرجة من وصف المنتج (زي "سعر العبوة" و"عرض 2+1")،
+  // أول اختيار (عادةً سعر القطعة العادي) بيبقى مختار افتراضيًا.
+  const offerOptions = useMemo(
+    () => parseOfferOptions(item?.description),
+    [item?.id],
+  );
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
+  const selectedOption = offerOptions[selectedOptionIndex] || null;
+
+  // باقي الوصف من غير أسطر الأسعار (دي هتتعرض كاختيارات منفصلة بدل ما
+  // تتكرر جوه فقرة الوصف العادية)
+  const cleanedDescription = useMemo(
+    () =>
+      offerOptions.length > 0
+        ? stripOfferLines(item?.description)
+        : item?.description,
+    [item?.id],
+  );
 
   if (!item) {
     return (
@@ -51,14 +74,29 @@ export default function ProductDetail() {
     return item.images;
   }, [item.id]);
 
+  // لو فيه اختيار عرض متحدد (زي 2+1)، الـ +/- بتتحكم في "عدد مرات" اختيار
+  // العرض ده نفسه (مش عدد القطع)، وبنبعت سعر العرض كامل كـ unitPrice، مع
+  // piecesPerUnit عشان السلة تقدر تعرض "= X قطعة" لو حبينا نوضحها للعميلة.
+  const effectiveQty = qty;
+  const effectiveUnitPrice = selectedOption ? selectedOption.price : undefined;
+  const piecesPerUnit = selectedOption ? selectedOption.qty : 1;
+
   const handleAdd = () => {
-    addToCart(item.id, qty);
+    addToCart(item.id, effectiveQty, {
+      unitPrice: effectiveUnitPrice,
+      optionLabel: selectedOption?.label,
+      piecesPerUnit,
+    });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
 
   const handleBuyNow = () => {
-    addToCart(item.id, qty);
+    addToCart(item.id, effectiveQty, {
+      unitPrice: effectiveUnitPrice,
+      optionLabel: selectedOption?.label,
+      piecesPerUnit,
+    });
     closeDrawer();
     navigate('/checkout');
   };
@@ -88,20 +126,88 @@ export default function ProductDetail() {
 
           <div className="mb-5 flex items-center gap-3">
             <span className="text-2xl font-bold text-brand-primaryDark">
-              {formatPrice(item.price)}
+              {formatPrice(selectedOption ? selectedOption.price : item.price)}
             </span>
-            {item.oldPrice && (
+            {(selectedOption ? selectedOption.oldPrice : item.oldPrice) && (
               <span className="text-sm text-brand-muted line-through">
-                {formatPrice(item.oldPrice)}
+                {formatPrice(
+                  selectedOption ? selectedOption.oldPrice : item.oldPrice,
+                )}
+              </span>
+            )}
+            {selectedOption && selectedOption.qty > 1 && (
+              <span className="text-xs text-brand-muted">
+                ({selectedOption.qty} قطع لكل عرض)
               </span>
             )}
           </div>
 
+          {offerOptions.length > 0 && (
+            <div className="mb-6">
+              <p className="mb-2 text-sm font-semibold text-brand-text">
+                اختاري العرض المناسب:
+              </p>
+              <div className="space-y-2">
+                {offerOptions.map((option, index) => {
+                  const isSelected = index === selectedOptionIndex;
+                  return (
+                    <button
+                      key={option.key}
+                      type="button"
+                      onClick={() => setSelectedOptionIndex(index)}
+                      className={`flex w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border px-3 py-2.5 text-right transition-colors ${
+                        isSelected
+                          ? 'border-brand-primary bg-brand-light'
+                          : 'border-amber-200 bg-amber-50 hover:border-brand-primary/50'
+                      }`}
+                    >
+                      <span
+                        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${
+                          isSelected
+                            ? 'border-brand-primary'
+                            : 'border-brand-muted'
+                        }`}
+                      >
+                        {isSelected && (
+                          <span className="h-2 w-2 rounded-full bg-brand-primary" />
+                        )}
+                      </span>
+                      <span className="text-sm text-[#4A4A42]">
+                        {option.label}
+                      </span>
+                      <span className="text-base font-extrabold text-brand-primaryDark">
+                        {option.price} ج.م
+                      </span>
+                      <span className="text-xs text-brand-muted line-through opacity-60">
+                        {option.oldPrice} ج.م
+                      </span>
+                      {option.isBundle && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
+                          🔥 الأكثر طلبًا
+                        </span>
+                      )}
+                      {option.note && (
+                        <span className="flex flex-wrap items-center gap-x-1">
+                          {renderAfterText(option.note)}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           <div className="mb-6">
-            <RichDescription text={item.description} />
+            <RichDescription text={cleanedDescription} />
           </div>
 
-          <div className="mb-4 flex items-center gap-4">
+          <div className="mb-4">
+            {selectedOption && selectedOption.qty > 1 && (
+              <p className="mb-1.5 text-xs text-brand-muted">
+                الكمية = عدد مرات هذا العرض
+              </p>
+            )}
             <div className="flex items-center rounded-full border border-brand-border">
               <button
                 onClick={() => setQty((q) => Math.max(1, q - 1))}

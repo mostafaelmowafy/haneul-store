@@ -58,7 +58,10 @@ export default function OrderSuccess() {
 
         <div className="space-y-4">
           {lines.map((line) => (
-            <div key={line.id} className="flex items-center gap-3">
+            <div
+              key={`${line.id}-${line.price}`}
+              className="flex items-center gap-3"
+            >
               <div className="relative shrink-0">
                 <ProductImage
                   src={line.image}
@@ -70,11 +73,20 @@ export default function OrderSuccess() {
                 </span>
               </div>
               <div className="flex flex-1 items-center justify-between gap-2">
-                <p className="text-sm font-medium leading-snug text-brand-text">
-                  {line.name}
-                </p>
+                <div>
+                  <p className="text-sm font-medium leading-snug text-brand-text">
+                    {line.name}
+                  </p>
+                  {line.optionLabel && (
+                    <p className="text-xs font-medium text-brand-primary">
+                      {line.optionLabel}
+                      {line.piecesPerUnit > 1 &&
+                        ` (${line.piecesPerUnit * line.qty} قطعة)`}
+                    </p>
+                  )}
+                </div>
                 <div className="shrink-0 text-left">
-                  {line.oldPrice && (
+                  {line.oldPrice && !line.optionLabel && (
                     <p className="text-xs text-brand-muted line-through">
                       {formatPrice(line.oldPrice * line.qty)}
                     </p>
@@ -90,16 +102,12 @@ export default function OrderSuccess() {
 
         <div className="my-4 border-t border-brand-border" />
 
-        {/* <div className="space-y-2 text-sm text-[#4A4A42]">
-          <div className="flex justify-between">
-            <span>الإجمالي الفرعي</span>
-            <span>{formatPrice(subtotal)}</span>
-          </div>
+        <div className="space-y-2 text-sm text-[#4A4A42]">
           <div className="flex justify-between">
             <span>الشحن</span>
-            <span>{shipping === 0 ? "مجاني" : formatPrice(shipping)}</span>
+            <span>مجاني</span>
           </div>
-        </div> */}
+        </div>
 
         <div className="my-4 border-t border-brand-border" />
 
