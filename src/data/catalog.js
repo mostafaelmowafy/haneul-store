@@ -14,7 +14,7 @@ export const PRODUCTS = [
     id: 'product-1',
     name: '🧽 فوم إزالة الدهون',
     category: ' أدوات التنظيف',
-    price: 249,
+    price: 297,
     oldPrice: 310,
     description: `قوة تنظيف.. على أصعب الدهون ✨
 
@@ -181,7 +181,7 @@ export const PRODUCTS = [
     id: 'product-6',
     name: '🧼 وايبس تنظيف البقع الصعبة من الملابس',
     category: ' أدوات التنظيف',
-    price: 197,
+    price: 287,
     oldPrice: 230,
     description: `ة ✨
 
