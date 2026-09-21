@@ -6,7 +6,7 @@ import Papa from 'papaparse';
 // الفعلي بيحصل جوه جوجل شيت نفسه وبيحتاج تسجيل دخول بحساب له صلاحية تعديل
 // على الشيت. الرابط ده منفصل تمامًا عن أي عملية كتابة.
 const SHEET_CSV_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vSUyLFi5RjP1h9UffnE93J4au-k0uq58CESwyJ6IjZ-6yGBbkPA4LljcqY9KdXv1xVJDyo7IVVFtdrR/pubhtml';
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vSUyLFi5RjP1h9UffnE93J4au-k0uq58CESwyJ6IjZ-6yGBbkPA4LljcqY9KdXv1xVJDyo7IVVFtdrR/pub?output=csv';
 
 function toNumberOrNull(value) {
   if (value === undefined || value === null) return null;
