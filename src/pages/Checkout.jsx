@@ -13,8 +13,7 @@ const SHIPPING_FEE = 60;
 // لازم تحطي هنا اللينك اللي هيظهرلك بعد عملية الـ Deploy (اتبعي التعليمات في ملف
 // google-sheet-setup.md اللي جوه المشروع). من غيره الفورم هيشتغل عادي بس البيانات
 // مش هتتبعت للشيت.
-const GOOGLE_SHEET_WEBAPP_URL =
-  'https://script.google.com/macros/s/AKfycbwDznRJ_HBNCLxJZxRMsfACp7tA63XylR7__h1EocwAvoyldQDawOfu6O2PyduiwNx0xg/exec';
+const GOOGLE_SHEET_WEBAPP_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
 
 const EMPTY_FORM = {
   fullName: '',
