@@ -55,7 +55,7 @@ export default function ProductDetail() {
     () => parseOfferOptions(resolvedDescription),
     [resolvedDescription],
   );
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(1);
   const selectedOption = offerOptions[selectedOptionIndex] || null;
 
   // باقي الوصف من غير أسطر الأسعار (دي هتتعرض كاختيارات منفصلة بدل ما
