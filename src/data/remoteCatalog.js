@@ -10,8 +10,8 @@ import Papa from 'papaparse';
 // بجوجل شيت". الرابط ده للقراءة بس — محدش يقدر يعدّل بيانات المنتجات
 // من خلاله حتى لو عرفه، لأن التعديل الفعلي بيحصل جوه جوجل شيت نفسه
 // وبيحتاج تسجيل دخول بحساب له صلاحية تعديل على الشيت.
-const SHEET_ID = 'PASTE_YOUR_SHEET_ID_HERE';
-const SHEET_TAB_NAME = 'Sheet1'; // اسم التاب (الورقة) اللي فيها بيانات المنتجات
+const SHEET_ID = '1-gAztJ87nmoRZyVSZK402aFFykTMnKj2GPOwVAI1-nw'; // من رابط الشيت بتاعك
+const SHEET_TAB_NAME = 'Sheet1'; // اسم التاب اللي فيه البيانات
 
 function buildSheetUrl() {
   return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_TAB_NAME)}`;
@@ -32,12 +32,17 @@ function extractOverrides(row) {
   const overrides = {};
 
   if (row.name && row.name.trim()) overrides.name = row.name.trim();
-  if (row.category && row.category.trim()) overrides.category = row.category.trim();
+  if (row.category && row.category.trim())
+    overrides.category = row.category.trim();
 
   const price = toNumberOrNull(row.price);
   if (price !== null) overrides.price = price;
 
-  if (row.oldPrice !== undefined && row.oldPrice !== null && row.oldPrice.trim() !== '') {
+  if (
+    row.oldPrice !== undefined &&
+    row.oldPrice !== null &&
+    row.oldPrice.trim() !== ''
+  ) {
     overrides.oldPrice = toNumberOrNull(row.oldPrice);
   }
 
@@ -91,7 +96,10 @@ export async function fetchCatalogOverrides() {
     }
     return overridesById;
   } catch (err) {
-    console.warn('تعذّر تحميل بيانات المنتجات من جوجل شيت، هيتم استخدام النسخة المحلية:', err);
+    console.warn(
+      'تعذّر تحميل بيانات المنتجات من جوجل شيت، هيتم استخدام النسخة المحلية:',
+      err,
+    );
     return new Map();
   }
 }
