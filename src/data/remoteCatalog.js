@@ -1,12 +1,21 @@
 import Papa from 'papaparse';
 
-// رابط الشيت بعد "Publish to web" كـ CSV (خطوات الإعداد الكاملة في
-// README.md تحت قسم "ربط بيانات المنتجات بجوجل شيت"). الرابط ده للقراءة
-// بس — محدش يقدر يعدّل بيانات المنتجات من خلاله حتى لو عرفه، لأن التعديل
-// الفعلي بيحصل جوه جوجل شيت نفسه وبيحتاج تسجيل دخول بحساب له صلاحية تعديل
-// على الشيت. الرابط ده منفصل تمامًا عن أي عملية كتابة.
-const SHEET_CSV_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vSUyLFi5RjP1h9UffnE93J4au-k0uq58CESwyJ6IjZ-6yGBbkPA4LljcqY9KdXv1xVJDyo7IVVFtdrR/pub?output=csv';
+// بدل رابط "Publish to web" (اللي بيحفظ نسخة/snapshot بتتجدد كل شوية
+// دقايق من عند جوجل نفسها، وده اللي كان بيسبب "تنقّل" السعر بين القديم
+// والجديد)، بنستخدم هنا endpoint بيقرا من الشيت اللايف مباشرة (gviz/tq)
+// من غير أي خطوة "Publish" أو أي نسخة وسيطة مخزّنة — يعني بيرجّع قيم
+// الخلايا الحالية فعليًا كل مرة، مش نسخة قديمة.
+//
+// خطوات الإعداد الكاملة في README.md تحت قسم "ربط بيانات المنتجات
+// بجوجل شيت". الرابط ده للقراءة بس — محدش يقدر يعدّل بيانات المنتجات
+// من خلاله حتى لو عرفه، لأن التعديل الفعلي بيحصل جوه جوجل شيت نفسه
+// وبيحتاج تسجيل دخول بحساب له صلاحية تعديل على الشيت.
+const SHEET_ID = 'PASTE_YOUR_SHEET_ID_HERE';
+const SHEET_TAB_NAME = 'Sheet1'; // اسم التاب (الورقة) اللي فيها بيانات المنتجات
+
+function buildSheetUrl() {
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_TAB_NAME)}`;
+}
 
 function toNumberOrNull(value) {
   if (value === undefined || value === null) return null;
@@ -23,17 +32,12 @@ function extractOverrides(row) {
   const overrides = {};
 
   if (row.name && row.name.trim()) overrides.name = row.name.trim();
-  if (row.category && row.category.trim())
-    overrides.category = row.category.trim();
+  if (row.category && row.category.trim()) overrides.category = row.category.trim();
 
   const price = toNumberOrNull(row.price);
   if (price !== null) overrides.price = price;
 
-  if (
-    row.oldPrice !== undefined &&
-    row.oldPrice !== null &&
-    row.oldPrice.trim() !== ''
-  ) {
+  if (row.oldPrice !== undefined && row.oldPrice !== null && row.oldPrice.trim() !== '') {
     overrides.oldPrice = toNumberOrNull(row.oldPrice);
   }
 
@@ -61,19 +65,16 @@ function extractOverrides(row) {
 // حصل أي خطأ في الاتصال — الموقع في الحالة دي بيفضل شغال بالبيانات
 // المحلية اللي في catalog.js من غير ما يوقف أو يبين فيه مشكلة للعميلة.
 export async function fetchCatalogOverrides() {
-  if (!SHEET_CSV_URL || SHEET_CSV_URL.startsWith('PASTE_')) {
+  if (!SHEET_ID || SHEET_ID.startsWith('PASTE_')) {
     return new Map();
   }
 
   try {
-    // جوجل بتحتفظ بنسخة مخزّنة (cached) من رابط "Publish to web" على
-    // سيرفراتها هي نفسها لمدة دقايق، وبتختلف النسخة دي أحيانًا حسب
-    // السيرفر اللي بيردّ عليكِ — وده اللي بيخلي السعر "يتنقّل" بين
-    // القديم والجديد مع كل تحديث. إضافة باراميتر عشوائي في الرابط بتجبر
-    // جوجل ترجع أحدث نسخة بدل النسخة المخزّنة عندها، بغض النظر عن
-    // cache: 'no-store' اللي بيمنع التخزين المؤقت في المتصفح بس.
-    const bustCacheUrl = `${SHEET_CSV_URL}${SHEET_CSV_URL.includes('?') ? '&' : '?'}cb=${Date.now()}`;
-    const res = await fetch(bustCacheUrl, { cache: 'no-store' });
+    // باراميتر إضافي بالوقت الحالي عشان نتجنب أي تخزين مؤقت جانبي
+    // (زي كاش المتصفح أو أي بروكسي بينك وبين جوجل) — الـ endpoint نفسه
+    // لايف أصلًا فمش المفروض يحتاجها، لكنها إضافة أمان بسيطة.
+    const url = `${buildSheetUrl()}&cb=${Date.now()}`;
+    const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error(`تعذّر تحميل الشيت: ${res.status}`);
 
     const csvText = await res.text();
@@ -90,10 +91,7 @@ export async function fetchCatalogOverrides() {
     }
     return overridesById;
   } catch (err) {
-    console.warn(
-      'تعذّر تحميل بيانات المنتجات من جوجل شيت، هيتم استخدام النسخة المحلية:',
-      err,
-    );
+    console.warn('تعذّر تحميل بيانات المنتجات من جوجل شيت، هيتم استخدام النسخة المحلية:', err);
     return new Map();
   }
 }
