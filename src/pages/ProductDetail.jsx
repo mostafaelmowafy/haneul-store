@@ -29,13 +29,33 @@ export default function ProductDetail() {
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
 
+  // بنستبدل {price}/{oldPrice}/{priceOffer}/{oldPriceOffer} في الوصف
+  // بالقيم الفعلية الحالية للمنتج، عشان لو غيّرتِ أي سعر (من catalog.js
+  // أو جوجل شيت) يتحدّث في نص الوصف تلقائيًا من غير ما تحتاجي تعدّليه
+  // في مكانين. priceOffer/oldPriceOffer بتمثّل سعر عرض تاني منفصل (زي
+  // "2+1 مجانا") مختلف فعليًا عن سعر القطعة العادية.
+  const resolvedDescription = useMemo(() => {
+    if (!item?.description) return item?.description;
+    return item.description
+      .replaceAll('{price}', item.price ?? '')
+      .replaceAll('{oldPrice}', item.oldPrice ?? '')
+      .replaceAll('{priceOffer}', item.priceOffer ?? '')
+      .replaceAll('{oldPriceOffer}', item.oldPriceOffer ?? '');
+  }, [
+    item?.description,
+    item?.price,
+    item?.oldPrice,
+    item?.priceOffer,
+    item?.oldPriceOffer,
+  ]);
+
   // اختيارات السعر المستخرجة من وصف المنتج (زي "سعر العبوة" و"عرض 2+1")،
   // أول اختيار (عادةً سعر القطعة العادي) بيبقى مختار افتراضيًا.
   const offerOptions = useMemo(
-    () => parseOfferOptions(item?.description),
-    [item?.id],
+    () => parseOfferOptions(resolvedDescription),
+    [resolvedDescription],
   );
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(1);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const selectedOption = offerOptions[selectedOptionIndex] || null;
 
   // باقي الوصف من غير أسطر الأسعار (دي هتتعرض كاختيارات منفصلة بدل ما
@@ -43,9 +63,9 @@ export default function ProductDetail() {
   const cleanedDescription = useMemo(
     () =>
       offerOptions.length > 0
-        ? stripOfferLines(item?.description)
-        : item?.description,
-    [item?.id],
+        ? stripOfferLines(resolvedDescription)
+        : resolvedDescription,
+    [resolvedDescription, offerOptions.length],
   );
 
   if (!item) {
@@ -117,9 +137,6 @@ export default function ProductDetail() {
         </div>
 
         <div>
-          <p className="mb-2 text-xs font-medium text-brand-accent">
-            {item.category}
-          </p>
           <h1 className="font-display mb-3 text-2xl text-brand-text sm:text-3xl">
             {item.name}
           </h1>

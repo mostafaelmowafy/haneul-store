@@ -50,10 +50,6 @@ export default function ItemCard({ item }) {
       </div>
 
       <div className="flex flex-1 flex-col p-4">
-        <p className="mb-1 text-[11px] font-medium text-brand-accent">
-          {item.category}
-        </p>
-
         <button
           onClick={() => navigate(`/product/${item.id}`)}
           className="mb-1 block text-right text-sm font-semibold leading-snug text-brand-text hover:text-brand-primary"
