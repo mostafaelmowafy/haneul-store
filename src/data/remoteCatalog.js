@@ -66,7 +66,14 @@ export async function fetchCatalogOverrides() {
   }
 
   try {
-    const res = await fetch(SHEET_CSV_URL, { cache: 'no-store' });
+    // جوجل بتحتفظ بنسخة مخزّنة (cached) من رابط "Publish to web" على
+    // سيرفراتها هي نفسها لمدة دقايق، وبتختلف النسخة دي أحيانًا حسب
+    // السيرفر اللي بيردّ عليكِ — وده اللي بيخلي السعر "يتنقّل" بين
+    // القديم والجديد مع كل تحديث. إضافة باراميتر عشوائي في الرابط بتجبر
+    // جوجل ترجع أحدث نسخة بدل النسخة المخزّنة عندها، بغض النظر عن
+    // cache: 'no-store' اللي بيمنع التخزين المؤقت في المتصفح بس.
+    const bustCacheUrl = `${SHEET_CSV_URL}${SHEET_CSV_URL.includes('?') ? '&' : '?'}cb=${Date.now()}`;
+    const res = await fetch(bustCacheUrl, { cache: 'no-store' });
     if (!res.ok) throw new Error(`تعذّر تحميل الشيت: ${res.status}`);
 
     const csvText = await res.text();
