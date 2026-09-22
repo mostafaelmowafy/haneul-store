@@ -1,5 +1,38 @@
 import Papa from 'papaparse';
 
+const CACHE_KEY = 'la-cucina-catalog-overrides-v1';
+
+// بنسيب آخر نسخة معروفة من تعديلات الشيت متخزّنة محليًا في المتصفح
+// (مش في الشيت نفسه)، عشان أول ما الموقع يفتح يعرض السعر الصح على طول
+// من غير "ومضة" بالسعر القديم لحد ما الطلب لجوجل يرجع. بعد كده بنطلب
+// من جوجل في الخلفية عادي عشان نتأكد إن مفيش تحديث أحدث.
+function loadCachedOverrides() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return new Map();
+    return new Map(Object.entries(JSON.parse(raw)));
+  } catch {
+    return new Map();
+  }
+}
+
+function saveCachedOverrides(overridesById) {
+  try {
+    localStorage.setItem(
+      CACHE_KEY,
+      JSON.stringify(Object.fromEntries(overridesById)),
+    );
+  } catch {
+    // لو التخزين مش متاح (وضع تصفح خاص مثلًا)، نتجاهل الخطأ بهدوء
+  }
+}
+
+// بترجع فورًا آخر نسخة متخزّنة محليًا (لعرضها من غير أي تأخير)، من غير
+// ما تستنى رد الشبكة.
+export function getCachedCatalogOverrides() {
+  return loadCachedOverrides();
+}
+
 // بدل رابط "Publish to web" (اللي بيحفظ نسخة/snapshot بتتجدد كل شوية
 // دقايق من عند جوجل نفسها، وده اللي كان بيسبب "تنقّل" السعر بين القديم
 // والجديد)، بنستخدم هنا endpoint بيقرا من الشيت اللايف مباشرة (gviz/tq)
@@ -94,6 +127,7 @@ export async function fetchCatalogOverrides() {
       if (!id) continue;
       overridesById.set(id, extractOverrides(row));
     }
+    saveCachedOverrides(overridesById);
     return overridesById;
   } catch (err) {
     console.warn(

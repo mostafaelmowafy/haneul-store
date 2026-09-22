@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { PRODUCTS, BUNDLES } from '../data/catalog.js';
-import { fetchCatalogOverrides } from '../data/remoteCatalog.js';
+import {
+  fetchCatalogOverrides,
+  getCachedCatalogOverrides,
+} from '../data/remoteCatalog.js';
 
 const CatalogContext = createContext(null);
 
@@ -18,10 +21,16 @@ function applyOverrides(items, overridesById) {
 }
 
 export function CatalogProvider({ children }) {
-  // بنبدأ بالبيانات المحلية على طول عشان الموقع يفتح فورًا من غير أي
-  // فترة تحميل، وبعدين لو الشيت مظبوط هنحدّث الأسعار/الأوصاف فوقها.
-  const [products, setProducts] = useState(() => withType(PRODUCTS, 'product'));
-  const [bundles, setBundles] = useState(() => withType(BUNDLES, 'bundle'));
+  // بنبدأ بالبيانات المحلية، لكن بنطبّق عليها فورًا (من غير ما نستنى
+  // رد الشبكة) آخر نسخة متخزّنة محليًا من تعديلات الشيت من زيارة سابقة
+  // — بكده لو فتحتِ الموقع تاني على نفس الجهاز، السعر الصح بيظهر على
+  // طول من غير "ومضة" بالسعر القديم قبل ما يوصل رد جوجل.
+  const [products, setProducts] = useState(() =>
+    applyOverrides(withType(PRODUCTS, 'product'), getCachedCatalogOverrides()),
+  );
+  const [bundles, setBundles] = useState(() =>
+    applyOverrides(withType(BUNDLES, 'bundle'), getCachedCatalogOverrides()),
+  );
 
   useEffect(() => {
     let alive = true;
