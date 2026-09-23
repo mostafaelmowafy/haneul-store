@@ -215,7 +215,7 @@ export default function ProductDetail() {
               </div>
             </div>
           )}
-          <Checkout />
+          {/* <Checkout /> */}
           <div className="mb-6">
             <RichDescription text={cleanedDescription} />
           </div>
