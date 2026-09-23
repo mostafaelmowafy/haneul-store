@@ -5,7 +5,8 @@ import { GOVERNORATES } from './products.js';
 // google-sheet-setup.md اللي جوه المشروع). من غيره الفورم هيشتغل عادي بس البيانات
 // مش هتتبعت للشيت. نفس الرابط ده مستخدم في صفحة الدفع وفورم "اشتري الآن" في صفحة
 // المنتج، عشان كل الطلبات تتسجل في نفس المكان.
-export const GOOGLE_SHEET_WEBAPP_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+export const GOOGLE_SHEET_WEBAPP_URL =
+  'https://script.google.com/macros/s/AKfycbwDznRJ_HBNCLxJZxRMsfACp7tA63XylR7__h1EocwAvoyldQDawOfu6O2PyduiwNx0xg/exec';
 
 export const EMPTY_SHIPPING_FORM = {
   fullName: '',
