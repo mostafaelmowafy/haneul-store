@@ -266,6 +266,54 @@ export default function ProductDetail() {
             </div>
           )}
 
+          {/* اشتري الآن مباشرة: فورم شحن مصغّر + ملخص، عشان اللي عايزة
+              تطلب المنتج ده لوحده من غير ما تمر بالسلة وصفحة الدفع */}
+          <div className="mt-8 rounded-2xl border border-brand-border bg-brand-surface p-5 sm:p-6">
+            <h2 className="font-display mb-1 text-lg text-brand-primaryDark">
+              اشتري الآن مباشرة
+            </h2>
+            <p className="mb-4 text-xs text-brand-muted">
+              املي بياناتك وهنأكّد معاكِ الطلب على طول
+            </p>
+
+            <div className="mb-4 flex items-center gap-3 rounded-xl bg-brand-light p-3">
+              <img
+                src={currentLine.image}
+                alt={currentLine.name}
+                className="h-12 w-12 shrink-0 rounded-lg bg-white object-cover"
+              />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-brand-text">
+                  {currentLine.name}
+                </p>
+                {currentLine.optionLabel && (
+                  <p className="text-xs font-medium text-brand-primary">
+                    {currentLine.optionLabel}
+                  </p>
+                )}
+                <p className="text-xs text-brand-muted">
+                  الكمية: {currentLine.qty}
+                </p>
+              </div>
+              <p className="shrink-0 text-sm font-bold text-brand-primaryDark">
+                {formatPrice(currentTotal)}
+              </p>
+            </div>
+
+            <ShippingForm
+              form={buyForm}
+              errors={buyErrors}
+              setField={setBuyField}
+            />
+
+            <button
+              onClick={handleOpenConfirm}
+              className="mt-4 w-full rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker"
+            >
+              إتمام الشراء — {formatPrice(currentTotal)}
+            </button>
+          </div>
+
           <div className="mb-6">
             <RichDescription text={cleanedDescription} />
           </div>
@@ -318,54 +366,6 @@ export default function ProductDetail() {
               <ShieldCheck className="h-4 w-4 text-brand-primary" /> استرجاع
               خلال 14 يوم
             </span>
-          </div>
-
-          {/* اشتري الآن مباشرة: فورم شحن مصغّر + ملخص، عشان اللي عايزة
-              تطلب المنتج ده لوحده من غير ما تمر بالسلة وصفحة الدفع */}
-          <div className="mt-8 rounded-2xl border border-brand-border bg-brand-surface p-5 sm:p-6">
-            <h2 className="font-display mb-1 text-lg text-brand-primaryDark">
-              اشتري الآن مباشرة
-            </h2>
-            <p className="mb-4 text-xs text-brand-muted">
-              املي بياناتك وهنأكّد معاكِ الطلب على طول
-            </p>
-
-            <div className="mb-4 flex items-center gap-3 rounded-xl bg-brand-light p-3">
-              <img
-                src={currentLine.image}
-                alt={currentLine.name}
-                className="h-12 w-12 shrink-0 rounded-lg bg-white object-cover"
-              />
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-brand-text">
-                  {currentLine.name}
-                </p>
-                {currentLine.optionLabel && (
-                  <p className="text-xs font-medium text-brand-primary">
-                    {currentLine.optionLabel}
-                  </p>
-                )}
-                <p className="text-xs text-brand-muted">
-                  الكمية: {currentLine.qty}
-                </p>
-              </div>
-              <p className="shrink-0 text-sm font-bold text-brand-primaryDark">
-                {formatPrice(currentTotal)}
-              </p>
-            </div>
-
-            <ShippingForm
-              form={buyForm}
-              errors={buyErrors}
-              setField={setBuyField}
-            />
-
-            <button
-              onClick={handleOpenConfirm}
-              className="mt-4 w-full rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker"
-            >
-              إتمام الشراء — {formatPrice(currentTotal)}
-            </button>
           </div>
         </div>
       </div>
