@@ -340,10 +340,6 @@ export default function ProductDetail() {
           </div>
 
           <div className="mb-6">
-            <RichDescription text={cleanedDescription} />
-          </div>
-
-          <div className="mb-6">
             <button
               onClick={handleAdd}
               className="flex w-full items-center justify-center gap-2 rounded-full border border-brand-primary py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
@@ -356,6 +352,10 @@ export default function ProductDetail() {
                 'أضف للسلة'
               )}
             </button>
+          </div>
+
+          <div className="mb-6">
+            <RichDescription text={cleanedDescription} />
           </div>
 
           <div className="flex items-center gap-6 text-xs text-brand-muted">
