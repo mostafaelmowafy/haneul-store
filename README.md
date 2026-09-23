@@ -26,24 +26,24 @@ src/
 ```js
 export const PRODUCTS = [
   {
-    id: "grease-remover",
-    name: "مزيل الدهون القوي",
+    id: 'grease-remover',
+    name: 'مزيل الدهون القوي',
     price: 149,
     oldPrice: null,
-    description: "وصف المنتج هنا...",
-    images: ["/images/grease-remover-1.webp", "/images/grease-remover-2.webp"],
+    description: 'وصف المنتج هنا...',
+    images: ['/images/grease-remover-1.webp', '/images/grease-remover-2.webp'],
   },
   // ...أضيفي عنصر جديد هنا بنفس الشكل
 ];
 
 export const BUNDLES = [
   {
-    id: "kitchen-offer",
-    name: "عرض المطبخ النظيف",
+    id: 'kitchen-offer',
+    name: 'عرض المطبخ النظيف',
     price: 399,
     oldPrice: 550,
-    description: "وصف العرض هنا...",
-    images: ["/images/kitchen-offer-1.webp"],
+    description: 'وصف العرض هنا...',
+    images: ['/images/kitchen-offer-1.webp'],
   },
   // ...أضيفي عرض جديد هنا بنفس الشكل
 ];
@@ -67,6 +67,7 @@ export const BUNDLES = [
 
 الصور متخزنة جوه المشروع في `public/images/` وبنشير لها بمسار نسبي زي
 `/images/grease-remover-1.webp`. لإضافة صورة منتج جديد:
+
 - ارفعيها في `public/images/`، أو
 - استخدمي رابط صورة مستضافة على الإنترنت مباشرة في حقل `images` (لازم
   يبدأ بـ `http` أو `https`).
@@ -90,8 +91,8 @@ export const BUNDLES = [
 1. اعملي جوجل شيت جديد، وحطي الأعمدة دي بالظبط في أول صف (الأسماء
    لازم تكون بالظبط زي ما هي، بالإنجليزي):
 
-   | id | name | category | price | oldPrice | priceOffer | oldPriceOffer | description |
-   |----|------|----------|-------|----------|------------|----------------|--------------|
+   | id  | name | category | price | oldPrice | priceOffer | oldPriceOffer | description |
+   | --- | ---- | -------- | ----- | -------- | ---------- | ------------- | ----------- |
 
 2. **عمود `id` هو الأهم** — لازم يتطابق حرفيًا مع الـ `id` بتاع نفس
    المنتج في `src/data/catalog.js` (زي `product-1`، `offer-2`... إلخ)،
@@ -101,7 +102,6 @@ export const BUNDLES = [
 3. املي صف لكل منتج عايزة تتحكمي فيه. **مش لازم تملي كل الأعمدة** —
    لو سبتِ خلية فاضية (زي `oldPrice` مثلًا)، الموقع هيفضل مستخدم القيمة
    المحلية من `catalog.js` لنفس الحقل ده.
-
    - لو عايزة تكتبي وصف بأسطر متعددة جوه خلية واحدة، استخدمي `|` بدل
      السطر الجديد، وهو هيتحول لسطر جديد تلقائيًا على الموقع. مثال:
      `أهم المميزات: | يشيل الدهون بسرعة | آمن على الأسطح`
@@ -131,7 +131,8 @@ export const BUNDLES = [
    `PASTE_YOUR_PUBLISHED_SHEET_CSV_LINK_HERE`:
 
    ```js
-   const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/.../pub?output=csv';
+   const SHEET_CSV_URL =
+     'https://docs.google.com/spreadsheets/d/e/.../pub?output=csv';
    ```
 
 6. احفظي، وارفعي التحديث. من دلوقتي أي تعديل تعمليه في الشيت (وتحفظيه)

@@ -18,6 +18,7 @@ import {
 } from '../utils/parseOfferOptions.js';
 import { useCatalog } from '../context/CatalogContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
+import Checkout from './Checkout.jsx';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -158,6 +159,7 @@ export default function ProductDetail() {
               </span>
             )}
           </div>
+          <Checkout />
 
           {offerOptions.length > 0 && (
             <div className="mb-6">
