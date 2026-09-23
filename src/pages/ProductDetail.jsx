@@ -10,25 +10,38 @@ import {
 } from 'lucide-react';
 import ProductGallery from '../components/ProductGallery.jsx';
 import ItemCard from '../components/ItemCard.jsx';
+import ShippingForm from '../components/ShippingForm.jsx';
+import OrderConfirmModal from '../components/OrderConfirmModal.jsx';
 import { formatPrice } from '../data/products.js';
 import RichDescription, { renderAfterText } from '../utils/richDescription.jsx';
 import {
   parseOfferOptions,
   stripOfferLines,
 } from '../utils/parseOfferOptions.js';
+import {
+  EMPTY_SHIPPING_FORM,
+  convertArabicNumsToEnglish,
+  validateShippingForm,
+  submitOrderToSheet,
+} from '../data/orderSubmission.js';
 import { useCatalog } from '../context/CatalogContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
-import Checkout from './Checkout.jsx';
 
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getItemById, bundles } = useCatalog();
-  const { addToCart, closeDrawer } = useCart();
+  const { addToCart } = useCart();
 
   const item = getItemById(id);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+
+  // بيانات فورم "اشتري الآن" المباشر تحت اختيار العرض
+  const [buyForm, setBuyForm] = useState(EMPTY_SHIPPING_FORM);
+  const [buyErrors, setBuyErrors] = useState({});
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   // بنستبدل {price}/{oldPrice}/{priceOffer}/{oldPriceOffer} في الوصف
   // بالقيم الفعلية الحالية للمنتج، عشان لو غيّرتِ أي سعر (من catalog.js
@@ -112,14 +125,51 @@ export default function ProductDetail() {
     setTimeout(() => setAdded(false), 1500);
   };
 
-  const handleBuyNow = () => {
-    addToCart(item.id, effectiveQty, {
-      unitPrice: effectiveUnitPrice,
-      optionLabel: selectedOption?.label,
-      piecesPerUnit,
+  // بيانات "السطر" الحالي (المنتج + الاختيار + الكمية المختارة فوق) —
+  // ده اللي بيتبعت لما تشتري مباشرة من الفورم اللي تحت، منفصل تمامًا عن
+  // أي حاجة تانية في عربة التسوق، عشان يكون واضح ومحدّد إنه المنتج ده بس.
+  const currentLine = {
+    id: item.id,
+    name: item.name,
+    optionLabel: selectedOption?.label || null,
+    piecesPerUnit,
+    image: item.images?.[0] || null,
+    qty: effectiveQty,
+    price: effectiveUnitPrice ?? item.price,
+    oldPrice:
+      (selectedOption ? selectedOption.oldPrice : item.oldPrice) || null,
+  };
+  const currentTotal = currentLine.price * currentLine.qty;
+
+  const setBuyField = (key) => (e) => {
+    let value = e.target.value;
+    if (key === 'phone' || key === 'altPhone')
+      value = convertArabicNumsToEnglish(value);
+    setBuyForm((f) => ({ ...f, [key]: value }));
+  };
+
+  const handleOpenConfirm = () => {
+    const newErrors = validateShippingForm(buyForm);
+    if (Object.keys(newErrors).length > 0) {
+      setBuyErrors(newErrors);
+      return;
+    }
+    setBuyErrors({});
+    setShowConfirm(true);
+  };
+
+  const handleConfirmOrder = async () => {
+    setSubmitting(true);
+    await submitOrderToSheet({
+      form: buyForm,
+      lines: [currentLine],
+      total: currentTotal,
     });
-    closeDrawer();
-    navigate('/checkout');
+    setSubmitting(false);
+    setShowConfirm(false);
+    navigate('/order-success', {
+      state: { lines: [currentLine], total: currentTotal, form: buyForm },
+    });
   };
 
   return (
@@ -215,7 +265,7 @@ export default function ProductDetail() {
               </div>
             </div>
           )}
-          {/* <Checkout /> */}
+
           <div className="mb-6">
             <RichDescription text={cleanedDescription} />
           </div>
@@ -245,10 +295,10 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          <div className="mb-6 flex items-center gap-3">
+          <div className="mb-6">
             <button
               onClick={handleAdd}
-              className="flex flex-1 items-center justify-center gap-2 rounded-full border border-brand-primary py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-brand-primary py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
             >
               {added ? (
                 <>
@@ -257,13 +307,6 @@ export default function ProductDetail() {
               ) : (
                 'أضف للسلة'
               )}
-            </button>
-
-            <button
-              onClick={handleBuyNow}
-              className="flex-1 rounded-full bg-brand-primary py-3 font-medium text-white transition-colors hover:bg-brand-primaryDark"
-            >
-              اشتري الآن
             </button>
           </div>
 
@@ -275,6 +318,54 @@ export default function ProductDetail() {
               <ShieldCheck className="h-4 w-4 text-brand-primary" /> استرجاع
               خلال 14 يوم
             </span>
+          </div>
+
+          {/* اشتري الآن مباشرة: فورم شحن مصغّر + ملخص، عشان اللي عايزة
+              تطلب المنتج ده لوحده من غير ما تمر بالسلة وصفحة الدفع */}
+          <div className="mt-8 rounded-2xl border border-brand-border bg-brand-surface p-5 sm:p-6">
+            <h2 className="font-display mb-1 text-lg text-brand-primaryDark">
+              اشتري الآن مباشرة
+            </h2>
+            <p className="mb-4 text-xs text-brand-muted">
+              املي بياناتك وهنأكّد معاكِ الطلب على طول
+            </p>
+
+            <div className="mb-4 flex items-center gap-3 rounded-xl bg-brand-light p-3">
+              <img
+                src={currentLine.image}
+                alt={currentLine.name}
+                className="h-12 w-12 shrink-0 rounded-lg bg-white object-cover"
+              />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-brand-text">
+                  {currentLine.name}
+                </p>
+                {currentLine.optionLabel && (
+                  <p className="text-xs font-medium text-brand-primary">
+                    {currentLine.optionLabel}
+                  </p>
+                )}
+                <p className="text-xs text-brand-muted">
+                  الكمية: {currentLine.qty}
+                </p>
+              </div>
+              <p className="shrink-0 text-sm font-bold text-brand-primaryDark">
+                {formatPrice(currentTotal)}
+              </p>
+            </div>
+
+            <ShippingForm
+              form={buyForm}
+              errors={buyErrors}
+              setField={setBuyField}
+            />
+
+            <button
+              onClick={handleOpenConfirm}
+              className="mt-4 w-full rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker"
+            >
+              إتمام الشراء — {formatPrice(currentTotal)}
+            </button>
           </div>
         </div>
       </div>
@@ -296,6 +387,17 @@ export default function ProductDetail() {
             ))}
           </div>
         </div>
+      )}
+
+      {showConfirm && (
+        <OrderConfirmModal
+          lines={[currentLine]}
+          total={currentTotal}
+          form={buyForm}
+          submitting={submitting}
+          onConfirm={handleConfirmOrder}
+          onClose={() => setShowConfirm(false)}
+        />
       )}
     </div>
   );

@@ -2,62 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import ProductImage from '../components/ProductImage.jsx';
-import { formatPrice, GOVERNORATES } from '../data/products.js';
+import ShippingForm from '../components/ShippingForm.jsx';
+import { formatPrice } from '../data/products.js';
+import {
+  EMPTY_SHIPPING_FORM,
+  convertArabicNumsToEnglish,
+  validateShippingForm,
+  submitOrderToSheet,
+} from '../data/orderSubmission.js';
 import { useCart } from '../context/CartContext.jsx';
 import { useCatalog } from '../context/CatalogContext.jsx';
-
-const FREE_SHIPPING_THRESHOLD = 500;
-const SHIPPING_FEE = 60;
-
-// رابط تطبيق الويب بتاع Google Apps Script اللي بيوصل بيانات الفورم بجوجل شيت.
-// لازم تحطي هنا اللينك اللي هيظهرلك بعد عملية الـ Deploy (اتبعي التعليمات في ملف
-// google-sheet-setup.md اللي جوه المشروع). من غيره الفورم هيشتغل عادي بس البيانات
-// مش هتتبعت للشيت.
-const GOOGLE_SHEET_WEBAPP_URL =
-  'https://script.google.com/macros/s/AKfycbwDznRJ_HBNCLxJZxRMsfACp7tA63XylR7__h1EocwAvoyldQDawOfu6O2PyduiwNx0xg/exec';
-
-const EMPTY_FORM = {
-  fullName: '',
-  phone: '',
-  altPhone: '',
-  governorate: GOVERNORATES[0],
-  address: '',
-  notes: '',
-};
-
-const convertArabicNumsToEnglish = (str) =>
-  str.replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
-
-const PHONE_REGEX =
-  /^(?:(?:010|011|015)[0-9]{8}|(?:0127|0128|0120|0121|0122)[0-9]{7})$/;
-
-const validateForm = (form) => {
-  const newErrors = {};
-
-  const phone = convertArabicNumsToEnglish((form.phone || '').trim());
-  const altPhone = convertArabicNumsToEnglish((form.altPhone || '').trim());
-  const fullName = (form.fullName || '').trim();
-
-  if (!fullName) newErrors.fullName = 'يجب إدخال الاسم بالكامل';
-
-  if (!phone) {
-    newErrors.phone = 'يجب إدخال رقم الهاتف';
-  } else if (!PHONE_REGEX.test(phone)) {
-    newErrors.phone =
-      '❌ من فضلك أدخلي رقم هاتف صحيح يبدأ بـ 010 - 011 - 015 - 0127 - 0128 - 0120 - 0121 - 0122 ويتكون من 11 رقم';
-  }
-
-  if (altPhone && !PHONE_REGEX.test(altPhone)) {
-    newErrors.altPhone = '❌ الرقم البديل غير صحيح، تأكدي إنه مكوّن من 11 رقم';
-  }
-
-  if (!(form.address || '').trim())
-    newErrors.address = 'يجب إدخال العنوان بالتفصيل';
-  if (!(form.governorate || '').trim())
-    newErrors.governorate = 'يجب إدخال المحافظة';
-
-  return newErrors;
-};
 
 export default function Checkout() {
   const { cart, clearCart } = useCart();
@@ -71,7 +25,7 @@ export default function Checkout() {
 
   const total = lines.reduce((sum, l) => sum + l.unitPrice * l.qty, 0);
 
-  const [form, setForm] = useState(EMPTY_FORM);
+  const [form, setForm] = useState(EMPTY_SHIPPING_FORM);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -83,7 +37,7 @@ export default function Checkout() {
   };
 
   const handlePlaceOrder = async () => {
-    const newErrors = validateForm(form);
+    const newErrors = validateShippingForm(form);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -91,62 +45,22 @@ export default function Checkout() {
     setErrors({});
     setSubmitting(true);
 
-    const orderSnapshot = {
-      lines: lines.map((line) => ({
-        id: line.item.id,
-        name: line.item.name,
-        optionLabel: line.optionLabel || null,
-        piecesPerUnit: line.piecesPerUnit || 1,
-        image: line.item.images?.[0] || null,
-        qty: line.qty,
-        price: line.unitPrice,
-        oldPrice: line.item.oldPrice || null,
-      })),
-      total,
-      form,
-    };
+    const orderLines = lines.map((line) => ({
+      id: line.item.id,
+      name: line.item.name,
+      optionLabel: line.optionLabel || null,
+      piecesPerUnit: line.piecesPerUnit || 1,
+      image: line.item.images?.[0] || null,
+      qty: line.qty,
+      price: line.unitPrice,
+      oldPrice: line.item.oldPrice || null,
+    }));
 
-    // بعت بيانات الطلب لجوجل شيت (لو الرابط متظبط). مستخدمين no-cors لأن
-    // Google Apps Script مش بيرجّع CORS headers، فمينفعش نقرأ الرد، بس البيانات
-    // بتوصل وبتتسجل في الشيت عادي.
-    if (
-      GOOGLE_SHEET_WEBAPP_URL &&
-      !GOOGLE_SHEET_WEBAPP_URL.startsWith('PASTE_')
-    ) {
-      try {
-        await fetch(GOOGLE_SHEET_WEBAPP_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            fullName: form.fullName,
-            phone: form.phone,
-            altPhone: form.altPhone || 'لا يوجد',
-            governorate: form.governorate,
-            address: form.address,
-            notes: form.notes || 'لا يوجد',
-            products: lines
-              .map((l) => {
-                const piecesNote =
-                  l.piecesPerUnit > 1
-                    ? ` = ${l.piecesPerUnit * l.qty} قطعة`
-                    : '';
-                return `${l.item.name}${l.optionLabel ? ` (${l.optionLabel})` : ''} (الكمية: ${l.qty}${piecesNote} - السعر: ${l.unitPrice} ج.م)`;
-              })
-              .join(' | '),
-            total,
-          }),
-        });
-      } catch (err) {
-        // حتى لو فشل الاتصال بجوجل شيت، الطلب برضه بيتسجل عندك في الموقع
-        // وميتوقفش عن العميلة — بس تقدري تراجعي هنا لو حابة تتعاملي مع الخطأ بشكل تاني.
-        console.error('تعذّر إرسال بيانات الطلب لجوجل شيت:', err);
-      }
-    }
+    await submitOrderToSheet({ form, lines: orderLines, total });
 
     setSubmitting(false);
     clearCart();
-    navigate('/order-success', { state: orderSnapshot });
+    navigate('/order-success', { state: { lines: orderLines, total, form } });
   };
 
   if (lines.length === 0) {
@@ -240,91 +154,7 @@ export default function Checkout() {
               <h2 className="mb-3 font-semibold text-brand-text">
                 بيانات الشحن
               </h2>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="sm:col-span-2">
-                  <input
-                    className="input w-full"
-                    placeholder="الاسم بالكامل"
-                    value={form.fullName}
-                    onChange={setField('fullName')}
-                  />
-                  {errors.fullName && (
-                    <p className="mt-1 text-xs text-red-500">
-                      {errors.fullName}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <input
-                    className="input w-full"
-                    placeholder="رقم التليفون"
-                    value={form.phone}
-                    onChange={setField('phone')}
-                    maxLength={11}
-                    dir="ltr"
-                  />
-                  {errors.phone && (
-                    <p className="mt-1 text-xs text-red-500">{errors.phone}</p>
-                  )}
-                </div>
-
-                <div>
-                  <input
-                    className="input w-full"
-                    placeholder="رقم بديل (اختياري)"
-                    value={form.altPhone}
-                    onChange={setField('altPhone')}
-                    maxLength={11}
-                    dir="ltr"
-                  />
-                  {errors.altPhone && (
-                    <p className="mt-1 text-xs text-red-500">
-                      {errors.altPhone}
-                    </p>
-                  )}
-                </div>
-
-                <div className="sm:col-span-2">
-                  <select
-                    className="input w-full"
-                    value={form.governorate}
-                    onChange={setField('governorate')}
-                  >
-                    {GOVERNORATES.map((g) => (
-                      <option key={g} value={g}>
-                        {g}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.governorate && (
-                    <p className="mt-1 text-xs text-red-500">
-                      {errors.governorate}
-                    </p>
-                  )}
-                </div>
-
-                <div className="sm:col-span-2">
-                  <textarea
-                    className="input h-24 w-full resize-none"
-                    placeholder="العنوان بالتفصيل"
-                    value={form.address}
-                    onChange={setField('address')}
-                  />
-                  {errors.address && (
-                    <p className="mt-1 text-xs text-red-500">
-                      {errors.address}
-                    </p>
-                  )}
-                </div>
-
-                <textarea
-                  className="input h-20 resize-none sm:col-span-2"
-                  placeholder="ملاحظات إضافية تحبي تقوليها (اختياري)"
-                  value={form.notes}
-                  onChange={setField('notes')}
-                />
-              </div>
+              <ShippingForm form={form} errors={errors} setField={setField} />
             </div>
 
             <button
