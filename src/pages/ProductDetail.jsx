@@ -159,7 +159,6 @@ export default function ProductDetail() {
               </span>
             )}
           </div>
-          <Checkout />
 
           {offerOptions.length > 0 && (
             <div className="mb-6">
@@ -216,7 +215,7 @@ export default function ProductDetail() {
               </div>
             </div>
           )}
-
+          <Checkout />
           <div className="mb-6">
             <RichDescription text={cleanedDescription} />
           </div>
