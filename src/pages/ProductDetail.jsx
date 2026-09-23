@@ -125,10 +125,10 @@ export default function ProductDetail() {
     setTimeout(() => setAdded(false), 1500);
   };
 
-  const goTo = (path) => {
-    closeDrawer();
-    navigate(path);
-  };
+  // const goTo = (path) => {
+  //   closeDrawer();
+  //   navigate(path);
+  // };
 
   // بيانات "السطر" الحالي (المنتج + الاختيار + الكمية المختارة فوق) —
   // ده اللي بيتبعت لما تشتري مباشرة من الفورم اللي تحت، منفصل تمامًا عن
@@ -358,12 +358,12 @@ export default function ProductDetail() {
               )}
             </button>
 
-            <button
+            {/* <button
               onClick={() => goTo('/cart')}
               className="w-full rounded-full border border-brand-border py-3 text-sm font-medium text-brand-text transition-colors hover:bg-brand-light"
             >
               عرض السلة كاملة
-            </button>
+            </button> */}
           </div>
 
           <div className="mb-6">
