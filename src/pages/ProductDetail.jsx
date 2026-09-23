@@ -125,13 +125,9 @@ export default function ProductDetail() {
     setTimeout(() => setAdded(false), 1500);
   };
 
-  const handleBuyNow = () => {
-    addToCart(item.id, effectiveQty, {
-      unitPrice: effectiveUnitPrice,
-      optionLabel: selectedOption?.label,
-    });
+  const goTo = (path) => {
     closeDrawer();
-    navigate('/checkout');
+    navigate(path);
   };
 
   // بيانات "السطر" الحالي (المنتج + الاختيار + الكمية المختارة فوق) —
@@ -363,10 +359,10 @@ export default function ProductDetail() {
             </button>
 
             <button
-              onClick={handleBuyNow}
-              className="flex-1 rounded-full bg-brand-primary py-3 font-medium text-white transition-colors hover:bg-brand-primaryDark"
+              onClick={() => goTo('/cart')}
+              className="w-full rounded-full border border-brand-border py-3 text-sm font-medium text-brand-text transition-colors hover:bg-brand-light"
             >
-              اشتري الآن
+              عرض السلة كاملة
             </button>
           </div>
 
