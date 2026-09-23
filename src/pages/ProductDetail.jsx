@@ -339,7 +339,7 @@ export default function ProductDetail() {
             </button>
           </div>
 
-          <div className="mb-6">
+          <div className="mb-6 mt-4">
             <button
               onClick={handleAdd}
               className="flex w-full items-center justify-center gap-2 rounded-full border border-brand-primary py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
