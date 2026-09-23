@@ -125,6 +125,15 @@ export default function ProductDetail() {
     setTimeout(() => setAdded(false), 1500);
   };
 
+  const handleBuyNow = () => {
+    addToCart(item.id, effectiveQty, {
+      unitPrice: effectiveUnitPrice,
+      optionLabel: selectedOption?.label,
+    });
+    closeDrawer();
+    navigate('/checkout');
+  };
+
   // بيانات "السطر" الحالي (المنتج + الاختيار + الكمية المختارة فوق) —
   // ده اللي بيتبعت لما تشتري مباشرة من الفورم اللي تحت، منفصل تمامًا عن
   // أي حاجة تانية في عربة التسوق، عشان يكون واضح ومحدّد إنه المنتج ده بس.
@@ -351,6 +360,13 @@ export default function ProductDetail() {
               ) : (
                 'أضف للسلة'
               )}
+            </button>
+
+            <button
+              onClick={handleBuyNow}
+              className="flex-1 rounded-full bg-brand-primary py-3 font-medium text-white transition-colors hover:bg-brand-primaryDark"
+            >
+              اشتري الآن
             </button>
           </div>
 
