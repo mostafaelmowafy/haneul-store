@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -11,7 +11,6 @@ import {
 import ProductGallery from '../components/ProductGallery.jsx';
 import ItemCard from '../components/ItemCard.jsx';
 import ShippingForm from '../components/ShippingForm.jsx';
-import OrderConfirmModal from '../components/OrderConfirmModal.jsx';
 import { formatPrice } from '../data/products.js';
 import RichDescription, { renderAfterText } from '../utils/richDescription.jsx';
 import {
@@ -40,8 +39,6 @@ export default function ProductDetail() {
   // بيانات فورم "اشتري الآن" المباشر تحت اختيار العرض
   const [buyForm, setBuyForm] = useState(EMPTY_SHIPPING_FORM);
   const [buyErrors, setBuyErrors] = useState({});
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
 
   // بنستبدل {price}/{oldPrice}/{priceOffer}/{oldPriceOffer} في الوصف
   // بالقيم الفعلية الحالية للمنتج، عشان لو غيّرتِ أي سعر (من catalog.js
@@ -153,25 +150,12 @@ export default function ProductDetail() {
     setBuyForm((f) => ({ ...f, [key]: value }));
   };
 
-  const handleOpenConfirm = () => {
-    const newErrors = validateShippingForm(buyForm);
-    if (Object.keys(newErrors).length > 0) {
-      setBuyErrors(newErrors);
-      return;
-    }
-    setBuyErrors({});
-    setShowConfirm(true);
-  };
-
   const handleConfirmOrder = async () => {
-    setSubmitting(true);
     await submitOrderToSheet({
       form: buyForm,
       lines: [currentLine],
       total: currentTotal,
     });
-    setSubmitting(false);
-    setShowConfirm(false);
     navigate('/order-success', {
       state: { lines: [currentLine], total: currentTotal, form: buyForm },
     });
@@ -337,7 +321,7 @@ export default function ProductDetail() {
             />
 
             <button
-              onClick={handleOpenConfirm}
+              onClick={handleConfirmOrder}
               className="mt-4 w-full rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker"
             >
               إتمام الشراء — {formatPrice(currentTotal)}
@@ -399,17 +383,6 @@ export default function ProductDetail() {
             ))}
           </div>
         </div>
-      )}
-
-      {showConfirm && (
-        <OrderConfirmModal
-          lines={[currentLine]}
-          total={currentTotal}
-          form={buyForm}
-          submitting={submitting}
-          onConfirm={handleConfirmOrder}
-          onClose={() => setShowConfirm(false)}
-        />
       )}
     </div>
   );
