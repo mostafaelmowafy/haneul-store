@@ -40,8 +40,6 @@ export default function ProductDetail() {
   // بيانات فورم "اشتري الآن" المباشر تحت اختيار العرض
   const [buyForm, setBuyForm] = useState(EMPTY_SHIPPING_FORM);
   const [buyErrors, setBuyErrors] = useState({});
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
 
   // بنستبدل {price}/{oldPrice}/{priceOffer}/{oldPriceOffer} في الوصف
   // بالقيم الفعلية الحالية للمنتج، عشان لو غيّرتِ أي سعر (من catalog.js
@@ -153,25 +151,31 @@ export default function ProductDetail() {
     setBuyForm((f) => ({ ...f, [key]: value }));
   };
 
+  // const handleOpenConfirm = () => {
+  //   const newErrors = validateShippingForm(buyForm);
+  //   if (Object.keys(newErrors).length > 0) {
+  //     setBuyErrors(newErrors);
+  //     return;
+  //   }
+  //   setBuyErrors({});
+  // };
+
   const handleConfirmOrder = async () => {
-    setSubmitting(true);
     const newErrors = validateShippingForm(buyForm);
     if (Object.keys(newErrors).length > 0) {
       setBuyErrors(newErrors);
       return;
-    } else {
-      setBuyErrors({});
-      await submitOrderToSheet({
-        form: buyForm,
-        lines: [currentLine],
-        total: currentTotal,
-      });
-      setSubmitting(false);
-      setShowConfirm(false);
-      navigate('/order-success', {
-        state: { lines: [currentLine], total: currentTotal, form: buyForm },
-      });
     }
+    setBuyErrors({});
+
+    await submitOrderToSheet({
+      form: buyForm,
+      lines: [currentLine],
+      total: currentTotal,
+    });
+    navigate('/order-success', {
+      state: { lines: [currentLine], total: currentTotal, form: buyForm },
+    });
   };
 
   return (
@@ -334,7 +338,7 @@ export default function ProductDetail() {
             />
 
             <button
-              onClick={handleConfirmOrder}
+              onClick={() => handleConfirmOrder}
               className="mt-4 w-full rounded-full bg-brand-primaryDark py-3 font-medium text-white transition-colors hover:bg-brand-primaryDarker"
             >
               إتمام الشراء — {formatPrice(currentTotal)}
