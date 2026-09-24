@@ -159,17 +159,19 @@ export default function ProductDetail() {
     if (Object.keys(newErrors).length > 0) {
       setBuyErrors(newErrors);
       return;
+    } else {
+      setBuyErrors({});
+      await submitOrderToSheet({
+        form: buyForm,
+        lines: [currentLine],
+        total: currentTotal,
+      });
+      setSubmitting(false);
+      setShowConfirm(false);
+      navigate('/order-success', {
+        state: { lines: [currentLine], total: currentTotal, form: buyForm },
+      });
     }
-    await submitOrderToSheet({
-      form: buyForm,
-      lines: [currentLine],
-      total: currentTotal,
-    });
-    setSubmitting(false);
-    setShowConfirm(false);
-    navigate('/order-success', {
-      state: { lines: [currentLine], total: currentTotal, form: buyForm },
-    });
   };
 
   return (
