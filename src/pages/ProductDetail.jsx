@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -11,6 +11,7 @@ import {
 import ProductGallery from '../components/ProductGallery.jsx';
 import ItemCard from '../components/ItemCard.jsx';
 import ShippingForm from '../components/ShippingForm.jsx';
+import OrderConfirmModal from '../components/OrderConfirmModal.jsx';
 import { formatPrice } from '../data/products.js';
 import RichDescription, { renderAfterText } from '../utils/richDescription.jsx';
 import {
@@ -39,6 +40,8 @@ export default function ProductDetail() {
   // بيانات فورم "اشتري الآن" المباشر تحت اختيار العرض
   const [buyForm, setBuyForm] = useState(EMPTY_SHIPPING_FORM);
   const [buyErrors, setBuyErrors] = useState({});
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   // بنستبدل {price}/{oldPrice}/{priceOffer}/{oldPriceOffer} في الوصف
   // بالقيم الفعلية الحالية للمنتج، عشان لو غيّرتِ أي سعر (من catalog.js
@@ -151,11 +154,19 @@ export default function ProductDetail() {
   };
 
   const handleConfirmOrder = async () => {
+    setSubmitting(true);
+    const newErrors = validateShippingForm(buyForm);
+    if (Object.keys(newErrors).length > 0) {
+      setBuyErrors(newErrors);
+      return;
+    }
     await submitOrderToSheet({
       form: buyForm,
       lines: [currentLine],
       total: currentTotal,
     });
+    setSubmitting(false);
+    setShowConfirm(false);
     navigate('/order-success', {
       state: { lines: [currentLine], total: currentTotal, form: buyForm },
     });
