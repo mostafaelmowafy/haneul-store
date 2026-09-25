@@ -346,7 +346,7 @@ export const PRODUCTS = [
 📦 الحجم: 500 جم
 
 سعر العبوة {price} يدل {oldPrice} ج و الشحن مجانى
-2 + 1 مجانا {priceOffer} ج  بدل {oldPriceOffer} ج و الشحن مجانى سعر العبوة فى العرض 149 ج فقط  `,
+سعر 3 عبوات {priceOffer} ج  بدل {oldPriceOffer} ج و الشحن مجانى سعر العبوة فى العرض 149 ج فقط  `,
     images: ['/images/product-10.webp'],
   },
   {
