@@ -134,7 +134,8 @@ export default function ProductDetail() {
     image: item.images?.[0] || null,
     qty: effectiveQty,
     price: effectiveUnitPrice ?? item.price,
-    oldPrice: (selectedOption ? selectedOption.oldPrice : item.oldPrice) || null,
+    oldPrice:
+      (selectedOption ? selectedOption.oldPrice : item.oldPrice) || null,
   };
   const currentTotal = currentLine.price * currentLine.qty;
 
@@ -258,60 +259,6 @@ export default function ProductDetail() {
             </div>
           )}
 
-          <div className="mb-6">
-            <RichDescription text={cleanedDescription} />
-          </div>
-
-          <div className="mb-4">
-            {selectedOption && selectedOption.qty > 1 && (
-              <p className="mb-1.5 text-xs text-brand-muted">
-                الكمية = عدد مرات هذا العرض
-              </p>
-            )}
-            <div className="flex items-center rounded-full border border-brand-border">
-              <button
-                onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="p-2.5 text-brand-primaryDark"
-                aria-label="تقليل الكمية"
-              >
-                <Minus className="h-4 w-4" />
-              </button>
-              <span className="w-8 text-center font-medium">{qty}</span>
-              <button
-                onClick={() => setQty((q) => q + 1)}
-                className="p-2.5 text-brand-primaryDark"
-                aria-label="زيادة الكمية"
-              >
-                <Plus className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-
-          <div className="mb-6">
-            <button
-              onClick={handleAdd}
-              className="flex w-full items-center justify-center gap-2 rounded-full border border-brand-primary py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
-            >
-              {added ? (
-                <>
-                  <Check className="h-4 w-4" /> تمت الإضافة
-                </>
-              ) : (
-                'أضف للسلة'
-              )}
-            </button>
-          </div>
-
-          <div className="flex items-center gap-6 text-xs text-brand-muted">
-            <span className="flex items-center gap-1">
-              <Truck className="h-4 w-4 text-brand-primary" /> شحن مجاني
-            </span>
-            <span className="flex items-center gap-1">
-              <ShieldCheck className="h-4 w-4 text-brand-primary" /> استرجاع
-              خلال 14 يوم
-            </span>
-          </div>
-
           {/* اشتري الآن مباشرة: فورم شحن مصغّر + ملخص، عشان اللي عايزة
               تطلب المنتج ده لوحده من غير ما تمر بالسلة وصفحة الدفع */}
           <div className="mt-8 rounded-2xl border border-brand-border bg-brand-surface p-5 sm:p-6">
@@ -361,6 +308,60 @@ export default function ProductDetail() {
                 ? 'جاري إرسال الطلب...'
                 : `إتمام الشراء — ${formatPrice(currentTotal)}`}
             </button>
+          </div>
+
+          <div className="mb-4">
+            {selectedOption && selectedOption.qty > 1 && (
+              <p className="mb-1.5 text-xs text-brand-muted">
+                الكمية = عدد مرات هذا العرض
+              </p>
+            )}
+            <div className="flex items-center rounded-full border border-brand-border">
+              <button
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                className="p-2.5 text-brand-primaryDark"
+                aria-label="تقليل الكمية"
+              >
+                <Minus className="h-4 w-4" />
+              </button>
+              <span className="w-8 text-center font-medium">{qty}</span>
+              <button
+                onClick={() => setQty((q) => q + 1)}
+                className="p-2.5 text-brand-primaryDark"
+                aria-label="زيادة الكمية"
+              >
+                <Plus className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <button
+              onClick={handleAdd}
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-brand-primary py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
+            >
+              {added ? (
+                <>
+                  <Check className="h-4 w-4" /> تمت الإضافة
+                </>
+              ) : (
+                'أضف للسلة'
+              )}
+            </button>
+          </div>
+
+          <div className="mb-6">
+            <RichDescription text={cleanedDescription} />
+          </div>
+
+          <div className="flex items-center gap-6 text-xs text-brand-muted">
+            <span className="flex items-center gap-1">
+              <Truck className="h-4 w-4 text-brand-primary" /> شحن مجاني
+            </span>
+            <span className="flex items-center gap-1">
+              <ShieldCheck className="h-4 w-4 text-brand-primary" /> استرجاع
+              خلال 14 يوم
+            </span>
           </div>
         </div>
       </div>
