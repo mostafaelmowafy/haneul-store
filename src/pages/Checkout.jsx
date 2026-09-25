@@ -13,6 +13,9 @@ import {
 import { useCart } from '../context/CartContext.jsx';
 import { useCatalog } from '../context/CatalogContext.jsx';
 
+const FREE_SHIPPING_THRESHOLD = 500;
+const SHIPPING_FEE = 60;
+
 export default function Checkout() {
   const { cart, clearCart } = useCart();
   const { getItemById } = useCatalog();

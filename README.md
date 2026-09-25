@@ -26,24 +26,24 @@ src/
 ```js
 export const PRODUCTS = [
   {
-    id: 'grease-remover',
-    name: 'مزيل الدهون القوي',
+    id: "grease-remover",
+    name: "مزيل الدهون القوي",
     price: 149,
     oldPrice: null,
-    description: 'وصف المنتج هنا...',
-    images: ['/images/grease-remover-1.webp', '/images/grease-remover-2.webp'],
+    description: "وصف المنتج هنا...",
+    images: ["/images/grease-remover-1.webp", "/images/grease-remover-2.webp"],
   },
   // ...أضيفي عنصر جديد هنا بنفس الشكل
 ];
 
 export const BUNDLES = [
   {
-    id: 'kitchen-offer',
-    name: 'عرض المطبخ النظيف',
+    id: "kitchen-offer",
+    name: "عرض المطبخ النظيف",
     price: 399,
     oldPrice: 550,
-    description: 'وصف العرض هنا...',
-    images: ['/images/kitchen-offer-1.webp'],
+    description: "وصف العرض هنا...",
+    images: ["/images/kitchen-offer-1.webp"],
   },
   // ...أضيفي عرض جديد هنا بنفس الشكل
 ];
@@ -67,7 +67,6 @@ export const BUNDLES = [
 
 الصور متخزنة جوه المشروع في `public/images/` وبنشير لها بمسار نسبي زي
 `/images/grease-remover-1.webp`. لإضافة صورة منتج جديد:
-
 - ارفعيها في `public/images/`، أو
 - استخدمي رابط صورة مستضافة على الإنترنت مباشرة في حقل `images` (لازم
   يبدأ بـ `http` أو `https`).
@@ -91,8 +90,8 @@ export const BUNDLES = [
 1. اعملي جوجل شيت جديد، وحطي الأعمدة دي بالظبط في أول صف (الأسماء
    لازم تكون بالظبط زي ما هي، بالإنجليزي):
 
-   | id  | name | category | price | oldPrice | priceOffer | oldPriceOffer | description |
-   | --- | ---- | -------- | ----- | -------- | ---------- | ------------- | ----------- |
+   | id | name | category | price | oldPrice | priceOffer | oldPriceOffer | description |
+   |----|------|----------|-------|----------|------------|----------------|--------------|
 
 2. **عمود `id` هو الأهم** — لازم يتطابق حرفيًا مع الـ `id` بتاع نفس
    المنتج في `src/data/catalog.js` (زي `product-1`، `offer-2`... إلخ)،
@@ -102,6 +101,7 @@ export const BUNDLES = [
 3. املي صف لكل منتج عايزة تتحكمي فيه. **مش لازم تملي كل الأعمدة** —
    لو سبتِ خلية فاضية (زي `oldPrice` مثلًا)، الموقع هيفضل مستخدم القيمة
    المحلية من `catalog.js` لنفس الحقل ده.
+
    - لو عايزة تكتبي وصف بأسطر متعددة جوه خلية واحدة، استخدمي `|` بدل
      السطر الجديد، وهو هيتحول لسطر جديد تلقائيًا على الموقع. مثال:
      `أهم المميزات: | يشيل الدهون بسرعة | آمن على الأسطح`
@@ -120,24 +120,33 @@ export const BUNDLES = [
      منفصل فعليًا عن سعر القطعة العادية (`price`)، فمحتاج عموده
      الخاص بيه بدل ما يتخلط مع سعر العبوة الواحدة.
 
-4. من قايمة **File → Share → Publish to web**:
-   - اختاري الشيت اللي عاملاه.
-   - اختاري صيغة **CSV**.
-   - دوسي **Publish** وأكدي.
-   - انسخي الرابط اللي هيظهرلك (بيبدأ بـ
-     `https://docs.google.com/spreadsheets/d/e/...`).
+4. من زرار **Share** (أعلى يمين الشيت):
+   - في **General access**، اختاري **Anyone with the link**، وخليها
+     **Viewer** (قراءة فقط — ده كافي، مش محتاجة "Editor").
+   - دوسي **Done**. (مفيش داعي لـ File → Publish to web خالص — الطريقة
+     دي بتقرا من الشيت اللايف مباشرة).
 
-5. افتحي `src/data/remoteCatalog.js` والصقي الرابط ده مكان
-   `PASTE_YOUR_PUBLISHED_SHEET_CSV_LINK_HERE`:
+5. جيبي **معرّف الشيت (Sheet ID)** من رابط الشيت نفسه في المتصفح، وهو
+   الجزء الطويل بين `/d/` و`/edit`:
 
-   ```js
-   const SHEET_CSV_URL =
-     'https://docs.google.com/spreadsheets/d/e/.../pub?output=csv';
+   ```
+   https://docs.google.com/spreadsheets/d/1-gAztJ87nmoRZyVSZK402aFFykTMnKj2GPOwVAI1-nw/edit
+                                          └──────────── ده الـ Sheet ID ────────────┘
    ```
 
-6. احفظي، وارفعي التحديث. من دلوقتي أي تعديل تعمليه في الشيت (وتحفظيه)
-   هيظهر على الموقع تلقائيًا لأول زيارة جديدة بعد كذا ثانية من التعديل
-   (Google بياخد وقت بسيط لتحديث النسخة المنشورة).
+6. افتحي `src/data/remoteCatalog.js` والصقي المعرّف ده مكان
+   `PASTE_YOUR_SHEET_ID_HERE`، وتأكدي إن `SHEET_TAB_NAME` مطابق لاسم
+   التاب (الورقة) اللي فيها بيانات المنتجات (تحت في أسفل الشيت):
+
+   ```js
+   const SHEET_ID = '1-gAztJ87nmoRZyVSZK402aFFykTMnKj2GPOwVAI1-nw';
+   const SHEET_TAB_NAME = 'Sheet1';
+   ```
+
+7. احفظي، وارفعي التحديث. من دلوقتي أي تعديل تعمليه في الشيت (وتحفظيه)
+   بيوصل للموقع فورًا تقريبًا، لأن الطريقة دي بتقرا من الشيت اللايف
+   مباشرة — من غير أي نسخة وسيطة أو خطوة "نشر" بتتأخر أو تتجدد كل شوية
+   دقايق زي الطريقة القديمة.
 
 **ملاحظة:** طول ما الرابط لسه فيه `PASTE_YOUR_...`، الموقع هيتجاهل
 الخطوة دي تمامًا ويشتغل بالبيانات المحلية في `catalog.js` عادي —
