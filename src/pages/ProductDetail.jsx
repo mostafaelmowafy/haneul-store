@@ -259,6 +259,31 @@ export default function ProductDetail() {
             </div>
           )}
 
+          <div className="mb-4">
+            {selectedOption && selectedOption.qty > 1 && (
+              <p className="mb-1.5 text-xs text-brand-muted">
+                الكمية = عدد مرات هذا العرض
+              </p>
+            )}
+            <div className="flex items-center rounded-full border border-brand-border">
+              <button
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                className="p-2.5 text-brand-primaryDark"
+                aria-label="تقليل الكمية"
+              >
+                <Minus className="h-4 w-4" />
+              </button>
+              <span className="w-8 text-center font-medium">{qty}</span>
+              <button
+                onClick={() => setQty((q) => q + 1)}
+                className="p-2.5 text-brand-primaryDark"
+                aria-label="زيادة الكمية"
+              >
+                <Plus className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
           {/* اشتري الآن مباشرة: فورم شحن مصغّر + ملخص، عشان اللي عايزة
               تطلب المنتج ده لوحده من غير ما تمر بالسلة وصفحة الدفع */}
           <div className="mt-8 rounded-2xl border border-brand-border bg-brand-surface p-5 sm:p-6">
@@ -310,32 +335,7 @@ export default function ProductDetail() {
             </button>
           </div>
 
-          <div className="mb-4">
-            {selectedOption && selectedOption.qty > 1 && (
-              <p className="mb-1.5 text-xs text-brand-muted">
-                الكمية = عدد مرات هذا العرض
-              </p>
-            )}
-            <div className="flex items-center rounded-full border border-brand-border">
-              <button
-                onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="p-2.5 text-brand-primaryDark"
-                aria-label="تقليل الكمية"
-              >
-                <Minus className="h-4 w-4" />
-              </button>
-              <span className="w-8 text-center font-medium">{qty}</span>
-              <button
-                onClick={() => setQty((q) => q + 1)}
-                className="p-2.5 text-brand-primaryDark"
-                aria-label="زيادة الكمية"
-              >
-                <Plus className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-
-          <div className="mb-6">
+          <div className="mb-6 mt-4">
             <button
               onClick={handleAdd}
               className="flex w-full items-center justify-center gap-2 rounded-full border border-brand-primary py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
