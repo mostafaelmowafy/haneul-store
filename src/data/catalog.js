@@ -320,7 +320,7 @@ export const PRODUCTS = [
   },
   {
     id: 'product-10',
-    name: '✨ معجون تنظيف وتلميع الاستانلس',
+    name: '✨ معجون إزالة البرومة والصدأ 🛠️',
     category: ' أدوات التنظيف',
     price: 223,
     oldPrice: 290,
