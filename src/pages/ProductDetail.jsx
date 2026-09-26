@@ -183,7 +183,7 @@ export default function ProductDetail() {
               )}
               {item.todayOrders != null && (
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-light px-3 py-1.5 text-xs font-bold text-brand-primaryDark">
-                  📦 {item.todayOrders} عميل طلبوا المنتج ده النهاردة
+                  📦 {item.todayOrders} عميل طلبوا المنتج ده
                 </span>
               )}
             </div>
