@@ -542,7 +542,7 @@ export const PRODUCTS = [
     ],
     relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
-    beforeAfter: null,
+    beforeAfter: '/images/before-after/p-10.webp',
   },
   {
     id: 'product-11',
