@@ -19,7 +19,7 @@ export default function Reviews({ reviews = [] }) {
           لسه مفيش تقييمات على المنتج ده. كوني أول واحدة تجرّبي وتقيّمي 🌿
         </p>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {reviews.map((src, i) => (
             <button
               key={i}
