@@ -4,6 +4,7 @@ import ProductImage from './ProductImage.jsx';
 // بيظهر بس لو المنتج معاه صورتين "قبل" و"بعد" في catalog.js (الحقل
 // beforeAfter). لو مش موجود، المكوّن بيرجّع null ومش بيتعرض خالص.
 export default function BeforeAfter({ beforeAfter }) {
+  console.log('BeforeAfter component rendered with beforeAfter:', beforeAfter);
   if (!beforeAfter) return null;
 
   return (
