@@ -10,9 +10,9 @@ export default function BeforeAfter({ beforeAfter }) {
   return (
     <div className="mt-16">
       <h2 className="font-display mb-6 text-center text-xl text-brand-primaryDark">
-        قبل وبعد
+        قبل وبعد الاستخدام
       </h2>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="">
         <div className="overflow-hidden rounded-2xl border border-brand-border">
           <div className="bg-brand-primaryDark px-4 py-1.5 text-center text-sm font-semibold text-white">
             قبل وبعد
