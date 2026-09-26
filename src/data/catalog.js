@@ -541,7 +541,12 @@ export const PRODUCTS = [
       },
     ],
     relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
-    reviews: [],
+    reviews: [
+      '/images/reviews/R1-P10.webp',
+      '/images/reviews/R2-P10.webp',
+      '/images/reviews/R3-P10.webp',
+      '/images/reviews/R4-P10.webp',
+    ],
     beforeAfter: '/images/before-after/p-10.webp',
   },
   {

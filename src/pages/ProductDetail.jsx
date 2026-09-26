@@ -257,7 +257,7 @@ export default function ProductDetail() {
 
           {/* اشتري الآن مباشرة: فورم شحن مصغّر + ملخص، عشان اللي عايزة
               تطلب المنتج ده لوحده من غير ما تمر بالسلة وصفحة الدفع */}
-          <div className="my-8 rounded-2xl border border-brand-border bg-brand-surface p-5 sm:p-6">
+          <div className="mt-8 rounded-2xl border border-brand-border bg-brand-surface p-5 sm:p-6">
             <h2 className="font-display mb-1 text-lg text-brand-primaryDark">
               اشتري الآن مباشرة
             </h2>
@@ -306,7 +306,7 @@ export default function ProductDetail() {
             </button>
           </div>
 
-          {/* <div className="mb-6 mt-4">
+          <div className="mb-6 mt-4">
             <button
               onClick={handleAdd}
               className="flex w-full items-center justify-center gap-2 rounded-full border border-brand-primary py-3 font-medium text-brand-primaryDark transition-colors hover:bg-brand-light"
@@ -319,7 +319,7 @@ export default function ProductDetail() {
                 'أضف للسلة'
               )}
             </button>
-          </div> */}
+          </div>
 
           <div className="mb-6">
             <RichDescription text={item.description} />
@@ -330,12 +330,8 @@ export default function ProductDetail() {
               <Truck className="h-4 w-4 text-brand-primary" /> شحن مجاني
             </span>
             <span className="flex items-center gap-1">
-              <ShieldCheck className="h-4 w-4 text-brand-primary" /> ضمان
-              استرجاع خلال 14 يوم
-            </span>
-            <span className=" ">
-              جرّب المنتج بنفسك، وإذا لم يكن مناسبًا لك يمكنك طلب الاسترجاع خلال
-              14 يومًا وفقًا لسياسة الاسترجاع
+              <ShieldCheck className="h-4 w-4 text-brand-primary" /> استرجاع
+              خلال 14 يوم
             </span>
           </div>
         </div>
