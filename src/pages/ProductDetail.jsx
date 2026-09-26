@@ -174,6 +174,21 @@ export default function ProductDetail() {
             )}
           </div>
 
+          {(item.stockLeft != null || item.todayOrders != null) && (
+            <div className="mb-5 flex flex-wrap gap-2">
+              {item.stockLeft != null && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1.5 text-xs font-bold text-red-600">
+                  🔥 باقي {item.stockLeft} بس في المخزون
+                </span>
+              )}
+              {item.todayOrders != null && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-light px-3 py-1.5 text-xs font-bold text-brand-primaryDark">
+                  📦 {item.todayOrders} عميل طلبوا المنتج ده النهاردة
+                </span>
+              )}
+            </div>
+          )}
+
           {options.length > 0 && (
             <div className="mb-6">
               <p className="mb-2 text-sm font-semibold text-brand-text">

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductImage from './ProductImage.jsx';
 
 // آراء العملاء بتتعرض كصور (سكرين شوت من واتساب/انستجرام إلخ)، مش كنص.
@@ -7,6 +7,14 @@ import ProductImage from './ProductImage.jsx';
 // reviews: ["/images/product-1-review-1.webp", "/images/product-1-review-2.webp"]
 export default function Reviews({ reviews = [] }) {
   const [openImage, setOpenImage] = useState(null);
+  const scrollerRef = useRef(null);
+
+  const scrollByCard = (direction) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const cardWidth = el.firstElementChild?.offsetWidth ?? 200;
+    el.scrollBy({ left: direction * (cardWidth + 12), behavior: 'smooth' });
+  };
 
   return (
     <div className="mt-16">
@@ -19,20 +27,45 @@ export default function Reviews({ reviews = [] }) {
           لسه مفيش تقييمات على المنتج ده. كوني أول واحدة تجرّبي وتقيّمي 🌿
         </p>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {reviews.map((src, i) => (
-            <button
-              key={i}
-              onClick={() => setOpenImage(src)}
-              className="overflow-hidden rounded-xl border border-brand-border transition-shadow hover:shadow-md"
-            >
-              <ProductImage
-                src={src}
-                alt={`رأي عميلة رقم ${i + 1}`}
-                className=" w-full bg-white"
-              />
-            </button>
-          ))}
+        <div className="relative">
+          {/* الأسهم بتتحكم في السكرول الأفقي — يمين وشمال بدل النزول تحت */}
+          {reviews.length > 1 && (
+            <>
+              <button
+                onClick={() => scrollByCard(-1)}
+                className="absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-brand-border bg-white p-1.5 shadow-md hover:bg-brand-light sm:flex"
+                aria-label="السابق"
+              >
+                <ChevronRight className="h-5 w-5 text-brand-primaryDark" />
+              </button>
+              <button
+                onClick={() => scrollByCard(1)}
+                className="absolute -left-3 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-brand-border bg-white p-1.5 shadow-md hover:bg-brand-light sm:flex"
+                aria-label="التالي"
+              >
+                <ChevronLeft className="h-5 w-5 text-brand-primaryDark" />
+              </button>
+            </>
+          )}
+
+          <div
+            ref={scrollerRef}
+            className="flex gap-3 overflow-x-auto scroll-smooth pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {reviews.map((src, i) => (
+              <button
+                key={i}
+                onClick={() => setOpenImage(src)}
+                className="w-40 shrink-0 overflow-hidden rounded-xl border border-brand-border transition-shadow hover:shadow-md sm:w-48"
+              >
+                <ProductImage
+                  src={src}
+                  alt={`رأي عميلة رقم ${i + 1}`}
+                  className="aspect-[3/4] w-full bg-white"
+                />
+              </button>
+            ))}
+          </div>
         </div>
       )}
 

@@ -27,6 +27,8 @@ export const PRODUCTS = [
     category: ' أدوات التنظيف',
     price: 249,
     oldPrice: 310,
+    stockLeft: 3,
+    todayOrders: 357,
     description: `قوة تنظيف.. على أصعب الدهون ✨
 
 سبراي مخصص لإزالة الدهون المتراكمة والزيوت وبقايا الطعام من أسطح المطبخ، ليساعدك على استعادة نظافة ولمعان الأسطح بسهولة وسرعة.
@@ -69,7 +71,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى سعر العبوة فى العرض 166 ج فقط',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -79,6 +81,8 @@ export const PRODUCTS = [
     category: ' أدوات التنظيف',
     price: 249,
     oldPrice: 310,
+    stockLeft: null,
+    todayOrders: null,
     description: `قوة تنظيف في كل مساحة ✨
 
 وايبس مخصصة لإزالة الدهون وبقع الطعام والأوساخ الصعبة بسرعة وسهولة، لتساعدك على تنظيف المطبخ والأسطح المختلفة بدون مجهود.
@@ -121,7 +125,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى سعر العبوة فى العرض166 ج فقط',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -131,6 +135,8 @@ export const PRODUCTS = [
     category: ' أدوات التنظيف',
     price: 229,
     oldPrice: 300,
+    stockLeft: null,
+    todayOrders: null,
     description: `غسالة أنظف.. ملابس أكثر صحة ✨
 
 كبسولات مخصصة لتنظيف الغسالة من الداخل، تساعد على إزالة الأوساخ والتراكمات والروائح الكريهة، للحفاظ على نظافة الغسالة وكفاءتها.
@@ -173,7 +179,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى سعر العبوة فى العرض 153 ج فقط',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -183,6 +189,8 @@ export const PRODUCTS = [
     category: ' المطبخ',
     price: 197,
     oldPrice: 230,
+    stockLeft: null,
+    todayOrders: null,
     description: `نظافة أعمق.. ورائحة منعشة تدوم ✨
 
 أقراص مخصصة لتنظيف وتعقيم قاعدة الحمام، تساعد على إزالة الأوساخ والتكلسات والروائح غير المرغوبة وتترك الحمام بمظهر أنظف ورائحة منعشة.
@@ -228,7 +236,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى سعر العبوة فى العرض 133 ج فقط',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -238,6 +246,8 @@ export const PRODUCTS = [
     category: ' أدوات التنظيف',
     price: 269,
     oldPrice: 300,
+    stockLeft: null,
+    todayOrders: null,
     description: `نظافة أعمق.. ورائحة منعشة تدوم طويلًا ✨
 
 كبسولات غسيل متعددة الوظائف تجمع بين التنظيف، إزالة البقع، والحفاظ على رائحة الملابس وانتعاشها، لتمنحك غسيلًا نظيفًا برائحة جميلة مع كل دورة.
@@ -280,7 +290,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى سعر العبوة فى العرض 179 ج فقط',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -290,6 +300,8 @@ export const PRODUCTS = [
     category: ' أدوات التنظيف',
     price: 197,
     oldPrice: 230,
+    stockLeft: null,
+    todayOrders: null,
     description: `ة ✨
 
 وايبس مخصصة للمساعدة في تنظيف البقع والأوساخ الصعبة من الملابس بسرعة وسهولة، بدون الحاجة لغسل القطعة بالكامل في كل مرة.
@@ -329,7 +341,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى سعر العبوة فى العرض 133 ج فقط',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -339,6 +351,8 @@ export const PRODUCTS = [
     category: ' أدوات التنظيف',
     price: 197,
     oldPrice: 230,
+    stockLeft: null,
+    todayOrders: null,
     description: `نظافة فورية.. في أي وقت وأي مكان ✨
 
 وايبس مخصصة لتنظيف الأحذية وإزالة الأوساخ والبقع وآثار الاستخدام اليومية بسهولة وسرعة، لتحافظ على مظهر حذائك نظيفًا وجديدًا.
@@ -378,7 +392,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى سعر العبوة فى العرض 133 ج فقط',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -388,6 +402,8 @@ export const PRODUCTS = [
     category: 'أدوات التنظيف',
     price: 237,
     oldPrice: 300,
+    stockLeft: null,
+    todayOrders: null,
     description: `تنظيف أسهل .. لكل مكان في بيتك ✨
 
 فوطة عملية تساعدك على تنظيف وتجفيف الأسطح المختلفة بسهولة، وتمتاز بقدرة جيدة على امتصاص المياه والأوساخ مع إمكانية استخدامها أكثر من مرة.
@@ -434,7 +450,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى  سعر العبوة فى العرض 155 ج فقط⸻',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -444,6 +460,8 @@ export const PRODUCTS = [
     category: ' المطبخ',
     price: 177,
     oldPrice: 230,
+    stockLeft: null,
+    todayOrders: null,
     description: `تعقيم وانتعاش يدوم.. مع كل استخدام ✨
 
 جل مخصص لقاعدة الحمام يساعد على التعقيم، تقليل الروائح غير المرغوبة وترك رائحة منعشة، مع تصميم سهل الاستخدام يمنح حمامك إحساسًا بالنظافة والانتعاش.
@@ -483,7 +501,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى سعر العبوة فى العرض 119 ج فقط',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -493,6 +511,8 @@ export const PRODUCTS = [
     category: ' أدوات التنظيف',
     price: 223,
     oldPrice: 290,
+    stockLeft: 3,
+    todayOrders: 357,
     description: `💥 ودّع الصدأ والبرومة والبهتان!
 
 معجون تنظيف وتلميع قوي يساعدك على استعادة شكل المعادن والأسطح التي فقدت لمعانها بسبب الصدأ والبرومة وآثار الاستخدام.
@@ -547,7 +567,7 @@ export const PRODUCTS = [
       '/images/reviews/R3-P10.webp',
       '/images/reviews/R4-P10.webp',
     ],
-    beforeAfter: '/images/before-after/p-10.webp',
+    beforeAfter: null,
   },
   {
     id: 'product-11',
@@ -555,6 +575,8 @@ export const PRODUCTS = [
     category: ' أدوات التنظيف',
     price: 249,
     oldPrice: 310,
+    stockLeft: null,
+    todayOrders: null,
     description: `رؤية أوضح.. ولمعان يدوم ✨
 
 فوم مخصص لتنظيف الزجاج وإزالة الزيوت، الأوساخ والأوساخ المتراكمة، ليساعد على استعادة صفاء ولمعان الزجاج بسهولة.
@@ -595,7 +617,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى سعر العبوة فى العرض 166 ج فقط',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -605,6 +627,8 @@ export const PRODUCTS = [
     category: 'أدوات التنظيف',
     price: 237,
     oldPrice: 300,
+    stockLeft: null,
+    todayOrders: null,
     description: `تنظيف عميق.. بدون منظفات ✨
 
 إسفنجة الميلامين تساعد على إزالة العلامات، البقع والأوساخ الصعبة من الأسطح المختلفة باستخدام الماء فقط، لتساعدك على استعادة نظافة السطح بسهولة.
@@ -640,7 +664,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -650,6 +674,8 @@ export const PRODUCTS = [
     category: 'أدوات تنظيم',
     price: 297,
     oldPrice: 400,
+    stockLeft: null,
+    todayOrders: null,
     description: `حافظ على طعامك طازجًا.. ونظّم مطبخك بسهولة ✨
 
 أكياس عملية لتغطية الأطباق وحفظ الطعام، تساعد على حماية الأكل من الأتربة والحشرات والعوامل الخارجية، وتحافظ على ترتيب ونظافة المطبخ.
@@ -683,7 +709,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -693,6 +719,8 @@ export const PRODUCTS = [
     category: ' أدوات التنظيف',
     price: 367,
     oldPrice: 450,
+    stockLeft: null,
+    todayOrders: null,
     description: `رفيقتك في كل مكان ✈️
   
   شنطة سفر عملية وأنيقة، مصممة لتوفر لك مساحة واسعة وتنظيم أفضل أثناء السفر والرحلات، مع سهولة حملها واستخدامها في مختلف المناسبات.
@@ -733,7 +761,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -743,6 +771,8 @@ export const PRODUCTS = [
     category: ' أدوات التنظيف',
     price: 529,
     oldPrice: 650,
+    stockLeft: null,
+    todayOrders: null,
     description: `ألوان أكتر.. متعة أكبر ✨
 
 مجموعة متكاملة للرسم والتلوين، تضم 60 لون تاتش زاهي وواضح مع كتب تلوين جاهزة، لتستمتع بالتلوين وتطلق خيالك وتحوّل كل رسمة لعمل مميز.
@@ -783,7 +813,7 @@ export const PRODUCTS = [
         note: 'و الشحن مجانى - المجموعة سعرها فى العرض 353 ج فقط',
       },
     ],
-    relatedOfferIds: [],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
@@ -796,6 +826,8 @@ export const BUNDLES = [
     category: 'عرض',
     price: 437,
     oldPrice: null,
+    stockLeft: null,
+    todayOrders: null,
     description: `كل ما يحتاجه مطبخك.. في عرض واحد ✨
 
 باكدج متكامل يجمع لك 4 منتجات أساسية لتنظيف وترتيب المطبخ، عشان تخلص من الدهون والأوساخ وتحافظ على مطبخك نظيف ومرتب بسهولة.
@@ -837,6 +869,8 @@ export const BUNDLES = [
     category: 'عرض',
     price: 449,
     oldPrice: null,
+    stockLeft: null,
+    todayOrders: null,
     description: `كل ما يحتاجه حمامك.. في عرض واحد ✨
 
 باكدج متكامل للعناية بنظافة الحمام وانتعاشه، يجمع 4 منتجات أساسية تساعدك على الحفاظ على حمام أنظف، أكثر انتعاشًا وأسهل في التنظيف.
@@ -877,6 +911,8 @@ export const BUNDLES = [
     category: 'عرض',
     price: 879,
     oldPrice: null,
+    stockLeft: null,
+    todayOrders: null,
     description: `كل اللي يحتاجه بيتك.. في عرض واحد ✨
 
 باكدج متكامل يجمع مجموعة من منتجات التنظيف والعناية بالمنزل، لتسهيل التنظيف اليومي والتعامل مع الدهون والبقع والروائح في مختلف أنحاء البيت.
