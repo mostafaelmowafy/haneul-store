@@ -257,7 +257,7 @@ export default function ProductDetail() {
 
           {/* اشتري الآن مباشرة: فورم شحن مصغّر + ملخص، عشان اللي عايزة
               تطلب المنتج ده لوحده من غير ما تمر بالسلة وصفحة الدفع */}
-          <div className="mt-8 rounded-2xl border border-brand-border bg-brand-surface p-5 sm:p-6">
+          <div className="my-8 rounded-2xl border border-brand-border bg-brand-surface p-5 sm:p-6">
             <h2 className="font-display mb-1 text-lg text-brand-primaryDark">
               اشتري الآن مباشرة
             </h2>
