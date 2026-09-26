@@ -11,12 +11,10 @@ import {
 import ProductGallery from '../components/ProductGallery.jsx';
 import ItemCard from '../components/ItemCard.jsx';
 import ShippingForm from '../components/ShippingForm.jsx';
+import BeforeAfter from '../components/BeforeAfter.jsx';
+import Reviews from '../components/Reviews.jsx';
 import { formatPrice } from '../data/products.js';
-import RichDescription, { renderAfterText } from '../utils/richDescription.jsx';
-import {
-  parseOfferOptions,
-  stripOfferLines,
-} from '../utils/parseOfferOptions.js';
+import RichDescription from '../utils/richDescription.jsx';
 import {
   EMPTY_SHIPPING_FORM,
   convertArabicNumsToEnglish,
@@ -41,44 +39,14 @@ export default function ProductDetail() {
   const [buyErrors, setBuyErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
-  // بنستبدل {price}/{oldPrice}/{priceOffer}/{oldPriceOffer} في الوصف
-  // بالقيم الفعلية الحالية للمنتج، عشان لو غيّرتِ أي سعر (من catalog.js
-  // أو جوجل شيت) يتحدّث في نص الوصف تلقائيًا من غير ما تحتاجي تعدّليه
-  // في مكانين. priceOffer/oldPriceOffer بتمثّل سعر عرض تاني منفصل (زي
-  // "2+1 مجانا") مختلف فعليًا عن سعر القطعة العادية.
-  const resolvedDescription = useMemo(() => {
-    if (!item?.description) return item?.description;
-    return item.description
-      .replaceAll('{price}', item.price ?? '')
-      .replaceAll('{oldPrice}', item.oldPrice ?? '')
-      .replaceAll('{priceOffer}', item.priceOffer ?? '')
-      .replaceAll('{oldPriceOffer}', item.oldPriceOffer ?? '');
-  }, [
-    item?.description,
-    item?.price,
-    item?.oldPrice,
-    item?.priceOffer,
-    item?.oldPriceOffer,
-  ]);
-
-  // اختيارات السعر المستخرجة من وصف المنتج (زي "سعر العبوة" و"عرض 2+1")،
-  // أول اختيار (عادةً سعر القطعة العادي) بيبقى مختار افتراضيًا.
-  const offerOptions = useMemo(
-    () => parseOfferOptions(resolvedDescription),
-    [resolvedDescription],
+  // اختيارات السعر بقت بيانات جاهزة في catalog.js (item.options) بدل
+  // ما تتقرا من نص الوصف — آخر اختيار (غالبًا العرض الأكبر) بيبقى
+  // مختار افتراضيًا لو موجود.
+  const options = item?.options ?? [];
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(
+    options.length > 1 ? options.length - 1 : 0,
   );
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(1);
-  const selectedOption = offerOptions[selectedOptionIndex] || null;
-
-  // باقي الوصف من غير أسطر الأسعار (دي هتتعرض كاختيارات منفصلة بدل ما
-  // تتكرر جوه فقرة الوصف العادية)
-  const cleanedDescription = useMemo(
-    () =>
-      offerOptions.length > 0
-        ? stripOfferLines(resolvedDescription)
-        : resolvedDescription,
-    [resolvedDescription, offerOptions.length],
-  );
+  const selectedOption = options[selectedOptionIndex] || null;
 
   if (!item) {
     return (
@@ -91,8 +59,11 @@ export default function ProductDetail() {
     );
   }
 
-  // العروض المتاحة (بتظهر تحت وصف أي منتج، ما عدا العرض اللي أنتِ واقفة فيه أصلًا)
-  const offers = bundles.filter((b) => b.id !== item.id);
+  // العروض اللي المفروض تظهر تحت المنتج ده تحديدًا، حسب item.relatedOfferIds
+  // في catalog.js (لو مش متحدد، بترجع مصفوفة فاضية ومفيش سكشن هيظهر خالص)
+  const offers = (item.relatedOfferIds ?? [])
+    .map((offerId) => bundles.find((b) => b.id === offerId))
+    .filter(Boolean);
 
   const galleryImages = useMemo(() => {
     if (item.type === 'bundle' && item.includes?.length) {
@@ -203,13 +174,13 @@ export default function ProductDetail() {
             )}
           </div>
 
-          {offerOptions.length > 0 && (
+          {options.length > 0 && (
             <div className="mb-6">
               <p className="mb-2 text-sm font-semibold text-brand-text">
                 اختاري العرض المناسب:
               </p>
               <div className="space-y-2">
-                {offerOptions.map((option, index) => {
+                {options.map((option, index) => {
                   const isSelected = index === selectedOptionIndex;
                   return (
                     <button
@@ -248,8 +219,8 @@ export default function ProductDetail() {
                         </span>
                       )}
                       {option.note && (
-                        <span className="flex flex-wrap items-center gap-x-1">
-                          {renderAfterText(option.note)}
+                        <span className="text-sm font-bold text-emerald-600">
+                          {option.note}
                         </span>
                       )}
                     </button>
@@ -351,7 +322,7 @@ export default function ProductDetail() {
           </div>
 
           <div className="mb-6">
-            <RichDescription text={cleanedDescription} />
+            <RichDescription text={item.description} />
           </div>
 
           <div className="flex items-center gap-6 text-xs text-brand-muted">
@@ -366,7 +337,9 @@ export default function ProductDetail() {
         </div>
       </div>
 
-      {/* العروض بتظهر هنا بعد وصف المنتج مباشرة، وبتتزود تلقائيًا من src/data/catalog.js */}
+      <BeforeAfter beforeAfter={item.beforeAfter} />
+
+      {/* العروض بتظهر هنا حسب item.relatedOfferIds في src/data/catalog.js */}
       {offers.length > 0 && (
         <div className="mt-16">
           <h2 className="font-display mb-6 text-center text-xl text-brand-primaryDark">
@@ -384,6 +357,8 @@ export default function ProductDetail() {
           </div>
         </div>
       )}
+
+      <Reviews reviews={item.reviews} />
     </div>
   );
 }

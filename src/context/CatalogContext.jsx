@@ -11,13 +11,47 @@ function withType(items, type) {
   return items.map((item) => ({ ...item, type }));
 }
 
-// بتدمج تعديلات جوجل شيت (لو موجودة) فوق البيانات المحلية بالاسم/السعر/
-// الوصف بس، وبتسيب الصور والـ includes زي ما هي (دايمًا من catalog.js).
+// بتدمج تعديلات جوجل شيت (لو موجودة) فوق البيانات المحلية. الحقول
+// البسيطة (الاسم، الفئة، الوصف) بتتحط على المنتج مباشرة. أما price/
+// oldPrice و priceOffer/oldPriceOffer فبقت بتتطبّق على العنصر المناسب
+// جوه مصفوفة options (الاختيار العادي، واختيار العرض زي "2+1")، عشان
+// السعر يفضل متزامن بين كروت المنتجات وصفحة المنتج في مكان واحد بس.
 function applyOverrides(items, overridesById) {
   if (overridesById.size === 0) return items;
-  return items.map((item) =>
-    overridesById.has(item.id) ? { ...item, ...overridesById.get(item.id) } : item,
-  );
+
+  return items.map((item) => {
+    const override = overridesById.get(item.id);
+    if (!override) return item;
+
+    const { priceOffer, oldPriceOffer, ...scalarOverrides } = override;
+    const updated = { ...item, ...scalarOverrides };
+
+    if (Array.isArray(item.options) && item.options.length > 0) {
+      updated.options = item.options.map((option) => {
+        if (!option.isBundle) {
+          return {
+            ...option,
+            price: scalarOverrides.price ?? option.price,
+            oldPrice:
+              scalarOverrides.oldPrice !== undefined
+                ? scalarOverrides.oldPrice
+                : option.oldPrice,
+          };
+        }
+        if (priceOffer !== undefined || oldPriceOffer !== undefined) {
+          return {
+            ...option,
+            price: priceOffer ?? option.price,
+            oldPrice:
+              oldPriceOffer !== undefined ? oldPriceOffer : option.oldPrice,
+          };
+        }
+        return option;
+      });
+    }
+
+    return updated;
+  });
 }
 
 export function CatalogProvider({ children }) {
