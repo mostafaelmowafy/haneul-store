@@ -56,7 +56,7 @@ export default function Reviews({ reviews = [] }) {
               <button
                 key={i}
                 onClick={() => setOpenImage(src)}
-                className="w-40 shrink-0 overflow-hidden rounded-xl border border-brand-border transition-shadow hover:shadow-md sm:w-48"
+                className="w-40 shrink-0 overflow-hidden rounded-xl border border-brand-border transition-shadow hover:shadow-md sm:w-64"
               >
                 <ProductImage
                   src={src}
