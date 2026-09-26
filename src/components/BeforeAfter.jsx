@@ -12,7 +12,7 @@ export default function BeforeAfter({ beforeAfter }) {
       <h2 className="font-display mb-6 text-center text-xl text-brand-primaryDark">
         قبل وبعد الاستخدام
       </h2>
-      <div className="">
+      <div className=" max-w-xl mx-auto">
         <div className="overflow-hidden rounded-2xl border border-brand-border">
           <div className="bg-brand-primaryDark px-4 py-1.5 text-center text-sm font-semibold text-white">
             قبل وبعد
