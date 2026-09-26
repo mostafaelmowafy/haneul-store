@@ -22,9 +22,9 @@
 
 export const PRODUCTS = [
   {
-    id: "product-1",
-    name: "🧽 فوم إزالة الدهون",
-    category: " أدوات التنظيف",
+    id: 'product-1',
+    name: '🧽 فوم إزالة الدهون',
+    category: ' أدوات التنظيف',
     price: 249,
     oldPrice: 310,
     description: `قوة تنظيف.. على أصعب الدهون ✨
@@ -48,41 +48,35 @@ export const PRODUCTS = [
 البوتجاز • شفاط المطبخ • أسطح المطبخ • الأحواض والأسطح المقاومة للمنظفات
 
 📦 الحجم: 500 مل`,
-    images: [
-      "/images/product-1.webp",
-    ],
+    images: ['/images/product-1.webp'],
     options: [
       {
-        key: "1-249",
-        label: "العبوة",
+        key: '1-249',
+        label: 'العبوة',
         qty: 1,
         price: 249,
         oldPrice: 310,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-499",
-        label: "2 + 1 مجانا",
+        key: '3-499',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 499,
         oldPrice: 930,
         isBundle: true,
-        note: "و الشحن مجانى سعر العبوة فى العرض 166 ج فقط",
+        note: 'و الشحن مجانى سعر العبوة فى العرض 166 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-2",
-    name: "🧽 وايبس إزالة الدهون",
-    category: " أدوات التنظيف",
+    id: 'product-2',
+    name: '🧽 وايبس إزالة الدهون',
+    category: ' أدوات التنظيف',
     price: 249,
     oldPrice: 310,
     description: `قوة تنظيف في كل مساحة ✨
@@ -106,41 +100,35 @@ export const PRODUCTS = [
 البوتجاز • أسطح المطبخ • الرخام والأسطح الصلبة • الأجهزة والأسطح المختلفة
 
 📦 العبوة: 80 قطعة`,
-    images: [
-      "/images/product-2.webp",
-    ],
+    images: ['/images/product-2.webp'],
     options: [
       {
-        key: "1-249",
-        label: "العبوة",
+        key: '1-249',
+        label: 'العبوة',
         qty: 1,
         price: 249,
         oldPrice: 310,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-499",
-        label: "2 + 1 مجانا",
+        key: '3-499',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 499,
         oldPrice: 930,
         isBundle: true,
-        note: "و الشحن مجانى سعر العبوة فى العرض166 ج فقط",
+        note: 'و الشحن مجانى سعر العبوة فى العرض166 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-3",
-    name: "🧺 كبسولات تنظيف وتعقيم الغسالة",
-    category: " أدوات التنظيف",
+    id: 'product-3',
+    name: '🧺 كبسولات تنظيف وتعقيم الغسالة',
+    category: ' أدوات التنظيف',
     price: 229,
     oldPrice: 300,
     description: `غسالة أنظف.. ملابس أكثر صحة ✨
@@ -164,41 +152,35 @@ export const PRODUCTS = [
 لجميع أنواع الغسالات
 
 📦 العبوة: 12 كبسولة`,
-    images: [
-      "/images/product-3.webp",
-    ],
+    images: ['/images/product-3.webp'],
     options: [
       {
-        key: "1-229",
-        label: "العبوة",
+        key: '1-229',
+        label: 'العبوة',
         qty: 1,
         price: 229,
         oldPrice: 300,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-459",
-        label: "2 + 1 مجانا",
+        key: '3-459',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 459,
         oldPrice: 900,
         isBundle: true,
-        note: "و الشحن مجانى سعر العبوة فى العرض 153 ج فقط",
+        note: 'و الشحن مجانى سعر العبوة فى العرض 153 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-4",
-    name: "🧼 أقراص تعقيم وتنظيف قاعدة الحمام",
-    category: " المطبخ",
+    id: 'product-4',
+    name: '🧼 أقراص تعقيم وتنظيف قاعدة الحمام',
+    category: ' المطبخ',
     price: 197,
     oldPrice: 230,
     description: `نظافة أعمق.. ورائحة منعشة تدوم ✨
@@ -225,41 +207,35 @@ export const PRODUCTS = [
 اسحب السيفون واستمتع بقاعدة حمام أنظف.
 
 📦 العبوة: 12 قرص`,
-    images: [
-      "/images/product-4.webp",
-    ],
+    images: ['/images/product-4.webp'],
     options: [
       {
-        key: "1-197",
-        label: "العبوة",
+        key: '1-197',
+        label: 'العبوة',
         qty: 1,
         price: 197,
         oldPrice: 230,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-397",
-        label: "2 + 1 مجانا",
+        key: '3-397',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 397,
         oldPrice: 690,
         isBundle: true,
-        note: "و الشحن مجانى سعر العبوة فى العرض 133 ج فقط",
+        note: 'و الشحن مجانى سعر العبوة فى العرض 133 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-5",
-    name: "🧺 كبسولات الغسيل الذكية 5 في 1",
-    category: " أدوات التنظيف",
+    id: 'product-5',
+    name: '🧺 كبسولات الغسيل الذكية 5 في 1',
+    category: ' أدوات التنظيف',
     price: 269,
     oldPrice: 300,
     description: `نظافة أعمق.. ورائحة منعشة تدوم طويلًا ✨
@@ -283,41 +259,35 @@ export const PRODUCTS = [
 استمتع بملابس نظيفة ورائحة منعشة 🌸
 
 📦 العبوة: 50 كبسولة`,
-    images: [
-      "/images/product-5.webp",
-    ],
+    images: ['/images/product-5.webp'],
     options: [
       {
-        key: "1-269",
-        label: "العبوة",
+        key: '1-269',
+        label: 'العبوة',
         qty: 1,
         price: 269,
         oldPrice: 300,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-538",
-        label: "2 + 1 مجانا",
+        key: '3-538',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 538,
         oldPrice: 900,
         isBundle: true,
-        note: "و الشحن مجانى سعر العبوة فى العرض 179 ج فقط",
+        note: 'و الشحن مجانى سعر العبوة فى العرض 179 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-6",
-    name: "🧼 وايبس تنظيف البقع الصعبة من الملابس",
-    category: " أدوات التنظيف",
+    id: 'product-6',
+    name: '🧼 وايبس تنظيف البقع الصعبة من الملابس',
+    category: ' أدوات التنظيف',
     price: 197,
     oldPrice: 230,
     description: `ة ✨
@@ -338,41 +308,35 @@ export const PRODUCTS = [
 اترك الملابس لتجف أو اغسلها بالطريقة المعتادة.
 
 📦 العبوة: 80 قطعة`,
-    images: [
-      "/images/product-6.webp",
-    ],
+    images: ['/images/product-6.webp'],
     options: [
       {
-        key: "1-197",
-        label: "العبوة",
+        key: '1-197',
+        label: 'العبوة',
         qty: 1,
         price: 197,
         oldPrice: 230,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-399",
-        label: "2 + 1 مجانا",
+        key: '3-399',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 399,
         oldPrice: 690,
         isBundle: true,
-        note: "و الشحن مجانى سعر العبوة فى العرض 133 ج فقط",
+        note: 'و الشحن مجانى سعر العبوة فى العرض 133 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-7",
-    name: "👟 وايبس تنظيف وتلميع الأحذية",
-    category: " أدوات التنظيف",
+    id: 'product-7',
+    name: '👟 وايبس تنظيف وتلميع الأحذية',
+    category: ' أدوات التنظيف',
     price: 197,
     oldPrice: 230,
     description: `نظافة فورية.. في أي وقت وأي مكان ✨
@@ -393,41 +357,35 @@ export const PRODUCTS = [
 اترك الحذاء ليجف.
 
 📦 العبوة: 80 قطعة`,
-    images: [
-      "/images/product-7.webp",
-    ],
+    images: ['/images/product-7.webp'],
     options: [
       {
-        key: "1-197",
-        label: "العبوة",
+        key: '1-197',
+        label: 'العبوة',
         qty: 1,
         price: 197,
         oldPrice: 230,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-399",
-        label: "2 + 1 مجانا",
+        key: '3-399',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 399,
         oldPrice: 690,
         isBundle: true,
-        note: "و الشحن مجانى سعر العبوة فى العرض 133 ج فقط",
+        note: 'و الشحن مجانى سعر العبوة فى العرض 133 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-8",
-    name: "🧽 فوطة التنظيف متعددة الاستخدامات",
-    category: "أدوات التنظيف",
+    id: 'product-8',
+    name: '🧽 فوطة التنظيف متعددة الاستخدامات',
+    category: 'أدوات التنظيف',
     price: 237,
     oldPrice: 300,
     description: `تنظيف أسهل .. لكل مكان في بيتك ✨
@@ -455,41 +413,35 @@ export const PRODUCTS = [
 بعد الاستخدام تُغسل وتُترك لتجف، ويمكن إعادة استخدامها.
 
 📦 العبوة: 20 فوطة`,
-    images: [
-      "/images/product-8.webp",
-    ],
+    images: ['/images/product-8.webp'],
     options: [
       {
-        key: "1-237",
-        label: "العبوة",
+        key: '1-237',
+        label: 'العبوة',
         qty: 1,
         price: 237,
         oldPrice: 300,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-473",
-        label: "2 + 1 مجانا",
+        key: '3-473',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 473,
         oldPrice: 900,
         isBundle: true,
-        note: "و الشحن مجانى  سعر العبوة فى العرض 155 ج فقط⸻",
+        note: 'و الشحن مجانى  سعر العبوة فى العرض 155 ج فقط⸻',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-9",
-    name: "🚽 حقن تعقيم و تعطير التواليت ",
-    category: " المطبخ",
+    id: 'product-9',
+    name: '🚽 حقن تعقيم و تعطير التواليت ',
+    category: ' المطبخ',
     price: 177,
     oldPrice: 230,
     description: `تعقيم وانتعاش يدوم.. مع كل استخدام ✨
@@ -510,96 +462,92 @@ export const PRODUCTS = [
 استبدل العبوة عند انتهاء الجل.
 
 📦 العبوة: تكفي حتى 14 استخدام`,
-    images: [
-      "/images/product-9.webp",
-    ],
+    images: ['/images/product-9.webp'],
     options: [
       {
-        key: "1-177",
-        label: "العبوة",
+        key: '1-177',
+        label: 'العبوة',
         qty: 1,
         price: 177,
         oldPrice: 230,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-357",
-        label: "2 + 1 مجانا",
+        key: '3-357',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 357,
         oldPrice: 690,
         isBundle: true,
-        note: "و الشحن مجانى سعر العبوة فى العرض 119 ج فقط",
+        note: 'و الشحن مجانى سعر العبوة فى العرض 119 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-10",
-    name: "✨ معجون إزالة البرومة والصدأ 🛠️",
-    category: " أدوات التنظيف",
+    id: 'product-10',
+    name: '✨ معجون إزالة البرومة والصدأ 🛠️',
+    category: ' أدوات التنظيف',
     price: 223,
     oldPrice: 290,
-    description: `ينظف.. يلمع.. ويحافظ على لمعان مطبخك ✨
+    description: `💥 ودّع الصدأ والبرومة والبهتان!
 
-معجون مخصص لتنظيف وتلميع أسطح الاستانلس، يساعد على إزالة الدهون، البقع وآثار الاستخدام ويعيد للسطح مظهره اللامع والنظيف.
+معجون تنظيف وتلميع قوي يساعدك على استعادة شكل المعادن والأسطح التي فقدت لمعانها بسبب الصدأ والبرومة وآثار الاستخدام.
 
-⭐ أهم المميزات:
-✔️ تنظيف قوي وفعّال
-✔️ يساعد على إزالة الدهون والبقع الصعبة
-✔️ يعيد اللمعان للاستانلس
-✔️ سهل الاستخدام
-✔️ مناسب للأواني والأسطح المصنوعة من الاستانلس
+استخدمه على:
 
-🧽 طريقة الاستخدام:
-ضع كمية صغيرة من المعجون على إسفنجة أو فوطة مبللة.
-افرك السطح بلطف بحركات دائرية.
-ركّز على البقع والدهون المتراكمة.
-اشطف جيدًا بالماء ثم جفف بفوطة نظيفة.
+🔩 المعادن والأجزاء المعدنية
+يساعد على إزالة الصدأ والبرومة وآثار الأكسدة.
 
-📦 الحجم: 500 جم`,
-    images: [
-      "/images/product-10.webp",
-    ],
+🚗 أجزاء السيارة المعدنية
+لتنظيف وتلميع الأجزاء المعدنية وإظهارها بشكل أنظف.
+
+🚿 الحنفيات والإكسسوارات المعدنية
+يساعد على إزالة البهتان والبقع المتراكمة واستعادة اللمعان.
+
+🍳 الستانلس وأدوات المطبخ
+لإزالة البقع وآثار الاستخدام وتلميع السطح.
+
+🛠️ المعادن القديمة والباهتة
+يساعد على تحسين المظهر وإعادة اللمعة للسطح.
+
+✨ النتيجة؟
+
+تنظيف + إزالة الصدأ والبرومة + تلميع = معدن شكله أنظف وأجدد
+
+الحجم: 500 جم`,
+    images: ['/images/product-10.webp'],
     options: [
       {
-        key: "1-223",
-        label: "العبوة",
+        key: '1-223',
+        label: 'العبوة',
         qty: 1,
         price: 223,
         oldPrice: 290,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "1-447",
-        label: "3 عبوات",
+        key: '1-447',
+        label: '3 عبوات',
         qty: 1,
         price: 447,
         oldPrice: 870,
         isBundle: false,
-        note: "و الشحن مجانى سعر العبوة فى العرض 179 ج فقط",
+        note: 'و الشحن مجانى سعر العبوة فى العرض 179 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: ['offer-1', 'offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-11",
-    name: "🧼 فوم تلميع وتنظيف الزجاج",
-    category: " أدوات التنظيف",
+    id: 'product-11',
+    name: '🧼 فوم تلميع وتنظيف الزجاج',
+    category: ' أدوات التنظيف',
     price: 249,
     oldPrice: 310,
     description: `رؤية أوضح.. ولمعان يدوم ✨
@@ -621,41 +569,35 @@ export const PRODUCTS = [
 
 🏠🚗 مناسب لـ:
 زجاج السيارات • نوافذ المنزل • المرايات • الأسطح الزجاجية`,
-    images: [
-      "/images/product-11.webp",
-    ],
+    images: ['/images/product-11.webp'],
     options: [
       {
-        key: "1-249",
-        label: "العبوة",
+        key: '1-249',
+        label: 'العبوة',
         qty: 1,
         price: 249,
         oldPrice: 310,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-499",
-        label: "2 + 1 مجانا",
+        key: '3-499',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 499,
         oldPrice: 930,
         isBundle: true,
-        note: "و الشحن مجانى سعر العبوة فى العرض 166 ج فقط",
+        note: 'و الشحن مجانى سعر العبوة فى العرض 166 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-12",
-    name: "🧽 إسفنجة الميلامين لإزالة الأوساخ والبقع",
-    category: "أدوات التنظيف",
+    id: 'product-12',
+    name: '🧽 إسفنجة الميلامين لإزالة الأوساخ والبقع',
+    category: 'أدوات التنظيف',
     price: 237,
     oldPrice: 300,
     description: `تنظيف عميق.. بدون منظفات ✨
@@ -681,32 +623,26 @@ export const PRODUCTS = [
 افرك البقعة أو العلامة بلطف.
 امسح بقطعة فوطة نظيفة.
 كرر عند الحاجة.`,
-    images: [
-      "/images/product-12.webp",
-    ],
+    images: ['/images/product-12.webp'],
     options: [
       {
-        key: "4-237",
-        label: "عرض خاص عدد 4",
+        key: '4-237',
+        label: 'عرض خاص عدد 4',
         qty: 4,
         price: 237,
         oldPrice: 300,
         isBundle: true,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-13",
-    name: "🍽️ أكياس تغطية الأطباق وحفظ الطعام",
-    category: "أدوات تنظيم",
+    id: 'product-13',
+    name: '🍽️ أكياس تغطية الأطباق وحفظ الطعام',
+    category: 'أدوات تنظيم',
     price: 297,
     oldPrice: 400,
     description: `حافظ على طعامك طازجًا.. ونظّم مطبخك بسهولة ✨
@@ -730,32 +666,26 @@ export const PRODUCTS = [
 يمكن تنظيف الكيس وإعادة استخدامه.
 
 📦 العبوة: 100 كيس`,
-    images: [
-      "/images/product-13.webp",
-    ],
+    images: ['/images/product-13.webp'],
     options: [
       {
-        key: "1-297",
-        label: "ال 400 كيس",
+        key: '1-297',
+        label: 'ال 400 كيس',
         qty: 1,
         price: 297,
         oldPrice: 400,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-14",
-    name: "👜 شنطة سفر كورية",
-    category: " أدوات التنظيف",
+    id: 'product-14',
+    name: '👜 شنطة سفر كورية',
+    category: ' أدوات التنظيف',
     price: 367,
     oldPrice: 450,
     description: `رفيقتك في كل مكان ✈️
@@ -777,41 +707,35 @@ export const PRODUCTS = [
   تساعدك على ترتيب ملابسك وأغراضك الشخصية بسهولة، مع إمكانية حملها بشكل مريح أثناء التنقل.
   
   شنطة واحدة.. لكل مشاويرك ❤️`,
-    images: [
-      "/images/product-14.webp",
-    ],
+    images: ['/images/product-14.webp'],
     options: [
       {
-        key: "1-367",
-        label: "الشنطة",
+        key: '1-367',
+        label: 'الشنطة',
         qty: 1,
         price: 367,
         oldPrice: 450,
         isBundle: false,
-        note: "والشحن مجانى",
+        note: 'والشحن مجانى',
       },
       {
-        key: "3-733",
-        label: "2 + 1 مجانا",
+        key: '3-733',
+        label: '2 + 1 مجانا',
         qty: 3,
         price: 733,
         oldPrice: 1350,
         isBundle: true,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "product-15",
-    name: "🎨 مجموعة الإبداع – ألوان تاتش 60 قطعة مع كتاب التلوين الجاهز",
-    category: " أدوات التنظيف",
+    id: 'product-15',
+    name: '🎨 مجموعة الإبداع – ألوان تاتش 60 قطعة مع كتاب التلوين الجاهز',
+    category: ' أدوات التنظيف',
     price: 529,
     oldPrice: 650,
     description: `ألوان أكتر.. متعة أكبر ✨
@@ -833,34 +757,28 @@ export const PRODUCTS = [
 الأطفال • محبي الرسم والتلوين • الأنشطة الإبداعية • الهدايا
 
 لون حياتك.. بكل تفاصيلها ❤️`,
-    images: [
-      "/images/product-15.webp",
-    ],
+    images: ['/images/product-15.webp'],
     options: [
       {
-        key: "1-529",
-        label: "المجموعة",
+        key: '1-529',
+        label: 'المجموعة',
         qty: 1,
         price: 529,
         oldPrice: 650,
         isBundle: false,
-        note: "و الشحن مجانى",
+        note: 'و الشحن مجانى',
       },
       {
-        key: "3-1059",
-        label: "اشترى2 + 1 مجانا  و الشحن مجانى",
+        key: '3-1059',
+        label: 'اشترى2 + 1 مجانا  و الشحن مجانى',
         qty: 3,
         price: 1059,
         oldPrice: 1950,
         isBundle: true,
-        note: "و الشحن مجانى - المجموعة سعرها فى العرض 353 ج فقط",
+        note: 'و الشحن مجانى - المجموعة سعرها فى العرض 353 ج فقط',
       },
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-      "offer-3",
-    ],
+    relatedOfferIds: [],
     reviews: [],
     beforeAfter: null,
   },
@@ -868,9 +786,9 @@ export const PRODUCTS = [
 
 export const BUNDLES = [
   {
-    id: "offer-1",
-    name: "🧼 باكدج المطبخ النظيف",
-    category: "عرض",
+    id: 'offer-1',
+    name: '🧼 باكدج المطبخ النظيف',
+    category: 'عرض',
     price: 437,
     oldPrice: null,
     description: `كل ما يحتاجه مطبخك.. في عرض واحد ✨
@@ -902,26 +820,16 @@ export const BUNDLES = [
 🚚 الشحن مجانًا
 💳 الدفع عند الاستلام
 🛡️ منتجات أصلية`,
-    images: [
-      "/images/offer-1.webp",
-    ],
-    includes: [
-      "product-2",
-      "product-1",
-      "product-8",
-      "product-13",
-    ],
-    relatedOfferIds: [
-      "offer-2",
-      "offer-3",
-    ],
+    images: ['/images/offer-1.webp'],
+    includes: ['product-2', 'product-1', 'product-8', 'product-13'],
+    relatedOfferIds: ['offer-2', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "offer-2",
-    name: "🚿 عرض الحمام النظيف",
-    category: "عرض",
+    id: 'offer-2',
+    name: '🚿 عرض الحمام النظيف',
+    category: 'عرض',
     price: 449,
     oldPrice: null,
     description: `كل ما يحتاجه حمامك.. في عرض واحد ✨
@@ -952,26 +860,16 @@ export const BUNDLES = [
 
 🚚 الشحن مجانًا
 💳 الدفع عند الاستلام`,
-    images: [
-      "/images/offer-2.webp",
-    ],
-    includes: [
-      "product-4",
-      "product-9",
-      "product-3",
-      "product-5",
-    ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-3",
-    ],
+    images: ['/images/offer-2.webp'],
+    includes: ['product-4', 'product-9', 'product-3', 'product-5'],
+    relatedOfferIds: ['offer-1', 'offer-3'],
     reviews: [],
     beforeAfter: null,
   },
   {
-    id: "offer-3",
-    name: "🏠 عرض البيت المتكامل النظيف",
-    category: "عرض",
+    id: 'offer-3',
+    name: '🏠 عرض البيت المتكامل النظيف',
+    category: 'عرض',
     price: 879,
     oldPrice: null,
     description: `كل اللي يحتاجه بيتك.. في عرض واحد ✨
@@ -1005,27 +903,22 @@ export const BUNDLES = [
 💳 الدفع عند الاستلام متوفر
 
 بيت أنظف.. وحياة أسهل ❤️`,
-    images: [
-      "/images/offer-3.webp",
-    ],
+    images: ['/images/offer-3.webp'],
     includes: [
-      "product-2",
-      "product-1",
-      "product-10",
-      "product-4",
-      "product-9",
-      "product-3",
-      "product-5",
-      "product-7",
-      "product-6",
-      "product-12",
-      "product-8",
-      "product-13",
+      'product-2',
+      'product-1',
+      'product-10',
+      'product-4',
+      'product-9',
+      'product-3',
+      'product-5',
+      'product-7',
+      'product-6',
+      'product-12',
+      'product-8',
+      'product-13',
     ],
-    relatedOfferIds: [
-      "offer-1",
-      "offer-2",
-    ],
+    relatedOfferIds: ['offer-1', 'offer-2'],
     reviews: [],
     beforeAfter: null,
   },
