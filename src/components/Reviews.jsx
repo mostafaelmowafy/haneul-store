@@ -1,20 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductImage from './ProductImage.jsx';
+import { useHorizontalScroll } from '../utils/useHorizontalScroll.js';
 
 // آراء العملاء بتتعرض كصور (سكرين شوت من واتساب/انستجرام إلخ)، مش كنص.
 // كل عنصر في reviews هو مسار صورة، زي:
 // reviews: ["/images/product-1-review-1.webp", "/images/product-1-review-2.webp"]
 export default function Reviews({ reviews = [] }) {
   const [openImage, setOpenImage] = useState(null);
-  const scrollerRef = useRef(null);
-
-  const scrollByCard = (direction) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const cardWidth = el.firstElementChild?.offsetWidth ?? 200;
-    el.scrollBy({ left: direction * (cardWidth + 12), behavior: 'smooth' });
-  };
+  const { scrollerRef, scrollByCard } = useHorizontalScroll();
 
   return (
     <div className="mt-16">
@@ -56,12 +50,12 @@ export default function Reviews({ reviews = [] }) {
               <button
                 key={i}
                 onClick={() => setOpenImage(src)}
-                className="w-40 shrink-0 overflow-hidden rounded-xl border border-brand-border transition-shadow hover:shadow-md sm:w-64"
+                className="w-52 shrink-0 overflow-hidden rounded-xl border border-brand-border transition-shadow hover:shadow-md sm:w-64"
               >
                 <ProductImage
                   src={src}
                   alt={`رأي عميلة رقم ${i + 1}`}
-                  className=" w-full bg-white"
+                  className="aspect-[3/5] w-full bg-white"
                 />
               </button>
             ))}

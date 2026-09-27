@@ -7,6 +7,8 @@ import {
   Check,
   Truck,
   ShieldCheck,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import ProductGallery from '../components/ProductGallery.jsx';
 import ItemCard from '../components/ItemCard.jsx';
@@ -15,6 +17,7 @@ import BeforeAfter from '../components/BeforeAfter.jsx';
 import Reviews from '../components/Reviews.jsx';
 import { formatPrice } from '../data/products.js';
 import RichDescription from '../utils/richDescription.jsx';
+import { useHorizontalScroll } from '../utils/useHorizontalScroll.js';
 import {
   EMPTY_SHIPPING_FORM,
   convertArabicNumsToEnglish,
@@ -29,6 +32,8 @@ export default function ProductDetail() {
   const navigate = useNavigate();
   const { getItemById, bundles } = useCatalog();
   const { addToCart } = useCart();
+  const { scrollerRef: offersScrollerRef, scrollByCard: scrollOffersByCard } =
+    useHorizontalScroll();
 
   const item = getItemById(id);
   const [qty, setQty] = useState(1);
@@ -183,7 +188,7 @@ export default function ProductDetail() {
               )}
               {item.todayOrders != null && (
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-light px-3 py-1.5 text-xs font-bold text-brand-primaryDark">
-                  📦 {item.todayOrders} عميل طلبوا المنتج ده
+                  📦 {item.todayOrders} عميل طلبوا المنتج ده النهاردة
                 </span>
               )}
             </div>
@@ -354,21 +359,47 @@ export default function ProductDetail() {
 
       <BeforeAfter beforeAfter={item.beforeAfter} />
 
-      {/* العروض بتظهر هنا حسب item.relatedOfferIds في src/data/catalog.js */}
+      {/* العروض بتظهر هنا حسب item.relatedOfferIds في src/data/catalog.js.
+          على الموبايل بتبقى Slide أفقي يمين وشمال، وعلى الشاشات الأكبر
+          بترجع Grid عادي متمركز في النص */}
       {offers.length > 0 && (
         <div className="mt-16">
           <h2 className="font-display mb-6 text-center text-xl text-brand-primaryDark">
             عروض قد تعجبك
           </h2>
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-            {offers.map((offer) => (
-              <div
-                key={offer.id}
-                className="w-[calc(50%-0.5rem)] sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1.125rem)]"
-              >
-                <ItemCard item={offer} />
-              </div>
-            ))}
+          <div className="relative">
+            {offers.length > 1 && (
+              <>
+                <button
+                  onClick={() => scrollOffersByCard(-1)}
+                  className="absolute -right-3 top-1/2 z-10 -translate-y-1/2 rounded-full border border-brand-border bg-white p-1.5 shadow-md hover:bg-brand-light sm:hidden"
+                  aria-label="السابق"
+                >
+                  <ChevronRight className="h-5 w-5 text-brand-primaryDark" />
+                </button>
+                <button
+                  onClick={() => scrollOffersByCard(1)}
+                  className="absolute -left-3 top-1/2 z-10 -translate-y-1/2 rounded-full border border-brand-border bg-white p-1.5 shadow-md hover:bg-brand-light sm:hidden"
+                  aria-label="التالي"
+                >
+                  <ChevronLeft className="h-5 w-5 text-brand-primaryDark" />
+                </button>
+              </>
+            )}
+
+            <div
+              ref={offersScrollerRef}
+              className="flex gap-4 overflow-x-auto scroll-smooth pb-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:justify-center sm:overflow-visible sm:gap-6 [&::-webkit-scrollbar]:hidden"
+            >
+              {offers.map((offer) => (
+                <div
+                  key={offer.id}
+                  className="w-44 shrink-0 sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1.125rem)]"
+                >
+                  <ItemCard item={offer} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
