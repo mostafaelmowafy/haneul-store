@@ -353,6 +353,16 @@ export default function ProductDetail() {
               <ShieldCheck className="h-4 w-4 text-brand-primary" /> استرجاع
               خلال 14 يوم
             </span>
+            <span className="flex items-center gap-1">
+              <Check className="h-4 w-4 text-brand-primary" /> ضمان جودة المنتج
+            </span>
+          </div>
+
+          <div className="mt-6 rounded-xl bg-brand-light/60 p-4 text-center text-sm text-brand-muted">
+            <span>
+              جرّب المنتج بنفسك، وإذا لم يكن مناسبًا لك يمكنك طلب الاسترجاع خلال
+              14 يومًا وفقًا لسياسة الاسترجاع
+            </span>
           </div>
         </div>
       </div>
