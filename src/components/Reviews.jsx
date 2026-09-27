@@ -55,7 +55,7 @@ export default function Reviews({ reviews = [] }) {
                 <ProductImage
                   src={src}
                   alt={`رأي عميلة رقم ${i + 1}`}
-                  className=" w-full bg-white"
+                  className=" w-1/3 bg-white"
                 />
               </button>
             ))}
